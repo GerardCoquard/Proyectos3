@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
 
         if (movement.y <= 0.0f && !onGround)
         {
-            Debug.Log(transform.position.y);
+            //Debug.Log(transform.position.y);
         }
 
 
