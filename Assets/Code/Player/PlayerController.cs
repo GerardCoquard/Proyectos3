@@ -21,15 +21,27 @@ public class PlayerController : MonoBehaviour
     private Vector3 lastDirection;
 
     [Header("Jumping")]
+    [SerializeField] private float coyoteTime;
+    [SerializeField] private float maxJumpHeight;
+    [SerializeField] private float maxJumpTime;
     private bool onGround = true;
     private Vector3 verticalSpeed;
     private float timeOnAir;
     private float jumpForce;
-    [SerializeField] private float coyoteTime;
     //[SerializeField] private float fallMultiplier;
-    [SerializeField] private float maxJumpHeight;
-    [SerializeField] private float maxJumpTime;
-     private float gravity;
+    private float gravity;
+
+    [Header("Push")]
+    [SerializeField] float closeObjectDetection;
+    [SerializeField] float pushForce;
+    [SerializeField] float maxRayDistance;
+    [SerializeField] LayerMask pusheableLayer;
+    [SerializeField] Transform raycastInitialTransform;
+    private PusheableObject currentObjectPushing;
+    private bool isPushing;
+
+
+
 
 
 
@@ -90,8 +102,8 @@ public class PlayerController : MonoBehaviour
 
         //Jump
 
+        PushDetection();
 
-       
         SetGravity();
 
         if (CanJump() && InputManager.GetAction("Jump").context.WasPerformedThisFrame())
@@ -109,15 +121,54 @@ public class PlayerController : MonoBehaviour
 
         CheckCollision(l_collisionFlags);
 
-        characterController.Move(movement);
-        
+
+
+
+
+
+        //Push
+        if (currentObjectPushing != null)
+        {
+            Push();
+        }
 
     }
 
 
+    private void PushDetection()
+    {
+        Ray ray = new Ray(raycastInitialTransform.position, rendererTransform.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, maxRayDistance, pusheableLayer))
+        {
+            if (hit.collider != null)
+            {
+                if (InputManager.GetAction("Test1").context.WasPressedThisFrame())
+                {
+                    Debug.Log("E pressed");
+                    //My player is pushing
+                    currentObjectPushing = hit.collider.GetComponent<PusheableObject>();
+                    characterController.enabled = false;
+                    transform.SetParent(currentObjectPushing.transform);
+
+                }
+            }
+        }
+
+      
+    }
+
+    private void Push()
+    {
+
+        currentObjectPushing.AddForceTowardsDirection(pushForce * movementAcceleration, direction);
+
+    }
+
     private bool CanJump()
     {
-        return onGround;
+        return onGround && !isPushing;
     }
 
     void SetGravity()
@@ -128,13 +179,6 @@ public class PlayerController : MonoBehaviour
 
         verticalSpeed.y = nextYVelocity;
         movement.y = verticalSpeed.y * Time.deltaTime;
-
-        if (movement.y <= 0.0f && !onGround)
-        {
-            //Debug.Log(transform.position.y);
-        }
-
-
 
     }
 
