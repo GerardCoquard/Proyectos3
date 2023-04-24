@@ -70,11 +70,11 @@ public class Book : MonoBehaviour
                 Vector3 desiredPosition =  player.position + OrientationToVector(player.eulerAngles.y + angle).normalized * distance + offset;
                 target.transform.position = desiredPosition;
 
-                //if(!VisibleToPlayer(col)) Debug.Log("Visible To Player FAILED");
+                if(!VisibleToPlayer(col)) Debug.Log("Visible To Player FAILED");
                 if(IsOverlapping(sensor)) Debug.Log("Overlapping FAILED");
                 if(!OnGround()) Debug.Log("OnGround FAILED");
 
-                //if(!VisibleToPlayer(col)) continue;
+                if(!VisibleToPlayer(col)) continue;
                 if(IsOverlapping(sensor)) continue;
                 if(!OnGround()) continue;
                 return true;
