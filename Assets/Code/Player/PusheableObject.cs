@@ -11,7 +11,7 @@ public class PusheableObject : MonoBehaviour
 
     public void AddForceTowardsDirection(float force, Vector3 direction)
     {
-        rb.velocity = direction * force * Time.deltaTime;
+        rb.velocity = direction * force * Time.fixedDeltaTime;
     }
 }
 

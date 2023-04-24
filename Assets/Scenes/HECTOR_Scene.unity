@@ -1270,7 +1270,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 671205001}
   m_LocalRotation: {x: 0.7064338, y: 0.47771442, z: 0.030843567, w: 0.5213338}
-  m_LocalPosition: {x: 0.24, y: 3, z: 4.18}
+  m_LocalPosition: {x: -29.55, y: 3, z: 9.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2135,15 +2135,15 @@ MonoBehaviour:
   animator: {fileID: 0}
   rendererTransform: {fileID: 1961537505}
   cam: {fileID: 558859348}
-  maxLinealSpeed: 5
-  maxAngularSpeed: 5
+  maxLinealSpeed: 7
+  maxAngularSpeed: 10
   increment: 1
   decrement: 1
   coyoteTime: 0.2
-  maxJumpHeight: 2
+  maxJumpHeight: 4
   maxJumpTime: 0.5
   closeObjectDetection: 1
-  pushForce: 1000
+  pushForce: 250
   maxRayDistance: 1
   pusheableLayer:
     serializedVersion: 2

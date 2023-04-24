@@ -64,6 +64,14 @@ public class PlayerController : MonoBehaviour
         jumpForce = (2 * maxJumpHeight) / timeToApex;
     }
 
+    private void FixedUpdate()
+    {
+        //Push
+        if (currentObjectPushing != null)
+        {
+            Push();
+        }
+    }
     void Update()
     {
 
@@ -77,28 +85,16 @@ public class PlayerController : MonoBehaviour
 
         if (direction != Vector3.zero)
         {
-
             lastDirection = direction;
-            if (movementAcceleration < 1f)
-            {
-                movementAcceleration += Mathf.Clamp01(tempDirection.magnitude) * increment * Time.deltaTime;
-                movementAcceleration = Mathf.Clamp(movementAcceleration, 0, tempDirection.magnitude);
-            }
-
-        }
-        else
+        }        
+        if (!isPushing)
         {
 
-            movementAcceleration -= decrement * Time.deltaTime;
-
-            movementAcceleration = Mathf.Clamp01(movementAcceleration);
+            rendererTransform.forward = Vector3.Dot(rendererTransform.forward, lastDirection) >= -.8f ?
+                rendererTransform.forward = Vector3.Lerp(rendererTransform.forward, lastDirection, maxAngularSpeed * Time.deltaTime) : lastDirection;
 
         }
-
-        rendererTransform.forward = Vector3.Dot(rendererTransform.forward, lastDirection) >= -.8f ?
-            rendererTransform.forward = Vector3.Lerp(rendererTransform.forward, lastDirection, maxAngularSpeed * Time.deltaTime) : lastDirection;
-
-        movement = maxLinealSpeed * lastDirection * Time.deltaTime * movementAcceleration;
+        movement = maxLinealSpeed * direction * Time.deltaTime;
 
 
         //Jump
@@ -109,29 +105,12 @@ public class PlayerController : MonoBehaviour
 
         if (CanJump() && InputManager.GetAction("Jump").context.WasPerformedThisFrame())
         {
-            /*float previousYVelocity = verticalSpeed.y;
-            float newYVelocity = (verticalSpeed.y + jumpForce);
-            float nextYVelocity = (previousYVelocity + newYVelocity) * .5f;
-
-            verticalSpeed.y = nextYVelocity;*/
-
             verticalSpeed.y = jumpForce * .5f;
         }
 
         CollisionFlags l_collisionFlags = characterController.Move(movement);
 
         CheckCollision(l_collisionFlags);
-
-
-
-
-
-
-        //Push
-        if (currentObjectPushing != null)
-        {
-            Push();
-        }
 
     }
 
@@ -147,19 +126,19 @@ public class PlayerController : MonoBehaviour
             {
                 if (InputManager.GetAction("Test1").context.WasPressedThisFrame() && !isPushing)
                 {
-                    
+
                     //My player is pushing
                     currentObjectPushing = hit.collider.GetComponent<PusheableObject>();
                     currentObjectPushing.rb.isKinematic = false;
                     characterController.enabled = false;
                     transform.SetParent(currentObjectPushing.transform);
-                    SetIsPushing(true); 
+                    SetIsPushing(true);
 
                 }
             }
         }
 
-        if(currentObjectPushing != null && isPushing && InputManager.GetAction("Test1").context.WasPressedThisFrame())
+        if (currentObjectPushing != null && isPushing && InputManager.GetAction("Test1").context.WasPressedThisFrame())
         {
             currentObjectPushing.rb.isKinematic = true;
             currentObjectPushing = null;
@@ -168,7 +147,7 @@ public class PlayerController : MonoBehaviour
             transform.SetParent(null);
         }
 
-      
+
     }
 
     private void SetIsPushing(bool state)
@@ -185,7 +164,7 @@ public class PlayerController : MonoBehaviour
     private void Push()
     {
 
-        currentObjectPushing.AddForceTowardsDirection(pushForce * movementAcceleration, direction);
+        currentObjectPushing.AddForceTowardsDirection(pushForce, direction);
 
     }
 
@@ -229,7 +208,5 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
-
 }
 
