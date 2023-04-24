@@ -16,17 +16,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float maxAngularSpeed;
     [SerializeField] float increment;
     [SerializeField] float decrement;
-    float movementAcceleration;
+    [SerializeField] float rotationFractionPerFrame;
+    private bool isMovementPressed;
     private Vector3 movement;
     private Vector3 direction;
-    private Vector3 lastDirection;
 
     [Header("Jumping")]
     [SerializeField] private float coyoteTime;
     [SerializeField] private float maxJumpHeight;
     [SerializeField] private float maxJumpTime;
+    [SerializeField] private float groundedGravity;
     private bool onGround = true;
-    private Vector3 verticalSpeed;
     private float timeOnAir;
     private float jumpForce;
     //[SerializeField] private float fallMultiplier;
@@ -51,9 +51,19 @@ public class PlayerController : MonoBehaviour
 
         characterController = GetComponent<CharacterController>();
         SetUpJumpVariables();
+        InputManager.GetAction("Move").context.started += OnMovementInput;
+        InputManager.GetAction("Move").context.canceled += OnMovementInput;
+        InputManager.GetAction("Move").context.performed += OnMovementInput;
 
     }
 
+    private void OnMovementInput(InputAction.CallbackContext context)
+    {
+        Vector2 tempDirection = context.ReadValue<Vector2>();
+        movement.x = tempDirection.x * maxLinealSpeed;
+        movement.z = tempDirection.y * maxLinealSpeed;
+        isMovementPressed = tempDirection.x != 0 || tempDirection.y != 0;
+    }
     private void SetUpJumpVariables()
     {
 
@@ -72,48 +82,51 @@ public class PlayerController : MonoBehaviour
             Push();
         }
     }
+
+    private void HandleRotation()
+    {
+        Vector3 positionToLookAt;
+
+        positionToLookAt.x = movement.x;
+        positionToLookAt.y = 0.0f;
+        positionToLookAt.z = movement.z;
+        Quaternion currentRotation = transform.rotation;
+
+
+        if (isMovementPressed)
+        {
+
+            Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
+            transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, rotationFractionPerFrame * Time.deltaTime);
+
+        }
+
+
+    }
     void Update()
     {
 
-        //Movement
-
-        Vector2 tempDirection = InputManager.GetAction("Move").context.ReadValue<Vector2>();
-        Vector3 movDirection = new Vector3(tempDirection.x, 0, tempDirection.y);
-
-        direction = movDirection;
-        direction.Normalize();
-
-        if (direction != Vector3.zero)
-        {
-            lastDirection = direction;
-        }        
-        if (!isPushing)
-        {
-
-            rendererTransform.forward = Vector3.Dot(rendererTransform.forward, lastDirection) >= -.8f ?
-                rendererTransform.forward = Vector3.Lerp(rendererTransform.forward, lastDirection, maxAngularSpeed * Time.deltaTime) : lastDirection;
-
-        }
-        movement = maxLinealSpeed * direction * Time.deltaTime;
-
-
-        //Jump
-
+        HandleRotation();
         PushDetection();
 
+        CollisionFlags collisionFlags = characterController.Move(movement * Time.deltaTime);
+        CheckCollision(collisionFlags);
+
         SetGravity();
+        HandleJump();
 
-        if (CanJump() && InputManager.GetAction("Jump").context.WasPerformedThisFrame())
-        {
-            verticalSpeed.y = jumpForce * .5f;
-        }
 
-        CollisionFlags l_collisionFlags = characterController.Move(movement);
 
-        CheckCollision(l_collisionFlags);
 
     }
+    private void HandleJump()
+    {
+        if (CanJump() && InputManager.GetAction("Jump").context.WasPerformedThisFrame())
+        {
+            movement.y = jumpForce * .5f;
+        }
 
+    }
 
     private void PushDetection()
     {
@@ -175,26 +188,26 @@ public class PlayerController : MonoBehaviour
 
     void SetGravity()
     {
-        float previousYVelocity = verticalSpeed.y;
-        float newYVelocity = verticalSpeed.y + (gravity * Time.deltaTime);
-        float nextYVelocity = (previousYVelocity + newYVelocity) * .5f;
 
-        verticalSpeed.y = nextYVelocity;
-        movement.y = verticalSpeed.y * Time.deltaTime;
+            float previousYVelocity = movement.y;
+            float newYVelocity = movement.y + (gravity * Time.deltaTime);
+            float nextYVelocity = (previousYVelocity + newYVelocity) * .5f;
+
+            movement.y = nextYVelocity;
 
     }
 
     void CheckCollision(CollisionFlags collisionFlag)
     {
-        if ((collisionFlag & CollisionFlags.Above) != 0 && verticalSpeed.y > 0.0f)
+        if ((collisionFlag & CollisionFlags.Above) != 0 && movement.y > 0.0f)
         {
-            verticalSpeed.y = 0.0f;
+            movement.y = 0.0f;
         }
 
-        if ((collisionFlag & CollisionFlags.Below) != 0 && verticalSpeed.y < 0.0f)
+        if ((collisionFlag & CollisionFlags.Below) != 0 && movement.y < 0.0f)
         {
 
-            verticalSpeed.y = 0.0f;
+            movement.y = 0.0f;
             timeOnAir = 0.0f;
             onGround = true;
 
