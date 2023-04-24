@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -144,19 +145,41 @@ public class PlayerController : MonoBehaviour
         {
             if (hit.collider != null)
             {
-                if (InputManager.GetAction("Test1").context.WasPressedThisFrame())
+                if (InputManager.GetAction("Test1").context.WasPressedThisFrame() && !isPushing)
                 {
-                    Debug.Log("E pressed");
+                    
                     //My player is pushing
                     currentObjectPushing = hit.collider.GetComponent<PusheableObject>();
+                    currentObjectPushing.rb.isKinematic = false;
                     characterController.enabled = false;
                     transform.SetParent(currentObjectPushing.transform);
+                    SetIsPushing(true); 
 
                 }
             }
         }
 
+        if(currentObjectPushing != null && isPushing && InputManager.GetAction("Test1").context.WasPressedThisFrame())
+        {
+            currentObjectPushing.rb.isKinematic = true;
+            currentObjectPushing = null;
+            SetIsPushing(false);
+            characterController.enabled = true;
+            transform.SetParent(null);
+        }
+
       
+    }
+
+    private void SetIsPushing(bool state)
+    {
+        StartCoroutine(VariableDelay(state));
+    }
+
+    IEnumerator VariableDelay(bool state)
+    {
+        yield return new WaitForEndOfFrame();
+        isPushing = state;
     }
 
     private void Push()

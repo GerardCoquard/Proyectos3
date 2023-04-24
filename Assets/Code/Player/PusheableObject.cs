@@ -2,7 +2,7 @@
 
 public class PusheableObject : MonoBehaviour
 {
-    private Rigidbody rb;
+    public Rigidbody rb;
 
     private void Start()
     {
