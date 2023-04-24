@@ -45,16 +45,21 @@ public class Book : MonoBehaviour
         Collider[] cols = target.GetComponents<Collider>();
         foreach (Collider col in cols)
         {
-            Collider newCol = target.AddComponent(col);
-            newCol.isTrigger = true;
+            col.isTrigger = true;
         }
 
         if(!FindSpot()) return;
+
         target.GetComponent<ColliderSensor>().enabled = false;
+        foreach (Collider col in cols)
+        {
+            col.isTrigger = false;
+        }
     }
     public bool FindSpot()
     {
         ColliderSensor sensor = target.GetComponent<ColliderSensor>();
+        Collider col = target.GetComponent<Collider>();
         for (float distI = 1; distI <= distanceIterations; distI++)
         {
             float distance = maxDistance/distanceIterations*distI;
@@ -65,14 +70,13 @@ public class Book : MonoBehaviour
                 Vector3 desiredPosition =  player.position + OrientationToVector(player.eulerAngles.y + angle).normalized * distance + offset;
                 target.transform.position = desiredPosition;
 
-                if(!VisibleToPlayer()) Debug.Log("Visible To Player FAILED");
-                if(sensor.IsOverlapping()) Debug.Log("Overlapping FAILED");
+                //if(!VisibleToPlayer(col)) Debug.Log("Visible To Player FAILED");
+                if(IsOverlapping(sensor)) Debug.Log("Overlapping FAILED");
                 if(!OnGround()) Debug.Log("OnGround FAILED");
 
-                if(!VisibleToPlayer()) continue;
-                if(sensor.IsOverlapping()) continue;
+                //if(!VisibleToPlayer(col)) continue;
+                if(IsOverlapping(sensor)) continue;
                 if(!OnGround()) continue;
-                Debug.Log("GoodSpot!");
                 return true;
             }
         }
@@ -80,16 +84,20 @@ public class Book : MonoBehaviour
         Destroy(target);
         return false;
     }
-    bool VisibleToPlayer()
+    bool VisibleToPlayer(Collider col)
     {
         RaycastHit hit;
-        Physics.Raycast(player.position+offset, target.transform.position - player.position + offset*2, out hit,whatIsNotPlayer);
+        Physics.Raycast(player.position, col.bounds.center - player.position, out hit,Mathf.Infinity,whatIsNotPlayer,QueryTriggerInteraction.Collide);
         if(hit.collider!=null) return hit.collider.gameObject == target;
         else return false;
     }
     bool OnGround()
     {
         return Physics.Raycast(target.transform.position-offset/2,Vector3.down,groundDetectionDistance);
+    }
+    bool IsOverlapping(ColliderSensor sensor)
+    {
+        return sensor.IsOverlapping();
     }
     Vector3 OrientationToVector(float angle)
     {

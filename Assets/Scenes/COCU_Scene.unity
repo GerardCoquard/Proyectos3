@@ -722,7 +722,7 @@ MonoBehaviour:
   maxDistance: 5
   player: {fileID: 1669500684}
   groundDetectionDistance: 0.2
-  shapeTest: {fileID: 1460272748}
+  shapeTest: {fileID: 444197564}
   whatIsNotPlayer:
     serializedVersion: 2
     m_Bits: 503
@@ -1493,6 +1493,18 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f455b7779f567124c9b56dc4922741b4, type: 3}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f455b7779f567124c9b56dc4922741b4, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.69064
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f455b7779f567124c9b56dc4922741b4, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.04083652
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f455b7779f567124c9b56dc4922741b4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.69064
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f455b7779f567124c9b56dc4922741b4, type: 3}
       propertyPath: m_LocalPosition.x
