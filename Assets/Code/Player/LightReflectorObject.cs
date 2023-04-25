@@ -9,16 +9,17 @@ public class LightReflectorObject : MonoBehaviour
     private void Update()
     {
         myLight.gameObject.SetActive(refractionEnabled);
-        refractionEnabled = false;
+        refractionEnabled = true;
     }
 
-    public void CreateRefraction(Vector3 entryDirection, Vector3 hitPosition)
+    public void CreateRefraction(Vector3 entryDirection, Vector3 hitNormal)
     {
         if (refractionEnabled)
             return;
 
-        myLight.StartLight(entryDirection);
+        Vector3 reflectedDirection = Vector3.Reflect(entryDirection, hitNormal);
         refractionEnabled = true;
+        myLight.StartLight(reflectedDirection);
     }
 
 }
