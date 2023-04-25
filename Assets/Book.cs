@@ -7,23 +7,30 @@ using System.Reflection;
 
 public class Book : MonoBehaviour
 {
-    GameObject bookGraphics;
-    Transform objectHolder;
-    Animator anim;
-    public VisualEffect particles;
-    GameObject target;
+    public static Book instance;
+    public float playerWidth;
     public int angleIterations;
-    public float distanceIterations;
-    public float maxDistance; 
+    public float distanceIterations = 1;
+    public float iterationDistance;
     public Transform player;
     public float groundDetectionDistance;
-    public GameObject shapeTest;
+    public Shape shapeTest;
     public LayerMask whatIsNotPlayer;
     Vector3 offset = new Vector3(0,0.05f,0);
+    GameObject target;
+    Vector3 center;
+    Vector3 exten;
+    private void Awake() {
+        if(instance==null) instance = this;
+        else Destroy(this.gameObject);
+    }
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
         Gizmos.DrawLine(player.position,player.position+new Vector3(0,-groundDetectionDistance,0));
-        Gizmos.DrawLine(player.position,player.position+new Vector3(maxDistance,0,0));
+        Gizmos.DrawLine(player.position,player.position+new Vector3(iterationDistance,0,0));
+        Gizmos.DrawLine(player.position,player.position+new Vector3(-playerWidth,0,0));
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(center,exten*2);
     }
     private void OnEnable() {
         InputManager.GetAction("Test1").action += Test;
@@ -33,71 +40,94 @@ public class Book : MonoBehaviour
     }
     void Test(InputAction.CallbackContext context)
     {
-        if(context.started) Shapeshift(shapeTest);
+        if(context.started) shapeTest.Shift();
+    }
+    void SpotFound(Vector3 pos, GameObject clone)
+    {
+        target = Instantiate(clone,pos, clone.transform.rotation);
+        Destroy(target.GetComponent<Shape>());
     }
 
-    public void Shapeshift(GameObject _target)
+    public void ShapeshiftBox(Shape shape, Vector3 extents)
     {
-        if(_target.Equals(null)) return;
-        
-        target = Instantiate(_target,objectHolder);
-        target.AddComponent<ColliderSensor>();
-        Collider[] cols = target.GetComponents<Collider>();
-        foreach (Collider col in cols)
+        float largerExtent = Mathf.Max(extents.x, extents.z);
+        Vector3 extentVector = new Vector3(0,extents.y,0);
+        for (float distI = 0; distI < distanceIterations; distI++)
         {
-            col.isTrigger = true;
-        }
-
-        if(!FindSpot()) return;
-
-        target.GetComponent<ColliderSensor>().enabled = false;
-        foreach (Collider col in cols)
-        {
-            col.isTrigger = false;
-        }
-    }
-    public bool FindSpot()
-    {
-        ColliderSensor sensor = target.GetComponent<ColliderSensor>();
-        Collider col = target.GetComponent<Collider>();
-        for (float distI = 1; distI <= distanceIterations; distI++)
-        {
-            float distance = maxDistance/distanceIterations*distI;
+            float distance = playerWidth + largerExtent + iterationDistance*distI;
 
             for (int angI = 1; angI <= angleIterations; angI++)
             {
                 float angle = 360/angleIterations*angI;
                 Vector3 desiredPosition =  player.position + OrientationToVector(player.eulerAngles.y + angle).normalized * distance + offset;
-                target.transform.position = desiredPosition;
 
-                if(!VisibleToPlayer(col)) Debug.Log("Visible To Player FAILED");
-                if(IsOverlapping(sensor)) Debug.Log("Overlapping FAILED");
-                if(!OnGround()) Debug.Log("OnGround FAILED");
+                center = desiredPosition+extentVector;
+                exten = extents;
 
-                if(!VisibleToPlayer(col)) continue;
-                if(IsOverlapping(sensor)) continue;
-                if(!OnGround()) continue;
-                return true;
+                if(Physics.CheckBox(desiredPosition+extentVector,extents,Quaternion.identity,Physics.AllLayers,QueryTriggerInteraction.Ignore)) continue;
+                if(!VisibleToPlayer(desiredPosition+extentVector)) continue;
+                if(!OnGround(desiredPosition,new Vector2(extents.x,extents.z))) continue;
+                
+                SpotFound(desiredPosition,shape.gameObject);
+                return;
             }
         }
-        Debug.Log("Couldn't find a spot!");
-        Destroy(target);
-        return false;
     }
-    bool VisibleToPlayer(Collider col)
+    public void ShapeshiftCapsule(Shape shape, float radius, float height)
+    {
+        Vector3 bottomPoint = new Vector3(0,radius,0);
+        Vector3 topPoint = new Vector3(0,height - radius,0);
+        for (float distI = 0; distI < distanceIterations; distI++)
+        {
+            float distance = playerWidth + radius + iterationDistance*distI;
+
+            for (int angI = 1; angI <= angleIterations; angI++)
+            {
+                float angle = 360/angleIterations*angI;
+                Vector3 desiredPosition =  player.position + OrientationToVector(player.eulerAngles.y + angle).normalized * distance + offset;
+
+                if(Physics.CheckCapsule(desiredPosition+bottomPoint,desiredPosition+topPoint,radius,Physics.AllLayers,QueryTriggerInteraction.Ignore)) continue;
+                if(!VisibleToPlayer(desiredPosition+new Vector3(0,height/2,0))) continue;
+                if(!OnGround(desiredPosition,new Vector2(radius,radius))) continue;
+                
+                SpotFound(desiredPosition,shape.gameObject);
+                return;
+            }
+        }
+    }
+    public void ShapeshiftSphere(Shape shape, float radius)
+    {
+        Vector3 radiusVector = new Vector3(0,radius,0);
+        for (float distI = 0; distI < distanceIterations; distI++)
+        {
+            float distance = playerWidth + radius + iterationDistance*distI;
+
+            for (int angI = 1; angI <= angleIterations; angI++)
+            {
+                float angle = 360/angleIterations*angI;
+                Vector3 desiredPosition =  player.position + OrientationToVector(player.eulerAngles.y + angle).normalized * distance + offset;
+
+                if(Physics.CheckSphere(desiredPosition+radiusVector,radius,Physics.AllLayers,QueryTriggerInteraction.Ignore)) continue;
+                if(!VisibleToPlayer(desiredPosition+radiusVector)) continue;
+                if(!OnGround(desiredPosition,new Vector2(radius,radius))) continue;
+                
+                SpotFound(desiredPosition,shape.gameObject);
+                return;
+            }
+        }
+    }
+    bool VisibleToPlayer(Vector3 pos)
     {
         RaycastHit hit;
-        Physics.Raycast(player.position, col.bounds.center - player.position, out hit,Mathf.Infinity,whatIsNotPlayer,QueryTriggerInteraction.Collide);
-        if(hit.collider!=null) return hit.collider.gameObject == target;
-        else return false;
+        return !Physics.Raycast(player.position, pos - player.position, out hit,Vector3.Distance(player.position,pos),whatIsNotPlayer,QueryTriggerInteraction.Ignore);
     }
-    bool OnGround()
+    bool OnGround(Vector3 pos,Vector2 bounds)
     {
-        return Physics.Raycast(target.transform.position-offset/2,Vector3.down,groundDetectionDistance);
-    }
-    bool IsOverlapping(ColliderSensor sensor)
-    {
-        return sensor.IsOverlapping();
+        bool corner1 = Physics.Raycast(pos+new Vector3(bounds.x,0,bounds.y),Vector3.down,groundDetectionDistance);
+        bool corner2 = Physics.Raycast(pos+new Vector3(bounds.x,0,-bounds.y),Vector3.down,groundDetectionDistance);
+        bool corner3 = Physics.Raycast(pos+new Vector3(-bounds.x,0,-bounds.y),Vector3.down,groundDetectionDistance);
+        bool corner4 = Physics.Raycast(pos+new Vector3(-bounds.x,0,bounds.y),Vector3.down,groundDetectionDistance);
+        return corner1 && corner2 && corner3 && corner4;
     }
     Vector3 OrientationToVector(float angle)
     {
@@ -107,13 +137,5 @@ public class Book : MonoBehaviour
         float sin = Mathf.Sin (angle);
 
         return new Vector3 (sin, 0, cos);
-    }
-    public static T CopyComponent<T> ( GameObject game, T duplicate ) where T : Component
-    {
-        T target = game.AddComponent<T> ();
-        foreach (PropertyInfo x in typeof ( T ).GetProperties ())
-            if (x.CanWrite)
-                x.SetValue ( target, x.GetValue ( duplicate ) );
-        return target;
     }
 }

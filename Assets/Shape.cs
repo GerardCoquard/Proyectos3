@@ -4,20 +4,29 @@ using UnityEngine;
 
 public class Shape : MonoBehaviour
 {
-    ShapeType shape;
-    private void Start() {
-        switch (GetComponent<Collider>())
+    public Collider shapeCollider;
+    public void Shift() {
+        if(shapeCollider==null)
+        {
+            Debug.LogWarning(gameObject.name + " doesn't have a Collider associated");
+            return;
+        }
+        switch (shapeCollider)
         {
             case BoxCollider:
-            shape = ShapeType.Box;
+            Vector3 extents = shapeCollider.bounds.extents;
+            Book.instance.ShapeshiftBox(this,extents);
             break;
 
             case SphereCollider:
-            shape = ShapeType.Sphere;
+            float radiusSphere = ((SphereCollider)shapeCollider).radius;
+            Book.instance.ShapeshiftSphere(this,radiusSphere);
             break;
 
             case CapsuleCollider:
-            shape = ShapeType.Capsule;
+            float radiusCapsule = ((CapsuleCollider)shapeCollider).radius;
+            float height = ((CapsuleCollider)shapeCollider).height;
+            Book.instance.ShapeshiftCapsule(this,radiusCapsule,height);
             break;
 
             default:
@@ -25,11 +34,4 @@ public class Shape : MonoBehaviour
             break;
         }
     }
-    
-}
-public enum ShapeType
-{
-    Box,
-    Sphere,
-    Capsule
 }
