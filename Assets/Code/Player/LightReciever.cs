@@ -9,4 +9,3 @@ public class LightReciever : MonoBehaviour
         isRecivingLight = state;
     }
 }
-

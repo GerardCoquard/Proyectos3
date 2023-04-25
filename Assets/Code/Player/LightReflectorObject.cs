@@ -3,16 +3,22 @@
 public class LightReflectorObject : MonoBehaviour
 {
 
-    [SerializeField] LineRenderer lineRenderer;
+    [SerializeField] Light myLight;
+    private bool refractionEnabled;
 
-    private void Start()
+    private void Update()
     {
-        lineRenderer.enabled = false;
+        myLight.gameObject.SetActive(refractionEnabled);
+        refractionEnabled = false;
     }
 
-    public void StartReflection()
+    public void CreateRefraction(Vector3 entryDirection, Vector3 hitPosition)
     {
-        lineRenderer.enabled = true;
+        if (refractionEnabled)
+            return;
+
+        myLight.StartLight(entryDirection);
+        refractionEnabled = true;
     }
 
 }
