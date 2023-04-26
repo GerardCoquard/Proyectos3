@@ -8,7 +8,7 @@ public class SwitchablePlatformGym : MonoBehaviour
 
 
     public void SetPlatformToNewPosition()
-    {
+    {        
         StartCoroutine(MovePlatform());
     }
 
