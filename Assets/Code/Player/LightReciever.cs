@@ -1,11 +1,33 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.Events;
 
 public class LightReciever : MonoBehaviour
 {
-    private bool isRecivingLight = false;
+    public UnityEvent OnLightRecived;
+    private bool isTriggered;
 
-    public void SetRecivingLight(bool state)
+    public void DoAction()
     {
-        isRecivingLight = state;
+        if (!isTriggered)
+        {
+            isTriggered = true;
+            OnLightRecived?.Invoke();
+        }
+    }
+
+    public void DebugAction()
+    {
+        Debug.Log("DEBUG ACTION TEST");
+    }
+
+    public void SetIsHitted(bool state)
+    {
+        isTriggered = state;
+    }
+
+    public bool GetIsHitted()
+    {
+        return isTriggered;
     }
 }

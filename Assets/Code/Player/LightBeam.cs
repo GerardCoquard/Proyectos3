@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class LightBeam 
+public class LightBeam
 {
     private Vector3 position;
     private Vector3 direction;
@@ -9,6 +9,7 @@ public class LightBeam
     public LineRenderer lineRenderer;
     public List<Vector3> lightIndices = new List<Vector3>();
 
+    private LightReciever lightReciever;
     public LightBeam(Vector3 pos, Vector3 dir, Material material)
     {
         lineRenderer = new LineRenderer();
@@ -30,13 +31,13 @@ public class LightBeam
     public void CastLight(Vector3 pos, Vector3 dir, LineRenderer renderer)
     {
         lightIndices.Add(pos);
-        
+
         Ray ray = new Ray(pos, dir);
         RaycastHit hit;
 
-        if(Physics.Raycast(ray, out hit, 30, 1))
+        if (Physics.Raycast(ray, out hit, 30, 1))
         {
-            CheckHit(hit,dir,renderer);
+            CheckHit(hit, dir, renderer);
         }
         else
         {
@@ -59,17 +60,40 @@ public class LightBeam
 
     private void CheckHit(RaycastHit hitInfo, Vector3 direction, LineRenderer line)
     {
-        if (hitInfo.collider.tag == "Mirror")
+        if (hitInfo.collider != null)
         {
-            Vector3 pos = hitInfo.point;
-            Vector3 dir = Vector3.Reflect(direction, hitInfo.normal);
 
-            CastLight(pos,dir,line);
+            if (hitInfo.collider.tag == "Mirror")
+            {
+                Vector3 pos = hitInfo.point;
+                Vector3 dir = Vector3.Reflect(direction, hitInfo.normal);
+
+                CastLight(pos, dir, line);
+            }
+            else
+            {
+                lightIndices.Add(hitInfo.point);
+                UpdateLightBeam();
+            }
+
+            if (hitInfo.collider.tag == "LightTrigger" && lightReciever == null)
+            {
+                lightReciever = hitInfo.collider.GetComponent<LightReciever>();
+                lightReciever.DoAction();
+               
+            }
+            else if(lightReciever != null && hitInfo.collider.tag != "LightTrigger")
+            {
+                Debug.Log(hitInfo.collider.tag);
+                lightReciever.SetIsHitted(false);
+                lightReciever = null;
+            }
         }
-        else
+        else if (lightReciever.GetIsHitted() == true && hitInfo.collider == null)
         {
-            lightIndices.Add(hitInfo.point);
-            UpdateLightBeam();
+            Debug.Log("2");
+            lightReciever.SetIsHitted(false);
+            lightReciever = null;
         }
     }
 
