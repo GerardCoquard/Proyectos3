@@ -91,7 +91,6 @@ public class LightBeam
         }
         else if (lightReciever.GetIsHitted() == true && hitInfo.collider == null)
         {
-            Debug.Log("2");
             lightReciever.SetIsHitted(false);
             lightReciever = null;
         }
