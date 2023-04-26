@@ -978,7 +978,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &458176657
 Transform:
   m_ObjectHideFlags: 0
@@ -1592,7 +1592,7 @@ GameObject:
   m_Component:
   - component: {fileID: 847924606}
   m_Layer: 3
-  m_Name: rayPos
+  m_Name: PushStartZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1606,12 +1606,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 847924605}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.45999992, z: 0.57}
+  m_LocalPosition: {x: 0, y: 0.928, z: 0.486}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1961537505}
-  m_RootOrder: 4
+  m_Father: {fileID: 1669500684}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &875652822
 GameObject:
@@ -1724,9 +1724,9 @@ GameObject:
   - component: {fileID: 1211091935}
   - component: {fileID: 1211091934}
   - component: {fileID: 1211091933}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: PUSHEABLE
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1831,8 +1831,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1211091932}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.57, y: 0.92, z: 2.45}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.57, y: 1.97, z: 2.45}
+  m_LocalScale: {x: 1, y: 2.89, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2097,9 +2097,9 @@ GameObject:
   - component: {fileID: 1480956381}
   - component: {fileID: 1480956385}
   - component: {fileID: 1480956386}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Cube
-  m_TagString: PUSHEABLE
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2175,8 +2175,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1480956380}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.29, y: 0.92, z: 3.73}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -1.29, y: 1.97, z: 3.73}
+  m_LocalScale: {x: 1, y: 2.89, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2438,7 +2438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
-  rendererTransform: {fileID: 1961537505}
+  characterController: {fileID: 1669500683}
   cam: {fileID: 558859348}
   maxLinealSpeed: 7
   maxAngularSpeed: 10
@@ -2449,13 +2449,9 @@ MonoBehaviour:
   maxJumpHeight: 4
   maxJumpTime: 0.5
   groundedGravity: 0
-  closeObjectDetection: 1
-  pushForce: 250
-  maxRayDistance: 1
-  pusheableLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  raycastInitialTransform: {fileID: 847924606}
+  closeEnoughtDetection: 0.5
+  pushForce: 20
+  pushStartDetectionPoint: {fileID: 847924606}
 --- !u!143 &1669500683
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2486,6 +2482,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 847924606}
   - {fileID: 1961537505}
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -2720,9 +2717,8 @@ Transform:
   - {fileID: 1761680058}
   - {fileID: 504116407}
   - {fileID: 129561701}
-  - {fileID: 847924606}
   m_Father: {fileID: 1669500684}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &1961537506
 CapsuleCollider:

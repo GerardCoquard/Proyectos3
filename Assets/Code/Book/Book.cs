@@ -8,32 +8,31 @@ using System.Reflection;
 public class Book : MonoBehaviour
 {
     public static Book instance;
+    public Transform player;
     public float playerWidth;
     public int angleIterations;
     public float distanceIterations = 1;
     public float iterationDistance;
-    public Transform player;
     public float groundDetectionDistance;
+    public GameObject bookParticle;
+    public Transform particleStartPosition;
+    public CharacterController characterController;
     public Shape shapeTest;
-    public LayerMask whatIsNotPlayer;
     Vector3 offset = new Vector3(0,0.05f,0);
-    GameObject target;
-    Vector3 center;
-    Vector3 exten;
     private void Awake() {
         if(instance==null) instance = this;
-        else Destroy(this.gameObject);
+        else Destroy(this);
     }
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
         Gizmos.DrawLine(player.position,player.position+new Vector3(0,-groundDetectionDistance,0));
         Gizmos.DrawLine(player.position,player.position+new Vector3(iterationDistance,0,0));
         Gizmos.DrawLine(player.position,player.position+new Vector3(-playerWidth,0,0));
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(center,exten*2);
     }
     private void OnEnable() {
         InputManager.GetAction("Test1").action += Test;
+        bookParticle.transform.position = particleStartPosition.position;
+        bookParticle.SetActive(false);
     }
     private void OnDisable() {
         InputManager.GetAction("Test1").action -= Test;
@@ -42,9 +41,19 @@ public class Book : MonoBehaviour
     {
         if(context.started) shapeTest.Shift();
     }
+    public void ActivateBook()
+    {
+        bookParticle.transform.position = particleStartPosition.position;
+        bookParticle.SetActive(true);
+    }
+    public void DeactivateBook()
+    {
+        bookParticle.transform.position = particleStartPosition.position;
+        bookParticle.SetActive(false);
+    }
     void SpotFound(Vector3 pos, GameObject clone)
     {
-        target = Instantiate(clone,pos, clone.transform.rotation);
+        GameObject target = Instantiate(clone,pos, clone.transform.rotation);
         Destroy(target.GetComponent<Shape>());
     }
 
@@ -60,9 +69,6 @@ public class Book : MonoBehaviour
             {
                 float angle = 360/angleIterations*angI;
                 Vector3 desiredPosition =  player.position + OrientationToVector(player.eulerAngles.y + angle).normalized * distance + offset;
-
-                center = desiredPosition+extentVector;
-                exten = extents;
 
                 if(Physics.CheckBox(desiredPosition+extentVector,extents,Quaternion.identity,Physics.AllLayers,QueryTriggerInteraction.Ignore)) continue;
                 if(!VisibleToPlayer(desiredPosition+extentVector)) continue;
@@ -119,7 +125,7 @@ public class Book : MonoBehaviour
     bool VisibleToPlayer(Vector3 pos)
     {
         RaycastHit hit;
-        return !Physics.Raycast(player.position, pos - player.position, out hit,Vector3.Distance(player.position,pos),whatIsNotPlayer,QueryTriggerInteraction.Ignore);
+        return !Physics.Raycast(player.position, pos - player.position, out hit,Vector3.Distance(player.position,pos),Physics.AllLayers & ~(1 << LayerMask.GetMask("Player")),QueryTriggerInteraction.Ignore);
     }
     bool OnGround(Vector3 pos,Vector2 bounds)
     {
