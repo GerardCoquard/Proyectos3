@@ -62,24 +62,6 @@
                 {
                     "name": "Test1",
                     "type": "Button",
-                    "id": "552b3e91-02b5-414d-94a3-fdb975ba8d35",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Test2",
-                    "type": "Button",
-                    "id": "4a1648f7-cb1c-42c0-aabb-f23be2183078",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Test3",
-                    "type": "Button",
                     "id": "d649ce27-0b60-48b4-bffa-dd8249177ee0",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -87,7 +69,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Test4",
+                    "name": "Test2",
                     "type": "Button",
                     "id": "8da58a04-777f-4a43-97b7-c9268f950292",
                     "expectedControlType": "Button",
@@ -337,56 +319,12 @@
                 },
                 {
                     "name": "",
-                    "id": "53cba3a2-c8cc-46fc-a349-3edb0fdd76b7",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Test1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0d0c0cf2-e8c7-48da-8b47-377e9c3f0018",
-                    "path": "<Gamepad>/buttonEast",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Test1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "91b3c1a2-75a2-4639-8847-06855f2789fb",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Test2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "6cd4baf3-1d06-433b-9928-81361abf478d",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Test2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "2be1be9a-519d-4e2f-9209-92d6174a282d",
                     "path": "<Keyboard>/z",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Test4",
+                    "action": "Test2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -397,7 +335,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Test4",
+                    "action": "Test2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -408,7 +346,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Test3",
+                    "action": "Test1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -419,7 +357,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Test3",
+                    "action": "Test1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

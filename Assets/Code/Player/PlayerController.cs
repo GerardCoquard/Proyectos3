@@ -47,12 +47,12 @@ public class PlayerController : MonoBehaviour
     }
     private void OnEnable() {
         InputManager.GetAction("Move").action += OnMovementInput;
-        //InputManager.GetAction("ChangeMode").action += OnChangeModeInput;
+        InputManager.GetAction("ChangeMode").action += OnChangeModeInput;
         InputManager.GetAction("Push").action += OnPushInput;
     }
     private void OnDisable() {
         InputManager.GetAction("Move").action -= OnMovementInput;
-        //InputManager.GetAction("ChangeMode").action += OnChangeModeInput;
+        InputManager.GetAction("ChangeMode").action -= OnChangeModeInput;
         InputManager.GetAction("Push").action -= OnPushInput;
     }
     private void OnDrawGizmos() {
@@ -74,12 +74,14 @@ public class PlayerController : MonoBehaviour
             if(bookOpened)
             {
                 Book.instance.DeactivateBook();
-                InputManager.GetAction("Move").action -= OnMovementInput;
+                InputManager.GetAction("Move").action += OnMovementInput;
+                bookOpened = false;
             }
             else
             {
                 Book.instance.ActivateBook();
-                InputManager.GetAction("Move").action += OnMovementInput;
+                InputManager.GetAction("Move").action -= OnMovementInput;
+                bookOpened = true;
                 movement = new Vector3(0,movement.y,0);
                 StopPushing();
             }
@@ -136,38 +138,6 @@ public class PlayerController : MonoBehaviour
     private void HandleJump()
     {
         if (CanJump() && InputManager.GetAction("Jump").context.WasPerformedThisFrame()) movement.y = jumpForce * .5f;
-    }
-
-    private void PushDetection()
-    {
-        Ray ray = new Ray(transform.position + characterController.center, transform.forward);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, closeEnoughtDetection, LayerMask.GetMask("Pusheable")))
-        {
-            if (hit.collider != null)
-            {
-                if (InputManager.GetAction("Test1").context.WasPressedThisFrame() && !isPushing)
-                {
-                    //My player is pushing
-                    currentObjectPushing = hit.collider.GetComponent<PusheableObject>();
-                    currentObjectPushing.rb.isKinematic = false;
-                    characterController.enabled = false;
-                    transform.SetParent(currentObjectPushing.transform);
-                    SetIsPushing(true);
-
-                }
-            }
-        }
-
-        if (currentObjectPushing != null && isPushing && InputManager.GetAction("Test1").context.WasPressedThisFrame())
-        {
-            currentObjectPushing.rb.isKinematic = true;
-            currentObjectPushing = null;
-            SetIsPushing(false);
-            characterController.enabled = true;
-            transform.SetParent(null);
-        }
     }
     bool PusheableDetected(out PusheableObject pusheable)
     {

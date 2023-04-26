@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
-
+[RequireComponent(typeof(Rigidbody))]
 public class PusheableObject : MonoBehaviour
 {
-    public Rigidbody rb;
+    Rigidbody rb;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true;
+        rb.constraints = RigidbodyConstraints.FreezePositionY;
+        rb.freezeRotation = true;
+        rb.useGravity = false;
         gameObject.layer = LayerMask.NameToLayer("Pusheable");
     }
     public void MakePusheable()
