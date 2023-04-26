@@ -5,6 +5,9 @@ using UnityEngine;
 public class Shape : MonoBehaviour
 {
     public Collider shapeCollider;
+    private void Start() {
+        if(shapeCollider==null) shapeCollider = GetComponent<Collider>();
+    }
     public void Shift() {
         if(shapeCollider==null)
         {

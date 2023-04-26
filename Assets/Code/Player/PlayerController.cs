@@ -164,7 +164,7 @@ public class PlayerController : MonoBehaviour
             currentObjectPushing.MakePusheable();
             characterController.enabled = false;
             transform.SetParent(currentObjectPushing.transform);
-            SetIsPushing(true);
+            isPushing = true;
         }
     }
     void StopPushing()
@@ -175,20 +175,8 @@ public class PlayerController : MonoBehaviour
         currentObjectPushing = null;
         characterController.enabled = true;
         transform.SetParent(null);
-        SetIsPushing(false);
+        isPushing = false;
     }
-
-    private void SetIsPushing(bool state)
-    {
-        StartCoroutine(VariableDelay(state));
-    }
-
-    IEnumerator VariableDelay(bool state)
-    {
-        yield return new WaitForEndOfFrame();
-        isPushing = state;
-    }
-
     private void Push()
     {
         currentObjectPushing.AddForceTowardsDirection(pushForce, movement);
