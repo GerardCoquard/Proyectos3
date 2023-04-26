@@ -668,6 +668,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: bb7efeab3cdb8124c982b49d77c3ea8b, type: 2}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1023
 --- !u!1 &311539792
 GameObject:
   m_ObjectHideFlags: 0
@@ -1835,6 +1838,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  lightGoesThrough: 1
 --- !u!1 &1211091932
 GameObject:
   m_ObjectHideFlags: 0

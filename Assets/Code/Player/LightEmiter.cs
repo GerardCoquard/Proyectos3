@@ -4,10 +4,11 @@ public class LightEmiter : MonoBehaviour
 {
     public LightBeam beam;
     public Material material;
+    public LayerMask layerMask;
 
     private void Start()
     {
-        beam = new LightBeam(transform.position, transform.forward, material);
+        beam = new LightBeam(transform.position, transform.forward, material, layerMask);
     }
 
     private void Update()
