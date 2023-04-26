@@ -17,7 +17,6 @@ public class Book : MonoBehaviour
     public float groundDetectionDistance;
     public GameObject bookParticle;
     public Transform particleStartPosition;
-    public CharacterController characterController;
     public Shape shapeTest;
     public LayerMask whatIsNotPlayer;
     Vector3 offset = new Vector3(0,0.05f,0);

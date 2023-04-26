@@ -49,11 +49,13 @@ public class PlayerController : MonoBehaviour
         InputManager.GetAction("Move").action += OnMovementInput;
         InputManager.GetAction("ChangeMode").action += OnChangeModeInput;
         InputManager.GetAction("Push").action += OnPushInput;
+        InputManager.GetAction("Jump").action += OnJumpInput;
     }
     private void OnDisable() {
         InputManager.GetAction("Move").action -= OnMovementInput;
         InputManager.GetAction("ChangeMode").action -= OnChangeModeInput;
         InputManager.GetAction("Push").action -= OnPushInput;
+        InputManager.GetAction("Jump").action -= OnJumpInput;
     }
     private void OnDrawGizmos() {
         Gizmos.color = Color.blue;
@@ -75,17 +77,25 @@ public class PlayerController : MonoBehaviour
             {
                 Book.instance.DeactivateBook();
                 InputManager.GetAction("Move").action += OnMovementInput;
+                InputManager.GetAction("Push").action += OnPushInput;
+                InputManager.GetAction("Jump").action += OnJumpInput;
                 bookOpened = false;
             }
             else
             {
                 Book.instance.ActivateBook();
                 InputManager.GetAction("Move").action -= OnMovementInput;
+                InputManager.GetAction("Push").action -= OnPushInput;
+                InputManager.GetAction("Jump").action -= OnJumpInput;
                 bookOpened = true;
                 movement = new Vector3(0,movement.y,0);
                 StopPushing();
             }
         }
+    }
+    private void OnJumpInput(InputAction.CallbackContext context)
+    {
+        if(context.started) Jump();
     }
 
     private void OnMovementInput(InputAction.CallbackContext context)
@@ -133,11 +143,10 @@ public class PlayerController : MonoBehaviour
             CheckCollision(collisionFlags);
         }
         SetGravity();
-        HandleJump();
     }
-    private void HandleJump()
+    private void Jump()
     {
-        if (CanJump() && InputManager.GetAction("Jump").context.WasPerformedThisFrame()) movement.y = jumpForce * .5f;
+        if (CanJump()) movement.y = jumpForce * .5f;
     }
     bool PusheableDetected(out PusheableObject pusheable)
     {
