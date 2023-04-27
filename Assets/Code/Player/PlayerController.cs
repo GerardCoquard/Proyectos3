@@ -73,24 +73,7 @@ public class PlayerController : MonoBehaviour
     {
         if(context.started)
         {
-            if(bookOpened)
-            {
-                Book.instance.DeactivateBook();
-                InputManager.GetAction("Move").action += OnMovementInput;
-                InputManager.GetAction("Push").action += OnPushInput;
-                InputManager.GetAction("Jump").action += OnJumpInput;
-                bookOpened = false;
-            }
-            else
-            {
-                Book.instance.ActivateBook();
-                InputManager.GetAction("Move").action -= OnMovementInput;
-                InputManager.GetAction("Push").action -= OnPushInput;
-                InputManager.GetAction("Jump").action -= OnJumpInput;
-                bookOpened = true;
-                movement = new Vector3(0,movement.y,0);
-                StopPushing();
-            }
+            SwapControl();
         }
     }
     private void OnJumpInput(InputAction.CallbackContext context)
@@ -104,6 +87,27 @@ public class PlayerController : MonoBehaviour
         movement.x = tempDirection.x * maxLinealSpeed;
         movement.z = tempDirection.y * maxLinealSpeed;
         isMovementPressed = tempDirection.x != 0 || tempDirection.y != 0;
+    }
+    public void SwapControl()
+    {
+        if(bookOpened)
+        {
+            Book.instance.DeactivateBook();
+            InputManager.GetAction("Move").action += OnMovementInput;
+            InputManager.GetAction("Push").action += OnPushInput;
+            InputManager.GetAction("Jump").action += OnJumpInput;
+            bookOpened = false;
+        }
+        else
+        {
+            Book.instance.ActivateBook();
+            InputManager.GetAction("Move").action -= OnMovementInput;
+            InputManager.GetAction("Push").action -= OnPushInput;
+            InputManager.GetAction("Jump").action -= OnJumpInput;
+            bookOpened = true;
+            movement = new Vector3(0,movement.y,0);
+            StopPushing();
+        }
     }
     private void SetUpJumpVariables()
     {

@@ -6,22 +6,33 @@ using UnityEngine.InputSystem;
 public class BookGhost : MonoBehaviour
 {
     public float speed;
+    public float shapeDetectionRadius;
+    public LayerMask whatIsShape;
     Vector2 movement;
     bool up;
     bool down;
     CharacterController characterController;
+    Shape selectedShape;
     private void Start() {
         characterController = GetComponent<CharacterController>();
+    }
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position,transform.position+new Vector3(0,0,-shapeDetectionRadius));
     }
     private void OnEnable() {
         InputManager.GetAction("Move").action += OnMovementInput;
         InputManager.GetAction("Jump").action += OnUpInput;
         InputManager.GetAction("Shift").action += OnDownInput;
+        InputManager.GetAction("Push").action += OnInteractInput;
     }
     private void OnDisable() {
         InputManager.GetAction("Move").action -= OnMovementInput;
         InputManager.GetAction("Jump").action -= OnUpInput;
         InputManager.GetAction("Shift").action -= OnDownInput;
+        InputManager.GetAction("Push").action -= OnInteractInput;
+
+        ClearSelected();
     }
     private void OnMovementInput(InputAction.CallbackContext context)
     {
@@ -35,11 +46,46 @@ public class BookGhost : MonoBehaviour
     {
         down = context.ReadValueAsButton();
     }
+    private void OnInteractInput(InputAction.CallbackContext context)
+    {
+        if(context.started) SelectShape();
+    }
     private void Update() {
+        Move();
+    }
+    bool Move()
+    {
         int vertical = 0;
         if(up) vertical++;
         if(down) vertical--;
         Vector3 finalMovement = new Vector3(movement.x,vertical,movement.y).normalized;
         characterController.Move(finalMovement * Time.deltaTime * speed);
+        return finalMovement != Vector3.zero;
+    }
+    private void OnTriggerEnter(Collider other) {
+        Shape newShape = other.GetComponent<Shape>();
+        if(newShape==null) return;
+        if(newShape==selectedShape) return;
+        ClearSelected();
+        selectedShape = newShape;
+        selectedShape.SetSelected();
+    }
+    private void OnTriggerExit(Collider other) {
+        Shape newShape = other.GetComponent<Shape>();
+        if(newShape==null) return;
+        if(newShape!=selectedShape) return;
+        ClearSelected();
+    }
+    void ClearSelected()
+    {
+        if(selectedShape==null) return;
+        selectedShape.Unselect();
+        selectedShape = null;
+    }
+    void SelectShape()
+    {
+        if(selectedShape==null) return;
+        selectedShape.Shift();
+        PlayerController.instance.SwapControl();
     }
 }

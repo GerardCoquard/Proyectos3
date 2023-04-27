@@ -7,6 +7,7 @@ public class Shape : MonoBehaviour
     public Collider shapeCollider;
     private void Start() {
         if(shapeCollider==null) shapeCollider = GetComponent<Collider>();
+        Unselect();
     }
     public void Shift() {
         if(shapeCollider==null)
@@ -36,5 +37,14 @@ public class Shape : MonoBehaviour
             Debug.Log(gameObject.name + " doesn't have an accepted Collider type");
             break;
         }
+    }
+
+    public void SetSelected()
+    {
+
+    }
+    public void Unselect()
+    {
+
     }
 }
