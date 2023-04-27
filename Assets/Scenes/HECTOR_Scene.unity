@@ -1838,6 +1838,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnLightNotRecived:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2079721404}
+        m_TargetAssemblyTypeName: SwitchablePlatformGym, Assembly-CSharp
+        m_MethodName: SetPlatformToNewPosition
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   lightGoesThrough: 0
 --- !u!1 &1211091932
 GameObject:
@@ -2571,7 +2586,7 @@ MonoBehaviour:
   maxAngularSpeed: 10
   increment: 1
   decrement: 1
-  rotationFractionPerFrame: 15
+  rotationFractionPerFrame: 45
   coyoteTime: 0.2
   maxJumpHeight: 4
   maxJumpTime: 0.5
@@ -2912,7 +2927,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100002, guid: ff6dc36862fe41641bb21568d92147c9, type: 3}
+  - {fileID: 2100000, guid: 6296e48663fd7ad46b1a2af507f871cf, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
