@@ -8,11 +8,10 @@ public class LightBeam
     private GameObject lightGameObject;
     public LineRenderer lineRenderer;
     public List<Vector3> lightIndices = new List<Vector3>();
-
-    private LightReciever lightReciever;
-    private RaycastHit lastHitInfo;
     private LayerMask layerMask;
 
+    private List<LightReciever> lightRecieverList = new List<LightReciever>();
+    private List<LightReciever> currentLightRecivers = new List<LightReciever>();
 
     public LightBeam(Vector3 pos, Vector3 dir, Material material, LayerMask layerMask)
     {
@@ -46,8 +45,10 @@ public class LightBeam
         }
         else
         {
+
             lightIndices.Add(ray.GetPoint(30));
             UpdateLightBeam();
+            CheckRecivers();
         }
     }
 
@@ -63,6 +64,28 @@ public class LightBeam
         }
     }
 
+    private void CheckRecivers()
+    {
+        List<LightReciever> tempList = new List<LightReciever>(lightRecieverList); 
+
+        foreach (LightReciever receiver in tempList)
+        {
+           
+            if (!currentLightRecivers.Contains(receiver))
+            {
+                receiver.UndoAction();
+                lightRecieverList.Remove(receiver);
+                receiver.SetIsHitted(false);
+
+            }
+           
+
+
+        }
+        currentLightRecivers.Clear();
+
+    }
+
     private void CheckHit(RaycastHit hitInfo, Vector3 direction, LineRenderer line)
     {
         if (hitInfo.collider != null)
@@ -70,14 +93,9 @@ public class LightBeam
 
             if (hitInfo.collider.tag == "Mirror")
             {
-                if (hitInfo.collider != lastHitInfo.collider)
-                {
-                    lastHitInfo = hitInfo;
-                }
 
                 Vector3 pos = hitInfo.point;
                 Vector3 dir = Vector3.Reflect(direction, hitInfo.normal);
-
                 CastLight(pos, dir, line);
             }
             else
@@ -85,34 +103,24 @@ public class LightBeam
                 lightIndices.Add(hitInfo.point);
                 UpdateLightBeam();
             }
-
             if (hitInfo.collider.tag == "LightTrigger")
             {
 
-                if (hitInfo.collider != lastHitInfo.collider)
+                LightReciever reciver = hitInfo.collider.GetComponent<LightReciever>();
+                currentLightRecivers.Add(reciver);
+
+                if (!lightRecieverList.Contains(reciver))
                 {
-                    lastHitInfo = hitInfo;
-                }               
+                    reciver.DoAction();
+                    reciver.SetIsHitted(true);
+                    lightRecieverList.Add(reciver);
+                }
+
+              
 
             }
-            else if (lightReciever != null && lastHitInfo.collider.tag != "LightTrigger")
-            {
-                lightReciever.SetIsHitted(false);
-                lightReciever = null;
-            }
-        }
-        else if (lightReciever.GetIsHitted() == true)
-        {
-
-            lightReciever.SetIsHitted(false);
-            lightReciever = null;
         }
 
-        if(lastHitInfo.collider.tag == "LightTrigger")
-        {
-            lightReciever = lastHitInfo.collider.GetComponent<LightReciever>();
-            lightReciever.DoAction();
-        }
     }
 
 

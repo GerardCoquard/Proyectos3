@@ -310,14 +310,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 34196375}
-  m_LocalRotation: {x: -0, y: 0.24911234, z: -0, w: 0.9684746}
+  m_LocalRotation: {x: -0, y: 0.25742233, z: -0, w: 0.966299}
   m_LocalPosition: {x: 9.06, y: 0.9560404, z: -5.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 28.85, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 29.834, z: 0}
 --- !u!1 &129561700
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,7 +667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e65f29e6c8bc5e4c8885b9b37967c75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: bb7efeab3cdb8124c982b49d77c3ea8b, type: 2}
+  material: {fileID: 2100000, guid: d8b7e61dae678814787356179d7deea4, type: 2}
   layerMask:
     serializedVersion: 2
     m_Bits: 1023
@@ -1843,7 +1843,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2079721404}
         m_TargetAssemblyTypeName: SwitchablePlatformGym, Assembly-CSharp
-        m_MethodName: SetPlatformToNewPosition
+        m_MethodName: ResetPlatformPosition
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3068,6 +3068,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   finalPlatformPosition: {fileID: 1849815488}
+  startPosition: {fileID: 2119400241}
   speed: 3
 --- !u!1 &2111270290
 GameObject:
@@ -3167,3 +3168,34 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!1 &2119400240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2119400241}
+  m_Layer: 0
+  m_Name: startPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2119400241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2119400240}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.132369, y: 1.5500002, z: 9.291843}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

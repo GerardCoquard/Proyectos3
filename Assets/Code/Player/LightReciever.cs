@@ -5,29 +5,34 @@ using UnityEngine.Events;
 public class LightReciever : MonoBehaviour
 {
     public UnityEvent OnLightRecived;
-    [SerializeField] private bool lightGoesThrough;
+    public UnityEvent OnLightNotRecived;
+    public bool lightGoesThrough;
     private bool isTriggered;
     public void DoAction()
     {
         if (!isTriggered)
         {
             isTriggered = true;
-            OnLightRecived?.Invoke();
-            if (lightGoesThrough)
-            {
-                gameObject.layer = 10;
-            }
+            OnLightRecived?.Invoke();           
         }
     }
 
-    public void DebugAction()
+    private void Update()
     {
-        Debug.Log("DEBUG ACTION TEST");
+        if (!isTriggered) gameObject.layer = 0;
     }
+
+    public void UndoAction()
+    {
+
+        OnLightNotRecived?.Invoke();
+    }
+
 
     public void SetIsHitted(bool state)
     {
         isTriggered = state;
+       
     }
 
     public bool GetIsHitted()
