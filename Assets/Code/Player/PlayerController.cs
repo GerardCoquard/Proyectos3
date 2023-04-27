@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float rotationFractionPerFrame;
     private bool isMovementPressed;
     private Vector3 movement;
-    private Vector3 direction;
 
     [Header("Jumping")]
     [SerializeField] private float coyoteTime;
@@ -31,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private float jumpForce;
     //[SerializeField] private float fallMultiplier;
     private float gravity;
+    private bool isJumping;
 
     [Header("Push")]
     [SerializeField] float closeEnoughtDetection;
@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
     private PusheableObject currentObjectPushing;
     private bool isPushing;
     bool bookOpened;
+    [SerializeField] float offset;
     private void Awake()
     {
         if(instance==null) instance = this;
@@ -123,7 +124,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (currentObjectPushing != null) Push();
+        if (currentObjectPushing != null && !isJumping) Push();
     }
 
     private void HandleRotation()
@@ -153,7 +154,12 @@ public class PlayerController : MonoBehaviour
     }
     private void Jump()
     {
-        if (CanJump()) movement.y = jumpForce * .5f;
+        if (CanJump()) 
+        {
+            movement.y = jumpForce * .5f;
+            isJumping = true;
+        }
+        
     }
     bool PusheableDetected(out PusheableObject pusheable)
     {
@@ -167,6 +173,11 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, closeEnoughtDetection, LayerMask.GetMask("Pusheable"),QueryTriggerInteraction.Ignore))
         {
             pusheable = hit.collider.GetComponent<PusheableObject>();
+            transform.forward = -hit.normal;
+            transform.position = new Vector3(hit.collider.transform.position.x - transform.forward.x * (characterController.radius + offset), 
+                transform.position.y, 
+                hit.collider.transform.position.z - transform.forward.z * (characterController.radius + offset));
+            
             return true;
         }
         return false;
@@ -174,7 +185,7 @@ public class PlayerController : MonoBehaviour
     void CheckPush()
     {
         PusheableObject pusheable;
-        if (PusheableDetected(out pusheable))
+        if (PusheableDetected(out pusheable) && !isJumping)
         {
             currentObjectPushing = pusheable;
             currentObjectPushing.MakePusheable();
@@ -224,6 +235,7 @@ public class PlayerController : MonoBehaviour
             movement.y = 0.0f;
             timeOnAir = 0.0f;
             onGround = true;
+            isJumping = false;
         }
         else
         {
