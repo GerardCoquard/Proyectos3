@@ -6,10 +6,15 @@ public class CameraControllerProto : MonoBehaviour
 {
     [SerializeField] Transform maxTransform;
     [SerializeField] Transform minTransform;
-    [SerializeField] Transform myTransform;
     [SerializeField] float maxDistanceX;
     [SerializeField] float speed;
     [SerializeField] PlayerController player;
+    float yPos;
+    float zPos;
+    private void Start() {
+        yPos = transform.position.y;
+        zPos = transform.position.z;
+    }
 
     private void Update()
     {
@@ -22,6 +27,6 @@ public class CameraControllerProto : MonoBehaviour
                 transform.position = Vector3.Lerp(transform.position, player.transform.position, speed * Time.deltaTime);
             }
         }
-                transform.position = new Vector3(transform.position.x, 8.46f, -12.44f);
+                transform.position = new Vector3(transform.position.x, yPos, zPos);
     }
 }

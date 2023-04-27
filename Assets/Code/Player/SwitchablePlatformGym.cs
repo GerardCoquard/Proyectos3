@@ -35,13 +35,14 @@ public class SwitchablePlatformGym : MonoBehaviour
         float time = distanceToTarget / distanceBetweenPositions * timeToReachDestination;
         Vector3 initPos = transform.position;
         float timer = 0f;
-        while (Mathf.Abs(distanceBetweenPositions) > 0.1f)
+        while (Mathf.Abs(distanceToTarget) > 0.1f)
         {
+            distanceToTarget = Vector3.Distance(finalPlatformPosition.position, transform.position);
             transform.position = Vector3.Lerp(initPos, finalPlatformPosition.position, timer / time);
             timer += Time.deltaTime;
             yield return null;
         }
-        transform.position = finalPlatformPosition.position;
+        //transform.position = finalPlatformPosition.position;
     }
 
     IEnumerator ResetPlatform()
@@ -50,13 +51,14 @@ public class SwitchablePlatformGym : MonoBehaviour
         float time = distanceToTarget / distanceBetweenPositions * timeToReachDestination;
         Vector3 initPos = transform.position;
         float timer = 0f;
-        while (Mathf.Abs(distanceBetweenPositions) > 0.1f)
+        while (Mathf.Abs(distanceToTarget) > 0.1f)
         {
+            distanceToTarget = Vector3.Distance(finalPlatformPosition.position, transform.position);
             transform.position = Vector3.Lerp(initPos, startPosition.position, timer / time);
             timer += Time.deltaTime;
             yield return null;
         }
-        transform.position = startPosition.position;
+        //transform.position = startPosition.position;
 
     }
 
