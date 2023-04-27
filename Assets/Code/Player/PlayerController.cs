@@ -41,44 +41,47 @@ public class PlayerController : MonoBehaviour
     bool bookOpened;
     private void Awake()
     {
-        if(instance==null) instance = this;
+        if (instance == null) instance = this;
         else Destroy(this);
         SetUpJumpVariables();
     }
-    private void OnEnable() {
+    private void OnEnable()
+    {
         InputManager.GetAction("Move").action += OnMovementInput;
         InputManager.GetAction("ChangeMode").action += OnChangeModeInput;
         InputManager.GetAction("Push").action += OnPushInput;
         InputManager.GetAction("Jump").action += OnJumpInput;
     }
-    private void OnDisable() {
+    private void OnDisable()
+    {
         InputManager.GetAction("Move").action -= OnMovementInput;
         InputManager.GetAction("ChangeMode").action -= OnChangeModeInput;
         InputManager.GetAction("Push").action -= OnPushInput;
         InputManager.GetAction("Jump").action -= OnJumpInput;
     }
-    private void OnDrawGizmos() {
+    private void OnDrawGizmos()
+    {
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(pushStartDetectionPoint.position,pushStartDetectionPoint.position+transform.forward*closeEnoughtDetection);
+        Gizmos.DrawLine(pushStartDetectionPoint.position, pushStartDetectionPoint.position + transform.forward * closeEnoughtDetection);
     }
     void OnPushInput(InputAction.CallbackContext context)
     {
-        if(context.started)
+        if (context.started)
         {
-            if(currentObjectPushing!=null) StopPushing();
+            if (currentObjectPushing != null) StopPushing();
             else CheckPush();
         }
     }
     void OnChangeModeInput(InputAction.CallbackContext context)
     {
-        if(context.started)
+        if (context.started)
         {
             SwapControl();
         }
     }
     private void OnJumpInput(InputAction.CallbackContext context)
     {
-        if(context.started) Jump();
+        if (context.started) Jump();
     }
 
     private void OnMovementInput(InputAction.CallbackContext context)
@@ -90,7 +93,7 @@ public class PlayerController : MonoBehaviour
     }
     public void SwapControl()
     {
-        if(bookOpened)
+        if (bookOpened)
         {
             Book.instance.DeactivateBook();
             InputManager.GetAction("Move").action += OnMovementInput;
@@ -105,7 +108,7 @@ public class PlayerController : MonoBehaviour
             InputManager.GetAction("Push").action -= OnPushInput;
             InputManager.GetAction("Jump").action -= OnJumpInput;
             bookOpened = true;
-            movement = new Vector3(0,movement.y,0);
+            movement = new Vector3(0, movement.y, 0);
             StopPushing();
         }
     }
@@ -126,7 +129,7 @@ public class PlayerController : MonoBehaviour
     private void HandleRotation()
     {
         Vector3 positionToLookAt;
-
+ 
         positionToLookAt.x = movement.x;
         positionToLookAt.y = 0.0f;
         positionToLookAt.z = movement.z;
@@ -140,7 +143,7 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        if(characterController.enabled)
+        if (characterController.enabled)
         {
             HandleRotation();
             CollisionFlags collisionFlags = characterController.Move(movement * Time.deltaTime);
@@ -156,12 +159,12 @@ public class PlayerController : MonoBehaviour
     {
         pusheable = null;
 
-        if(!onGround) return false;
+        if (!onGround) return false;
 
         Ray ray = new Ray(pushStartDetectionPoint.position, transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, closeEnoughtDetection, LayerMask.GetMask("Pusheable"),QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(ray, out hit, closeEnoughtDetection, LayerMask.GetMask("Pusheable"), QueryTriggerInteraction.Ignore))
         {
             pusheable = hit.collider.GetComponent<PusheableObject>();
             return true;
@@ -182,7 +185,7 @@ public class PlayerController : MonoBehaviour
     }
     void StopPushing()
     {
-        if(currentObjectPushing == null) return;
+        if (currentObjectPushing == null) return;
 
         currentObjectPushing.NotPusheable();
         currentObjectPushing = null;
