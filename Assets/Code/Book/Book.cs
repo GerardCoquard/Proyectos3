@@ -15,17 +15,38 @@ public class Book : MonoBehaviour
     public float distanceIterations = 1;
     public float iterationDistance;
     public float groundDetectionDistance;
-    public GameObject bookParticle;
+    public GameObject bookGraphics;
+    public GameObject bookGhost;
     public Transform particleStartPosition;
-    public Shape shapeTest;
     public LayerMask whatIsNotPlayer;
-    public GameObject canvas;
     Vector3 offset = new Vector3(0,0.05f,0);
     public delegate void BookStateChanged(bool state);
     public static event BookStateChanged OnBookStateChanged;
+    GameObject shapeshiftedObject;
+    bool ghostActive;
+    public Vector3 bookOffset;
+    public VisualEffect particles;
     private void Awake() {
         if(instance==null) instance = this;
         else Destroy(this);
+    }
+    private void Update() {
+        if(shapeshiftedObject==null)
+        {
+            transform.position = player.position + bookOffset;
+        }
+    }
+    void ResetBook()
+    {
+        transform.position = player.position + bookOffset;
+        if(shapeshiftedObject!=null)
+        {
+            Destroy(shapeshiftedObject.gameObject);
+            shapeshiftedObject = null;
+            particles.Play();
+
+        }
+        bookGraphics.SetActive(true);
     }
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
@@ -34,33 +55,30 @@ public class Book : MonoBehaviour
         Gizmos.DrawLine(player.position,player.position+new Vector3(-playerWidth,0,0));
     }
     private void OnEnable() {
-        InputManager.GetAction("Test1").action += Test;
-        bookParticle.transform.position = particleStartPosition.position;
-        bookParticle.SetActive(false);
-    }
-    private void OnDisable() {
-        InputManager.GetAction("Test1").action -= Test;
-    }
-    void Test(InputAction.CallbackContext context)
-    {
-        if(context.started) shapeTest.Shift();
+        particles.Stop();
+        bookGhost.transform.position = particleStartPosition.position;
+        bookGhost.SetActive(false);
     }
     public void ActivateBook()
     {
-        bookParticle.transform.position = particleStartPosition.position;
-        bookParticle.SetActive(true);
+        ResetBook();
+        bookGhost.transform.position = particleStartPosition.position;
+        bookGhost.SetActive(true);
         OnBookStateChanged?.Invoke(true);
+        ghostActive = true;
     }
     public void DeactivateBook()
     {
-        bookParticle.transform.position = particleStartPosition.position;
-        bookParticle.SetActive(false);
+        bookGhost.SetActive(false);
         OnBookStateChanged?.Invoke(false);
+        ghostActive = false;
     }
     void SpotFound(Vector3 pos, GameObject clone)
     {
-        GameObject target = Instantiate(clone,pos, clone.transform.rotation);
-        Destroy(target.GetComponent<Shape>());
+        shapeshiftedObject = Instantiate(clone,pos, clone.transform.rotation);
+        Destroy(shapeshiftedObject.GetComponent<Shape>());
+        particles.Play();
+        bookGraphics.SetActive(false);
     }
 
     public void ShapeshiftBox(Shape shape, Vector3 extents)

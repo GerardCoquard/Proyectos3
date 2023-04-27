@@ -91,6 +91,8 @@ public class PlayerController : MonoBehaviour
     }
     public void SwapControl()
     {
+        if(isJumping) return;
+        
         if(bookOpened)
         {
             Book.instance.DeactivateBook();
@@ -174,9 +176,6 @@ public class PlayerController : MonoBehaviour
         {
             pusheable = hit.collider.GetComponent<PusheableObject>();
             transform.forward = -hit.normal;
-            transform.position = new Vector3(hit.collider.transform.position.x - transform.forward.x * (characterController.radius + offset), 
-                transform.position.y, 
-                hit.collider.transform.position.z - transform.forward.z * (characterController.radius + offset));
             
             return true;
         }

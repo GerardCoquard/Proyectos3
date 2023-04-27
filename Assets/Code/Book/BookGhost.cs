@@ -7,6 +7,7 @@ public class BookGhost : MonoBehaviour
 {
     public float speed;
     public float shapeDetectionRadius;
+    public GameObject canvas;
     Vector2 movement;
     bool up;
     bool down;
@@ -24,6 +25,7 @@ public class BookGhost : MonoBehaviour
         InputManager.GetAction("Jump").action += OnUpInput;
         InputManager.GetAction("Shift").action += OnDownInput;
         InputManager.GetAction("Push").action += OnInteractInput;
+        canvas.SetActive(false);
         movement = Vector2.zero;
         up = false;
         down = false;
@@ -72,6 +74,8 @@ public class BookGhost : MonoBehaviour
         ClearSelected();
         selectedShape = newShape;
         selectedShape.SetSelected();
+        canvas.transform.position = selectedShape.shapeCollider.bounds.center;
+        canvas.SetActive(true);
     }
     private void OnTriggerExit(Collider other) {
         if(other.gameObject.layer != LayerMask.NameToLayer("Outline")) return;
@@ -85,6 +89,7 @@ public class BookGhost : MonoBehaviour
         if(selectedShape==null) return;
         selectedShape.Unselect();
         selectedShape = null;
+        canvas.SetActive(false);
     }
     void SelectShape()
     {
