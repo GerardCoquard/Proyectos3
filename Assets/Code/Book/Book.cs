@@ -19,7 +19,10 @@ public class Book : MonoBehaviour
     public Transform particleStartPosition;
     public Shape shapeTest;
     public LayerMask whatIsNotPlayer;
+    public GameObject canvas;
     Vector3 offset = new Vector3(0,0.05f,0);
+    public delegate void BookStateChanged(bool state);
+    public static event BookStateChanged OnBookStateChanged;
     private void Awake() {
         if(instance==null) instance = this;
         else Destroy(this);
@@ -46,11 +49,13 @@ public class Book : MonoBehaviour
     {
         bookParticle.transform.position = particleStartPosition.position;
         bookParticle.SetActive(true);
+        OnBookStateChanged?.Invoke(true);
     }
     public void DeactivateBook()
     {
         bookParticle.transform.position = particleStartPosition.position;
         bookParticle.SetActive(false);
+        OnBookStateChanged?.Invoke(false);
     }
     void SpotFound(Vector3 pos, GameObject clone)
     {

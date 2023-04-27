@@ -97,6 +97,7 @@ public class PlayerController : MonoBehaviour
             InputManager.GetAction("Push").action += OnPushInput;
             InputManager.GetAction("Jump").action += OnJumpInput;
             bookOpened = false;
+            characterController.enabled = true;
         }
         else
         {
@@ -105,7 +106,9 @@ public class PlayerController : MonoBehaviour
             InputManager.GetAction("Push").action -= OnPushInput;
             InputManager.GetAction("Jump").action -= OnJumpInput;
             bookOpened = true;
-            movement = new Vector3(0,movement.y,0);
+            isMovementPressed = false;
+            movement = Vector3.zero;
+            characterController.enabled = false;
             StopPushing();
         }
     }

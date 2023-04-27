@@ -7,7 +7,6 @@ public class BookGhost : MonoBehaviour
 {
     public float speed;
     public float shapeDetectionRadius;
-    public LayerMask whatIsShape;
     Vector2 movement;
     bool up;
     bool down;
@@ -25,6 +24,9 @@ public class BookGhost : MonoBehaviour
         InputManager.GetAction("Jump").action += OnUpInput;
         InputManager.GetAction("Shift").action += OnDownInput;
         InputManager.GetAction("Push").action += OnInteractInput;
+        movement = Vector2.zero;
+        up = false;
+        down = false;
     }
     private void OnDisable() {
         InputManager.GetAction("Move").action -= OnMovementInput;
@@ -63,16 +65,18 @@ public class BookGhost : MonoBehaviour
         return finalMovement != Vector3.zero;
     }
     private void OnTriggerEnter(Collider other) {
+        if(other.gameObject.layer != LayerMask.NameToLayer("Outline")) return;
         Shape newShape = other.GetComponent<Shape>();
-        if(newShape==null) return;
+        if(newShape== null) return;
         if(newShape==selectedShape) return;
         ClearSelected();
         selectedShape = newShape;
         selectedShape.SetSelected();
     }
     private void OnTriggerExit(Collider other) {
+        if(other.gameObject.layer != LayerMask.NameToLayer("Outline")) return;
         Shape newShape = other.GetComponent<Shape>();
-        if(newShape==null) return;
+        if(newShape== null) return;
         if(newShape!=selectedShape) return;
         ClearSelected();
     }

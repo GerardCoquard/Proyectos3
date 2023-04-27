@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class Shape : MonoBehaviour
 {
+    LayerMask layer;
     public Collider shapeCollider;
+    private void OnEnable() {
+        Book.OnBookStateChanged += SetOutline;
+    }
+    private void OnDisable() {
+        Book.OnBookStateChanged -= SetOutline;
+    }
     private void Start() {
         if(shapeCollider==null) shapeCollider = GetComponent<Collider>();
         Unselect();
@@ -37,6 +44,11 @@ public class Shape : MonoBehaviour
             Debug.Log(gameObject.name + " doesn't have an accepted Collider type");
             break;
         }
+    }
+    void SetOutline(bool state)
+    {
+        if(state) gameObject.layer = LayerMask.NameToLayer("Outline");
+        else gameObject.layer = LayerMask.NameToLayer("Pusheable");
     }
 
     public void SetSelected()
