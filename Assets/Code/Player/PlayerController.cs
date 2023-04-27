@@ -101,6 +101,13 @@ public class PlayerController : MonoBehaviour
             InputManager.GetAction("Jump").action += OnJumpInput;
             bookOpened = false;
             characterController.enabled = true;
+            if(InputManager.GetAction("Move").GetEnabled())
+            {
+                Vector2 tempDirection = InputManager.GetAction("Move").context.ReadValue<Vector2>();
+                movement.x = tempDirection.x * maxLinealSpeed;
+                movement.z = tempDirection.y * maxLinealSpeed;
+                isMovementPressed = tempDirection.x != 0 || tempDirection.y != 0;
+            }
         }
         else
         {

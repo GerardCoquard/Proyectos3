@@ -29,6 +29,9 @@ public class BookGhost : MonoBehaviour
         movement = Vector2.zero;
         up = false;
         down = false;
+        if(InputManager.GetAction("Move").GetEnabled()) movement = InputManager.GetAction("Move").context.ReadValue<Vector2>();
+        if(InputManager.GetAction("Jump").GetEnabled()) up = InputManager.GetAction("Jump").context.ReadValue<float>() == 1;
+        if(InputManager.GetAction("Shift").GetEnabled()) down = InputManager.GetAction("Shift").context.ReadValue<float>() == 1;
     }
     private void OnDisable() {
         InputManager.GetAction("Move").action -= OnMovementInput;
