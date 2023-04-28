@@ -8,35 +8,54 @@ using System.Reflection;
 public class Book : MonoBehaviour
 {
     public static Book instance;
-    public Transform player;
+    Transform player;
+    [Header("Shapeshift Params")]
     public float playerWidth;
     public int angleIterations;
     public int extraAngleIterationsOnDistance;
     public float distanceIterations = 1;
     public float iterationDistance;
     public float groundDetectionDistance;
+    [Header("Book Params")]
     public GameObject bookGraphics;
     public GameObject bookGhost;
-    public Transform particleStartPosition;
-    public LayerMask whatIsNotPlayer;
-    Vector3 offset = new Vector3(0,0.05f,0);
+    public Transform bookGhostStartPosition;
+    public Vector3 bookOffset;
+    public VisualEffect particles;
     public delegate void BookStateChanged(bool state);
     public static event BookStateChanged OnBookStateChanged;
     GameObject shapeshiftedObject;
-    bool ghostActive;
-    public Vector3 bookOffset;
-    public VisualEffect particles;
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(bookGhost.transform.position,bookGhost.transform.position+new Vector3(0,-groundDetectionDistance,0));
+        Gizmos.DrawLine(bookGhost.transform.position,bookGhost.transform.position+new Vector3(iterationDistance,0,0));
+        Gizmos.DrawLine(bookGhost.transform.position,bookGhost.transform.position+new Vector3(-playerWidth,0,0));
+    }
     private void Awake() {
         if(instance==null) instance = this;
         else Destroy(this);
     }
-    private void Update() {
-        if(shapeshiftedObject==null)
-        {
-            transform.position = player.position + bookOffset;
-        }
+    private void Start() {
+        particles.Stop();
+        player = PlayerController.instance.transform;
+        bookGhost.SetActive(false);
     }
-    void ResetBook()
+    private void Update() {
+        if(shapeshiftedObject==null) transform.position = player.position + bookOffset;
+    }
+    public void ActivateBook()
+    {
+        ResetBookGraphics();
+        bookGhost.transform.position = bookGhostStartPosition.position;
+        bookGhost.SetActive(true);
+        OnBookStateChanged?.Invoke(true);
+    }
+    public void DeactivateBook()
+    {
+        bookGhost.SetActive(false);
+        OnBookStateChanged?.Invoke(false);
+    }
+    void ResetBookGraphics()
     {
         transform.position = player.position + bookOffset;
         if(shapeshiftedObject!=null)
@@ -48,31 +67,6 @@ public class Book : MonoBehaviour
         }
         bookGraphics.SetActive(true);
     }
-    private void OnDrawGizmos() {
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(player.position,player.position+new Vector3(0,-groundDetectionDistance,0));
-        Gizmos.DrawLine(player.position,player.position+new Vector3(iterationDistance,0,0));
-        Gizmos.DrawLine(player.position,player.position+new Vector3(-playerWidth,0,0));
-    }
-    private void OnEnable() {
-        particles.Stop();
-        bookGhost.transform.position = particleStartPosition.position;
-        bookGhost.SetActive(false);
-    }
-    public void ActivateBook()
-    {
-        ResetBook();
-        bookGhost.transform.position = particleStartPosition.position;
-        bookGhost.SetActive(true);
-        OnBookStateChanged?.Invoke(true);
-        ghostActive = true;
-    }
-    public void DeactivateBook()
-    {
-        bookGhost.SetActive(false);
-        OnBookStateChanged?.Invoke(false);
-        ghostActive = false;
-    }
     void SpotFound(Vector3 pos, GameObject clone)
     {
         shapeshiftedObject = Instantiate(clone,pos, clone.transform.rotation);
@@ -80,11 +74,12 @@ public class Book : MonoBehaviour
         particles.Play();
         bookGraphics.SetActive(false);
     }
-
-    public void ShapeshiftBox(Shape shape, Vector3 extents)
+    public void Shapehift(Shape shape, Vector3 extents)
     {
+        ShapeType type = shape.type;
         float largerExtent = Mathf.Max(extents.x, extents.z);
-        Vector3 extentVector = new Vector3(0,extents.y,0);
+        Vector3 verticalExtent = new Vector3(0,extents.y,0);
+
         for (int distI = 0; distI < distanceIterations; distI++)
         {
             float distance = playerWidth + largerExtent + iterationDistance*distI;
@@ -97,77 +92,41 @@ public class Book : MonoBehaviour
                 for (int i = 0; i < 2; i++)
                 {
                     if(angle == 180 || angle == 0) i++;
-                    Vector3 desiredPosition =  player.position + OrientationToVector(player.eulerAngles.y + (inverted? -angle : angle)).normalized * distance + offset;
+                    Vector3 desiredPosition =  player.position + OrientationToVector(player.eulerAngles.y + (inverted? -angle : angle)).normalized * distance + new Vector3(0,0.05f,0);
                     inverted = true;
-                    if(Physics.CheckBox(desiredPosition+extentVector,extents,Quaternion.identity,Physics.AllLayers,QueryTriggerInteraction.Ignore)) continue;
-                    if(!VisibleToPlayer(desiredPosition+extentVector)) continue;
+                    if(Overlapping(type,desiredPosition,largerExtent,verticalExtent,extents)) continue;
+                    if(!VisibleToPlayer(desiredPosition+verticalExtent)) continue;
                     if(!OnGround(desiredPosition,new Vector2(extents.x,extents.z))) continue;
                     SpotFound(desiredPosition,shape.gameObject);
                     return;
                 }
-                
             }
         }
     }
-    public void ShapeshiftCapsule(Shape shape, float radius, float height)
+    bool Overlapping(ShapeType _type, Vector3 desiredPosition,float largerExtent, Vector3 verticalExtent, Vector3 extents)
     {
-        Vector3 bottomPoint = new Vector3(0,radius,0);
-        Vector3 topPoint = new Vector3(0,height - radius,0);
-        for (int distI = 0; distI < distanceIterations; distI++)
+        switch (_type)
         {
-            float distance = playerWidth + radius + iterationDistance*distI;
+            case ShapeType.Box:
+            return Physics.CheckBox(desiredPosition+verticalExtent,extents,Quaternion.identity,Physics.AllLayers,QueryTriggerInteraction.Ignore);
 
-            for (int angI = 0; angI <= (angleIterations+(distI*extraAngleIterationsOnDistance))/2; angI++)
-            {
-                int extraAngles = distI*extraAngleIterationsOnDistance;
-                int angle = 360/(angleIterations+extraAngles)*angI;
-                bool inverted = false;
-                for (int i = 0; i < 2; i++)
-                {
-                    if(angle == 180 || angle == 0) i++;
-                    Vector3 desiredPosition =  player.position + OrientationToVector(player.eulerAngles.y + (inverted? -angle : angle)).normalized * distance + offset;
-                    inverted = true;
-                    if(Physics.CheckCapsule(desiredPosition+bottomPoint,desiredPosition+topPoint,radius,Physics.AllLayers,QueryTriggerInteraction.Ignore)) continue;
-                    if(!VisibleToPlayer(desiredPosition+new Vector3(0,height/2,0))) continue;
-                    if(!OnGround(desiredPosition,new Vector2(radius,radius))) continue;
-                    
-                    SpotFound(desiredPosition,shape.gameObject);
-                    return;
-                }
-            }
-        }
-    }
-    public void ShapeshiftSphere(Shape shape, float radius)
-    {
-        Vector3 radiusVector = new Vector3(0,radius,0);
-        for (int distI = 0; distI < distanceIterations; distI++)
-        {
-            float distance = playerWidth + radius + iterationDistance*distI;
+            case ShapeType.Sphere:
+            return Physics.CheckSphere(desiredPosition+verticalExtent,largerExtent,Physics.AllLayers,QueryTriggerInteraction.Ignore);
 
-            for (int angI = 0; angI <= (angleIterations+(distI*extraAngleIterationsOnDistance))/2; angI++)
-            {
-                int extraAngles = distI*extraAngleIterationsOnDistance;
-                int angle = 360/(angleIterations+extraAngles)*angI;
-                bool inverted = false;
-                for (int i = 0; i < 2; i++)
-                {
-                    if(angle == 180 || angle == 0) i++;
-                    Vector3 desiredPosition =  player.position + OrientationToVector(player.eulerAngles.y + (inverted? -angle : angle)).normalized * distance + offset;
-                    inverted = true;
-                    if(Physics.CheckSphere(desiredPosition+radiusVector,radius,Physics.AllLayers,QueryTriggerInteraction.Ignore)) continue;
-                    if(!VisibleToPlayer(desiredPosition+radiusVector)) continue;
-                    if(!OnGround(desiredPosition,new Vector2(radius,radius))) continue;
-                    
-                    SpotFound(desiredPosition,shape.gameObject);
-                    return;
-                }
-            }
+            case ShapeType.Capsule:
+            Vector3 bottomPoint = new Vector3(0,largerExtent,0);
+            Vector3 topPoint = new Vector3(0,2*verticalExtent.y - largerExtent,0);
+            return Physics.CheckCapsule(desiredPosition+bottomPoint,desiredPosition+topPoint,largerExtent,Physics.AllLayers,QueryTriggerInteraction.Ignore);
+
+            default:
+            return true;
         }
     }
     bool VisibleToPlayer(Vector3 pos)
     {
-        RaycastHit hit;
-        return !Physics.Raycast(player.position, pos - player.position, out hit,Vector3.Distance(player.position,pos),whatIsNotPlayer,QueryTriggerInteraction.Ignore);
+        LayerMask _layer = Physics.AllLayers;
+        _layer &= ~(1 << LayerMask.NameToLayer("Player"));
+        return !Physics.Raycast(player.position, pos - player.position,Vector3.Distance(player.position,pos),_layer,QueryTriggerInteraction.Ignore);
     }
     bool OnGround(Vector3 pos,Vector2 bounds)
     {

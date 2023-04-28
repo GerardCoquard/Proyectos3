@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 265353427}
   m_Layer: 0
-  m_Name: ParticleStartPosition
+  m_Name: GhostStartPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -754,7 +754,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 447316155}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.55999994, y: 2.11, z: 0.04}
+  m_LocalPosition: {x: -6.65, y: 2.11, z: -4.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -777,7 +777,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fda62ec335d9ae249884939e0e980a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1953904667}
   playerWidth: 1
   angleIterations: 20
   extraAngleIterationsOnDistance: 4
@@ -786,10 +785,10 @@ MonoBehaviour:
   groundDetectionDistance: 0.2
   bookGraphics: {fileID: 390146050}
   bookGhost: {fileID: 923696539}
-  particleStartPosition: {fileID: 265353427}
+  bookGhostStartPosition: {fileID: 265353427}
   whatIsNotPlayer:
     serializedVersion: 2
-    m_Bits: 1015
+    m_Bits: 2039
   bookOffset: {x: 0, y: 3, z: 0}
   particles: {fileID: 340496992}
 --- !u!1 &458176656
@@ -6662,7 +6661,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  shapeDetectionRadius: 1
+  shapeDetectionRadius: 2
   canvas: {fileID: 483013307}
 --- !u!135 &923696545
 SphereCollider:

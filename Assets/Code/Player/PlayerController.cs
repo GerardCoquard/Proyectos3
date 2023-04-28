@@ -37,7 +37,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float pushForce;
     [SerializeField] Transform pushStartDetectionPoint;
     private PusheableObject currentObjectPushing;
-    private bool isPushing;
     bool bookOpened;
     [SerializeField] float offset;
     private void Awake()
@@ -197,7 +196,6 @@ public class PlayerController : MonoBehaviour
             currentObjectPushing.MakePusheable();
             characterController.enabled = false;
             transform.SetParent(currentObjectPushing.transform);
-            isPushing = true;
         }
     }
     void StopPushing()
@@ -208,7 +206,6 @@ public class PlayerController : MonoBehaviour
         currentObjectPushing = null;
         characterController.enabled = true;
         transform.SetParent(null);
-        isPushing = false;
     }
     private void Push()
     {
@@ -217,7 +214,7 @@ public class PlayerController : MonoBehaviour
 
     private bool CanJump()
     {
-        return onGround && !isPushing;
+        return onGround && currentObjectPushing==null;
     }
 
     void SetGravity()

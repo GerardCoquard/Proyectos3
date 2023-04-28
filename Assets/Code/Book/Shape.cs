@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Shape : MonoBehaviour
 {
     LayerMask layer;
     public Collider shapeCollider;
+    [NonSerialized] public ShapeType type;
+
     private void OnEnable() {
         Book.OnBookStateChanged += SetOutline;
     }
@@ -14,43 +17,30 @@ public class Shape : MonoBehaviour
     }
     private void Start() {
         if(shapeCollider==null) shapeCollider = GetComponent<Collider>();
-        Unselect();
-    }
-    public void Shift() {
-        if(shapeCollider==null)
-        {
-            Debug.LogWarning(gameObject.name + " doesn't have a Collider associated");
-            return;
-        }
         switch (shapeCollider)
         {
             case BoxCollider:
-            Vector3 extents = shapeCollider.bounds.extents;
-            Book.instance.ShapeshiftBox(this,extents);
+            type = ShapeType.Box;
             break;
 
             case SphereCollider:
-            float radiusSphere = ((SphereCollider)shapeCollider).radius;
-            Book.instance.ShapeshiftSphere(this,radiusSphere);
+            type = ShapeType.Sphere;
             break;
 
             case CapsuleCollider:
-            float radiusCapsule = ((CapsuleCollider)shapeCollider).radius;
-            float height = ((CapsuleCollider)shapeCollider).height;
-            Book.instance.ShapeshiftCapsule(this,radiusCapsule,height);
-            break;
-
-            default:
-            Debug.Log(gameObject.name + " doesn't have an accepted Collider type");
+            type = ShapeType.Capsule;
             break;
         }
+        Unselect();
+    }
+    public void Shift() {
+        Book.instance.Shapehift(this,shapeCollider.bounds.extents);
     }
     void SetOutline(bool state)
     {
         if(state) gameObject.layer = LayerMask.NameToLayer("Outline");
         else gameObject.layer = LayerMask.NameToLayer("Pusheable");
     }
-
     public void SetSelected()
     {
 
@@ -59,4 +49,10 @@ public class Shape : MonoBehaviour
     {
 
     }
+}
+public enum ShapeType
+{
+    Box,
+    Sphere,
+    Capsule
 }
