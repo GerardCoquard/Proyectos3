@@ -12,8 +12,9 @@ public class LightBeam
 
     private List<LightReciever> lightRecieverList = new List<LightReciever>();
     private List<LightReciever> currentLightRecivers = new List<LightReciever>();
+    private int maxBounces;
 
-    public LightBeam(Vector3 pos, Vector3 dir, Material material, LayerMask layerMask)
+    public LightBeam(Vector3 pos, Vector3 dir, Material material, LayerMask layerMask, int maxBounces)
     {
         lineRenderer = new LineRenderer();
         lightGameObject = new GameObject();
@@ -21,6 +22,7 @@ public class LightBeam
         position = pos;
         direction = dir;
         this.layerMask = layerMask;
+        this.maxBounces = maxBounces;
 
         lineRenderer = lightGameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
         lineRenderer.startWidth = 0.1f;
@@ -32,6 +34,13 @@ public class LightBeam
         CastLight(position, direction, lineRenderer);
 
     }
+    public void ExecuteRay(Vector3 pos, Vector3 dir, LineRenderer renderer)
+    {
+        //Start the cast of the ray
+        lineRenderer.positionCount = 0;
+        lightIndices.Clear();
+        CastLight(pos, dir, renderer);
+    }
     public void CastLight(Vector3 pos, Vector3 dir, LineRenderer renderer)
     {
         lightIndices.Add(pos);
@@ -39,14 +48,14 @@ public class LightBeam
         Ray ray = new Ray(pos, dir);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 30, layerMask))
+        if (Physics.Raycast(ray, out hit, 50, layerMask,QueryTriggerInteraction.Ignore) && lightIndices.Count < maxBounces)
         {
             CheckHit(hit, dir, renderer);
         }
         else
         {
 
-            lightIndices.Add(ray.GetPoint(30));
+            lightIndices.Add(ray.GetPoint(50));
             UpdateLightBeam();
             CheckRecivers();
         }

@@ -2,20 +2,19 @@
 
 public class LightEmiter : MonoBehaviour
 {
-    public LightBeam beam;
+    LightBeam beam;
+    public Transform rayStartPos;
     public Material material;
-    public LayerMask layerMask;
+    public int maxBounces;
 
     private void Start()
     {
-        beam = new LightBeam(transform.position, transform.forward, material, layerMask);
+        beam = new LightBeam(transform.position, transform.forward, material, Physics.AllLayers,maxBounces);
     }
 
     private void Update()
     {
-        beam.lineRenderer.positionCount = 0;
-        beam.lightIndices.Clear();
-        beam.CastLight(transform.position, transform.right, beam.lineRenderer);
+        beam.ExecuteRay(rayStartPos.position, rayStartPos.forward, beam.lineRenderer);
     }
 
 }
