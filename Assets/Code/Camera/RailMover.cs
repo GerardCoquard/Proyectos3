@@ -7,19 +7,22 @@ public class RailMover : MonoBehaviour
     public Rail rail;
     public Transform lookAt;
     public float moveSpeed = 5.0f;
+    public float interactFOV = 52f;
+    public float zoomSpeed = 5f;
+    private float initialFOV;
 
     private Transform myTransform;
-    private PlayerController controller;
     private Vector3 lastPosition;
+    private Quaternion initialRotation;
 
-    private float initialFOV;
     private Camera myCamera;
-    public float distanceOfReference = 260f;
+    private PlayerController controller;
     private void Start()
     {
+        controller = FindObjectOfType<PlayerController>();
         myCamera = GetComponent<Camera>();
         initialFOV = myCamera.fieldOfView;
-        controller = FindObjectOfType<PlayerController>();
+        initialRotation = myCamera.transform.rotation;
         myTransform = transform;
         lastPosition = myTransform.position;
     }
@@ -28,11 +31,46 @@ public class RailMover : MonoBehaviour
     {
         lastPosition = Vector3.Lerp(lastPosition, rail.ProjectPositionOnRail(lookAt.position), Time.deltaTime * moveSpeed);
         myTransform.position = lastPosition;
-        myTransform.LookAt(lookAt.position);
 
-        float distanceToTarget = (lookAt.position - myTransform.position).sqrMagnitude;
-        myCamera.fieldOfView = initialFOV - (initialFOV/distanceToTarget) * initialFOV;
+        HandlePlayerOnCamera();
+        HandleZoomOnPlayer();
     }
 
+    private void HandlePlayerOnCamera()
+    {
+        //Get player position on screen coordinates
+        Vector3 playerPosToScreen = GetPlayerPosOnScreen(lookAt.position);
+        //Check if player is out of boundries
+
+        //Set the camera to its new rotation
+    }
+
+    private void HandleZoomOnPlayer()
+    {
+        //if controller is interacting zoom in
+        //if not zoom out
+        if (controller.isInteracting)
+        {
+            float delta = (interactFOV - myCamera.fieldOfView) * Time.deltaTime * zoomSpeed;
+            myCamera.fieldOfView += delta;
+
+            Quaternion targetRotation = Quaternion.LookRotation(lookAt.transform.position - transform.position);
+            myCamera.transform.rotation = Quaternion.Slerp(myCamera.transform.rotation, targetRotation, moveSpeed * Time.deltaTime);
+
+        }
+        else
+        {
+            float delta = (myCamera.fieldOfView - initialFOV) * Time.deltaTime * zoomSpeed;
+            myCamera.fieldOfView -= delta;
+
+            myCamera.transform.rotation = Quaternion.Slerp(myCamera.transform.rotation, initialRotation, moveSpeed * Time.deltaTime);
+        }
+    }
+
+    private Vector3 GetPlayerPosOnScreen(Vector3 pos)
+    {
+        return myCamera.WorldToScreenPoint(pos);
+    }
 
 }
+

@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform pushStartDetectionPoint;
     private PusheableObject currentObjectPushing;
     bool bookOpened;
+    public bool isInteracting = false;
     [SerializeField] float offset;
     private void Awake()
     {
@@ -192,6 +193,7 @@ public class PlayerController : MonoBehaviour
         PusheableObject pusheable;
         if (PusheableDetected(out pusheable) && !isJumping)
         {
+            isInteracting = true;
             currentObjectPushing = pusheable;
             currentObjectPushing.MakePusheable();
             characterController.enabled = false;
@@ -202,6 +204,7 @@ public class PlayerController : MonoBehaviour
     {
         if(currentObjectPushing == null) return;
 
+        isInteracting = false;
         currentObjectPushing.NotPusheable();
         currentObjectPushing = null;
         characterController.enabled = true;
