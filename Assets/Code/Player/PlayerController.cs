@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     private float jumpForce;
     //[SerializeField] private float fallMultiplier;
     private float gravity;
-    private bool isJumping;
+    public bool isJumping;
 
     [Header("Push")]
     [SerializeField] float closeEnoughtDetection;
