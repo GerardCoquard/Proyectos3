@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class LightBeam
 {
-    private Vector3 position;
-    private Vector3 direction;
-    private GameObject lightGameObject;
+    public Vector3 position;
+    public Vector3 direction;
+    public GameObject lightGameObject;
     public LineRenderer lineRenderer;
-    public List<Vector3> lightIndices = new List<Vector3>();
-    private LayerMask layerMask;
-
-    private List<LightReciever> lightRecieverList = new List<LightReciever>();
-    private List<LightReciever> currentLightRecivers = new List<LightReciever>();
-    private int maxBounces;
+    List<Vector3> lightIndices = new List<Vector3>();
+    public LayerMask layerMask;
+    public Material material;
+    List<LightReciever> lightRecieverList = new List<LightReciever>();
+    List<LightReciever> currentLightRecivers = new List<LightReciever>();
+    public int maxBounces;
 
     public LightBeam(Vector3 pos, Vector3 dir, Material material, LayerMask layerMask, int maxBounces)
     {
@@ -23,6 +23,7 @@ public class LightBeam
         direction = dir;
         this.layerMask = layerMask;
         this.maxBounces = maxBounces;
+        this.material = material;
 
         lineRenderer = lightGameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
         lineRenderer.startWidth = 0.1f;
@@ -32,7 +33,24 @@ public class LightBeam
         lineRenderer.endColor = Color.white;
 
         CastLight(position, direction, lineRenderer);
+    }
+    public LightBeam(LightBeam beam)
+    {
+        this.lineRenderer = new LineRenderer();
+        this.lightGameObject = new GameObject();
+        this.lightGameObject.name = "LightBeamExtra";
+        this.position = beam.position;
+        this.direction = beam.direction;
+        this.layerMask = beam.layerMask;
+        this.maxBounces = beam.maxBounces;
+        this.material = beam.material;
 
+        lineRenderer = lightGameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
+        lineRenderer.startWidth = 0.1f;
+        lineRenderer.endWidth = 0.1f;
+        lineRenderer.material = beam.material;
+        lineRenderer.startColor = Color.white;
+        lineRenderer.endColor = Color.white;
     }
     public void ExecuteRay(Vector3 pos, Vector3 dir, LineRenderer renderer)
     {
@@ -40,6 +58,8 @@ public class LightBeam
         lineRenderer.positionCount = 0;
         lightIndices.Clear();
         CastLight(pos, dir, renderer);
+        UpdateLightBeam();
+        CheckRecievers();
     }
     public void CastLight(Vector3 pos, Vector3 dir, LineRenderer renderer)
     {
@@ -54,10 +74,7 @@ public class LightBeam
         }
         else
         {
-
             lightIndices.Add(ray.GetPoint(50));
-            UpdateLightBeam();
-            CheckRecivers();
         }
     }
 
@@ -73,36 +90,27 @@ public class LightBeam
         }
     }
 
-    private void CheckRecivers()
+    private void CheckRecievers()
     {
-        List<LightReciever> tempList = new List<LightReciever>(lightRecieverList); 
+        List<LightReciever> tempList = new List<LightReciever>(lightRecieverList);
 
         foreach (LightReciever receiver in tempList)
         {
-           
             if (!currentLightRecivers.Contains(receiver))
             {
                 receiver.UndoAction();
                 lightRecieverList.Remove(receiver);
-                receiver.SetIsHitted(false);
-
             }
-           
-
-
         }
         currentLightRecivers.Clear();
-
     }
 
     private void CheckHit(RaycastHit hitInfo, Vector3 direction, LineRenderer line)
     {
         if (hitInfo.collider != null)
         {
-
             if (hitInfo.collider.tag == "Mirror")
             {
-
                 Vector3 pos = hitInfo.point;
                 Vector3 dir = Vector3.Reflect(direction, hitInfo.normal);
                 CastLight(pos, dir, line);
@@ -110,27 +118,18 @@ public class LightBeam
             else
             {
                 lightIndices.Add(hitInfo.point);
-                UpdateLightBeam();
             }
             if (hitInfo.collider.tag == "LightTrigger")
             {
-
                 LightReciever reciver = hitInfo.collider.GetComponent<LightReciever>();
-                currentLightRecivers.Add(reciver);
-
                 if (!lightRecieverList.Contains(reciver))
                 {
-                    reciver.DoAction();
-                    reciver.SetIsHitted(true);
+                    reciver.DoAction(this);
                     lightRecieverList.Add(reciver);
                 }
-
-              
-
+                currentLightRecivers.Add(reciver);
+                reciver.UpdatePoint(hitInfo.point,direction);
             }
         }
-
     }
-
-
 }

@@ -7,41 +7,32 @@ public class LightReciever : MonoBehaviour
     public UnityEvent OnLightRecived;
     public UnityEvent OnLightNotRecived;
     public bool lightGoesThrough;
-    private bool isTriggered;
-    public void DoAction()
+    LightBeam extraLightBeam;
+    [NonSerialized] public Vector3 pos;
+    [NonSerialized] public Vector3 dir;
+    public void DoAction(LightBeam beam)
     {
-        if (!isTriggered)
+        if(lightGoesThrough)
         {
-            isTriggered = true;
-            OnLightRecived?.Invoke();           
+            extraLightBeam =  new LightBeam(beam);
         }
+        OnLightRecived?.Invoke();           
     }
-
-    private void Update()
+    public void UpdatePoint(Vector3 _pos,Vector3 _dir)
     {
-        if (!isTriggered) gameObject.layer = 0;
+        pos = _pos;
+        dir = _dir;
     }
-
     public void UndoAction()
     {
-
+        if(lightGoesThrough)
+        {
+            Destroy(extraLightBeam.lightGameObject);
+            extraLightBeam = null;
+        }
         OnLightNotRecived?.Invoke();
     }
-
-
-    public void SetIsHitted(bool state)
-    {
-        isTriggered = state;
-       
-    }
-
-    public bool GetIsHitted()
-    {
-        return isTriggered;
-    }
-
-    public bool GetLightGoesThrough()
-    {
-        return lightGoesThrough;
+    private void LateUpdate() {
+        if(extraLightBeam!=null) extraLightBeam.ExecuteRay(pos,dir,extraLightBeam.lineRenderer);
     }
 }
