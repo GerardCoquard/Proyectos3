@@ -17,6 +17,11 @@ public class RailMover : MonoBehaviour
 
     private Camera myCamera;
     private PlayerController controller;
+
+    public Transform firstLimit;
+    public Transform lastLimit;
+
+    private bool shouldUpdate;
     private void Start()
     {
         controller = FindObjectOfType<PlayerController>();
@@ -29,20 +34,27 @@ public class RailMover : MonoBehaviour
 
     private void Update()
     {
+
         lastPosition = Vector3.Lerp(lastPosition, rail.ProjectPositionOnRail(lookAt.position), Time.deltaTime * moveSpeed);
         myTransform.position = lastPosition;
-
         HandlePlayerOnCamera();
+
+
+
         HandleZoomOnPlayer();
+        LimitCamera();
     }
 
     private void HandlePlayerOnCamera()
     {
-        //Get player position on screen coordinates
-        Vector3 playerPosToScreen = GetPlayerPosOnScreen(lookAt.position);
-        //Check if player is out of boundries
+        //This should just affect the rotation in the Y axis
+        if (shouldUpdate)
+        {
 
-        //Set the camera to its new rotation
+            Quaternion targetRotation = Quaternion.LookRotation(lookAt.transform.position - transform.position);
+            myCamera.transform.rotation = Quaternion.Slerp(myCamera.transform.rotation, targetRotation, moveSpeed * Time.deltaTime);
+        }
+       
     }
 
     private void HandleZoomOnPlayer()
@@ -53,10 +65,6 @@ public class RailMover : MonoBehaviour
         {
             float delta = (interactFOV - myCamera.fieldOfView) * Time.deltaTime * zoomSpeed;
             myCamera.fieldOfView += delta;
-
-            Quaternion targetRotation = Quaternion.LookRotation(lookAt.transform.position - transform.position);
-            myCamera.transform.rotation = Quaternion.Slerp(myCamera.transform.rotation, targetRotation, moveSpeed * Time.deltaTime);
-
         }
         else
         {
@@ -67,9 +75,21 @@ public class RailMover : MonoBehaviour
         }
     }
 
-    private Vector3 GetPlayerPosOnScreen(Vector3 pos)
+    private void LimitCamera()
     {
-        return myCamera.WorldToScreenPoint(pos);
+        //Get limit positions on viewport
+        Vector3 f = myCamera.WorldToViewportPoint(firstLimit.position);
+        Vector3 l = myCamera.WorldToViewportPoint(lastLimit.position);
+
+        if ((f.x >= 0 && f.x <= 1) && (f.y >= 0 && f.y <= 1) || (l.x >= 0 && l.x <= 1) && (l.y >= 0 && l.y <= 1))
+        {
+            shouldUpdate = false;
+
+        }
+        else
+        {
+            shouldUpdate = true;
+        }
     }
 
 }
