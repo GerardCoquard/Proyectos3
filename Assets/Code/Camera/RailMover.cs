@@ -10,6 +10,8 @@ public class RailMover : MonoBehaviour
     public float interactFOV = 52f;
     public float zoomSpeed = 5f;
     private float initialFOV;
+    public float maxDistanceToZoom = 310f;
+    public float farFOV = 41f;
 
     private Transform myTransform;
     private Vector3 lastPosition;
@@ -67,9 +69,16 @@ public class RailMover : MonoBehaviour
     {
         //if controller is interacting zoom in
         //if not zoom out
+        float targetDistance = (myCamera.transform.position - lookAt.position).sqrMagnitude;
+
         if (controller.isInteracting)
         {
             float delta = (interactFOV - myCamera.fieldOfView) * Time.deltaTime * zoomSpeed;
+            myCamera.fieldOfView += delta;
+        }
+        else if(targetDistance >= maxDistanceToZoom)
+        {
+            float delta = (farFOV - myCamera.fieldOfView) * Time.deltaTime * zoomSpeed;
             myCamera.fieldOfView += delta;
         }
         else
