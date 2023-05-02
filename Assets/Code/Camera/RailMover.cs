@@ -37,24 +37,30 @@ public class RailMover : MonoBehaviour
 
         lastPosition = Vector3.Lerp(lastPosition, rail.ProjectPositionOnRail(lookAt.position), Time.deltaTime * moveSpeed);
         myTransform.position = lastPosition;
-        HandlePlayerOnCamera();
 
 
 
         HandleZoomOnPlayer();
         LimitCamera();
+        HandlePlayerOnCamera();
     }
 
     private void HandlePlayerOnCamera()
     {
         //This should just affect the rotation in the Y axis
+      
+        Quaternion targetRotation = Quaternion.LookRotation(lookAt.transform.position - transform.position);
         if (shouldUpdate)
         {
-
-            Quaternion targetRotation = Quaternion.LookRotation(lookAt.transform.position - transform.position);
             myCamera.transform.rotation = Quaternion.Slerp(myCamera.transform.rotation, targetRotation, moveSpeed * Time.deltaTime);
         }
-       
+        else
+        {
+            Quaternion lerpedTarget = Quaternion.Slerp(myCamera.transform.rotation, targetRotation, moveSpeed * Time.deltaTime);
+            Quaternion LookYAxis = Quaternion.Euler(lerpedTarget.eulerAngles.x, myCamera.transform.rotation.eulerAngles.y, myCamera.transform.rotation.eulerAngles.z);
+            myCamera.transform.rotation = LookYAxis; 
+        }
+
     }
 
     private void HandleZoomOnPlayer()
