@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class LimitTrigger : MonoBehaviour
+public class RoomTrigger : MonoBehaviour
 {
     public UnityEvent onRoomChanged;
 
@@ -32,7 +32,7 @@ public class LimitTrigger : MonoBehaviour
     public void ChangeRoom()
     {
         myCollider.enabled = false;
-        RailMover.instance.ChangeLimits(firstLimitPos, lastLimitPos, firstLimitRot, lastLimitRot);
+        CameraController.instance.ChangeLimits(firstLimitPos, lastLimitPos, firstLimitRot, lastLimitRot);
         onRoomChanged?.Invoke();
         
     }

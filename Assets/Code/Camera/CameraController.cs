@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RailMover : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
 
-    public static RailMover instance { get; private set; }
+    public static CameraController instance { get; private set; }
 
     public Rail rail;
     public Transform lookAt;
