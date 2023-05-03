@@ -1,38 +1,71 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections.Generic;
+using System.Collections;
 
 public class LightReciever : MonoBehaviour
 {
     public UnityEvent OnLightRecived;
     public UnityEvent OnLightNotRecived;
     public bool lightGoesThrough;
-    LightBeam extraLightBeam;
-    [NonSerialized] public Vector3 pos;
-    [NonSerialized] public Vector3 dir;
+    Dictionary<LightBeam,LightBeamData> crossingBeams = new Dictionary<LightBeam, LightBeamData>();
     public void DoAction(LightBeam beam)
     {
-        if(lightGoesThrough)
-        {
-            extraLightBeam =  new LightBeam(beam);
-        }
-        OnLightRecived?.Invoke();           
+        if(crossingBeams.Count == 0) OnLightRecived?.Invoke();
+
+        if(lightGoesThrough) StartCoroutine(AddBeam(beam));
+        else crossingBeams.Add(beam,new LightBeamData(null,Vector3.zero,Vector3.zero));
     }
-    public void UpdatePoint(Vector3 _pos,Vector3 _dir)
+    public void UpdatePoint(LightBeam beam,Vector3 _pos,Vector3 _dir)
     {
-        pos = _pos;
-        dir = _dir;
-    }
-    public void UndoAction()
-    {
-        if(lightGoesThrough)
+        if(!lightGoesThrough) return;
+        foreach (KeyValuePair<LightBeam, LightBeamData> entry in crossingBeams)
         {
-            Destroy(extraLightBeam.lightGameObject);
-            extraLightBeam = null;
+            if(entry.Key == beam)
+            {
+                entry.Value.pos = _pos;
+                entry.Value.dir = _dir;
+            }
         }
-        OnLightNotRecived?.Invoke();
+    }
+    public void UndoAction(LightBeam beam)
+    {
+        if(lightGoesThrough) CheckChildBeams(beam);
+        else
+        {
+            crossingBeams.Remove(beam);
+            if(crossingBeams.Count == 0) OnLightNotRecived?.Invoke();
+        }
     }
     private void LateUpdate() {
-        if(extraLightBeam!=null) extraLightBeam.ExecuteRay(pos,dir,extraLightBeam.lineRenderer);
+        if(!lightGoesThrough) return;
+        foreach (KeyValuePair<LightBeam, LightBeamData> entry in crossingBeams)
+        {
+            entry.Value.beam.ExecuteRay(entry.Value.pos,entry.Value.dir,entry.Value.beam.lineRenderer);
+        }
+    }
+    void CheckChildBeams(LightBeam beam)
+    {
+        if(crossingBeams.ContainsKey(beam))
+        {
+            CheckChildBeams(crossingBeams[beam].beam);
+            StartCoroutine(DestroyBeamChild(beam));
+        }
+    }
+    IEnumerator DestroyBeamChild(LightBeam beam)
+    {
+        yield return new WaitForEndOfFrame();
+        GameObject beamToDestroy= crossingBeams[beam].beam.lightGameObject;
+        crossingBeams.Remove(beam);
+        Destroy(beamToDestroy);
+        if(crossingBeams.Count == 0) OnLightNotRecived?.Invoke();
+    }
+    IEnumerator AddBeam(LightBeam beam)
+    {
+        yield return new WaitForEndOfFrame();
+        LightBeam extraLightBeam =  new LightBeam(beam);
+        LightBeamData extraData = new LightBeamData(extraLightBeam,Vector3.zero,Vector3.zero);
+        crossingBeams.Add(beam,extraData);
     }
 }

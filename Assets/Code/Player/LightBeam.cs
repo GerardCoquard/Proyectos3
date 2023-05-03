@@ -98,7 +98,7 @@ public class LightBeam
         {
             if (!currentLightRecivers.Contains(receiver))
             {
-                receiver.UndoAction();
+                receiver.UndoAction(this);
                 lightRecieverList.Remove(receiver);
             }
         }
@@ -128,7 +128,7 @@ public class LightBeam
                     lightRecieverList.Add(reciver);
                 }
                 currentLightRecivers.Add(reciver);
-                reciver.UpdatePoint(hitInfo.point,direction);
+                reciver.UpdatePoint(this,hitInfo.point,direction);
             }
         }
     }
