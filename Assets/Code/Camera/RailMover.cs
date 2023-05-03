@@ -9,7 +9,6 @@ public class RailMover : MonoBehaviour
     public float moveSpeed = 5.0f;
     public float interactFOV = 52f;
     public float zoomSpeed = 5f;
-    private float initialFOV;
     public float maxDistanceToZoom = 310f;
     public float maxZoom = 41f;
     public float distanceFactor = 10f;
@@ -22,37 +21,59 @@ public class RailMover : MonoBehaviour
 
     private Camera myCamera;
 
-    public Transform firstLimit;
-    public Transform lastLimit;
+    public Transform firstLimitRotation;
+    public Transform lastLimitRotation;
+
+    public Transform firstLimitPosition;
+    public Transform lastLimitPosition;
+
+    public float limitXRotation = 50f;
+
+    private float initYRotation;
+    private float initZRotation;
+
+    public bool camFreezeYZRotation;
 
     private bool shouldUpdate;
     private void Start()
     {
         myCamera = GetComponent<Camera>();
-        initialFOV = myCamera.fieldOfView;
         myTransform = transform;
         lastPosition = myTransform.position;
         previousDistance = (myCamera.transform.position - lookAt.position).sqrMagnitude;
+
+        initYRotation = transform.eulerAngles.y;
+        initZRotation = transform.eulerAngles.z;
     }
 
     private void Update()
     {
-
-        lastPosition = Vector3.Lerp(lastPosition, rail.ProjectPositionOnRail(lookAt.position), Time.deltaTime * moveSpeed);
-        myTransform.position = lastPosition;
-
-
-
+        HandlePosition();
         HandleZoomOnPlayer();
         LimitCamera();
         HandlePlayerOnCamera();
     }
 
+    private void HandlePosition()
+    {
+        lastPosition = Vector3.Lerp(lastPosition, rail.ProjectPositionOnRail(lookAt.position), Time.deltaTime * moveSpeed);
+        lastPosition.x = Mathf.Clamp(lastPosition.x, firstLimitPosition.position.x, lastLimitPosition.position.x);
+        myTransform.position = lastPosition;
+    }
     private void HandlePlayerOnCamera()
     {
-        //This should just affect the rotation in the Y axis
 
         Quaternion targetRotation = Quaternion.LookRotation(lookAt.transform.position - transform.position);
+        Vector3 rotationInDegrees = targetRotation.eulerAngles;
+        rotationInDegrees.x = Mathf.Clamp(rotationInDegrees.x, 0, limitXRotation);
+        targetRotation = Quaternion.Euler(rotationInDegrees);
+
+        if (camFreezeYZRotation)
+        {
+
+            targetRotation.y = initYRotation;
+            targetRotation.z = initZRotation;
+        }
         if (shouldUpdate)
         {
             myCamera.transform.rotation = Quaternion.Slerp(myCamera.transform.rotation, targetRotation, moveSpeed * Time.deltaTime);
@@ -68,8 +89,7 @@ public class RailMover : MonoBehaviour
 
     private void HandleZoomOnPlayer()
     {
-        //if controller is interacting zoom in
-        //if not zoom out
+
         float targetDistance = (myCamera.transform.position - lookAt.position).sqrMagnitude;
         float distanceIncrement = (targetDistance - previousDistance);
         previousDistance = targetDistance;
@@ -81,9 +101,9 @@ public class RailMover : MonoBehaviour
 
     private void LimitCamera()
     {
-        //Get limit positions on viewport
-        Vector3 f = myCamera.WorldToViewportPoint(firstLimit.position);
-        Vector3 l = myCamera.WorldToViewportPoint(lastLimit.position);
+
+        Vector3 f = myCamera.WorldToViewportPoint(firstLimitRotation.position);
+        Vector3 l = myCamera.WorldToViewportPoint(lastLimitRotation.position);
 
         if ((f.x >= 0 && f.x <= 1) && (f.y >= 0 && f.y <= 1) || (l.x >= 0 && l.x <= 1) && (l.y >= 0 && l.y <= 1))
         {
@@ -97,4 +117,6 @@ public class RailMover : MonoBehaviour
     }
 
 }
+
+
 
