@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class RailMover : MonoBehaviour
 {
+
+    public static RailMover instance { get; private set; }
+
     public Rail rail;
     public Transform lookAt;
     public float moveSpeed = 5.0f;
@@ -35,6 +38,20 @@ public class RailMover : MonoBehaviour
     public bool camFreezeYZRotation;
 
     private bool shouldUpdate;
+    private bool transitioning;
+    public float timeToTransition;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
     private void Start()
     {
         myCamera = GetComponent<Camera>();
@@ -56,6 +73,8 @@ public class RailMover : MonoBehaviour
 
     private void HandlePosition()
     {
+        if (transitioning) return;
+
         lastPosition = Vector3.Lerp(lastPosition, rail.ProjectPositionOnRail(lookAt.position), Time.deltaTime * moveSpeed);
         lastPosition.x = Mathf.Clamp(lastPosition.x, firstLimitPosition.position.x, lastLimitPosition.position.x);
         myTransform.position = lastPosition;
@@ -114,6 +133,37 @@ public class RailMover : MonoBehaviour
         {
             shouldUpdate = true;
         }
+    }
+
+    public void ChangeLimits(Transform fp, Transform lp, Transform fr, Transform lr)
+    {
+        transitioning = true;
+        firstLimitPosition = fp == null ? firstLimitPosition : fp;
+        lastLimitPosition = lp == null ? lastLimitPosition : lp;
+        firstLimitRotation = fr == null ? firstLimitRotation : fr;
+        lastLimitRotation = lr == null ? lastLimitRotation : lr;
+
+        StartCoroutine(TransitionLerp());
+    }
+
+    IEnumerator TransitionLerp()
+    {
+        float timer = 0f;
+        Vector3 initialPos = myCamera.transform.position;
+
+        while (timer < timeToTransition)
+        {
+
+            lastPosition = Vector3.Lerp(lastPosition, rail.ProjectPositionOnRail(lookAt.position), Time.deltaTime * moveSpeed);
+            lastPosition.x = Mathf.Clamp(lastPosition.x, firstLimitPosition.position.x, lastLimitPosition.position.x);
+
+            myTransform.position = Vector3.Lerp(initialPos, lastPosition, timer / timeToTransition);
+            timer += Time.deltaTime;
+
+            yield return null;
+
+        }
+        transitioning = false;
     }
 
 }
