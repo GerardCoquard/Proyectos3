@@ -1386,9 +1386,11 @@ MonoBehaviour:
   lookAt: {fileID: 1669500684}
   moveSpeed: 2
   interactFOV: 47
-  zoomSpeed: 5
+  zoomSpeed: 2
   maxDistanceToZoom: 310
-  farFOV: 41
+  maxZoom: 41
+  distanceFactor: 10
+  fovReductionFactor: 0.1
   firstLimit: {fileID: 1560836478}
   lastLimit: {fileID: 1734958843}
 --- !u!1 &616426752

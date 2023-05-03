@@ -11,14 +11,16 @@ public class RailMover : MonoBehaviour
     public float zoomSpeed = 5f;
     private float initialFOV;
     public float maxDistanceToZoom = 310f;
-    public float farFOV = 41f;
+    public float maxZoom = 41f;
+    public float distanceFactor = 10f;
+    public float fovReductionFactor = 0.1f;
+
+    private float previousDistance;
 
     private Transform myTransform;
     private Vector3 lastPosition;
-    private Quaternion initialRotation;
 
     private Camera myCamera;
-    private PlayerController controller;
 
     public Transform firstLimit;
     public Transform lastLimit;
@@ -26,12 +28,11 @@ public class RailMover : MonoBehaviour
     private bool shouldUpdate;
     private void Start()
     {
-        controller = FindObjectOfType<PlayerController>();
         myCamera = GetComponent<Camera>();
         initialFOV = myCamera.fieldOfView;
-        initialRotation = myCamera.transform.rotation;
         myTransform = transform;
         lastPosition = myTransform.position;
+        previousDistance = (myCamera.transform.position - lookAt.position).sqrMagnitude;
     }
 
     private void Update()
@@ -50,7 +51,7 @@ public class RailMover : MonoBehaviour
     private void HandlePlayerOnCamera()
     {
         //This should just affect the rotation in the Y axis
-      
+
         Quaternion targetRotation = Quaternion.LookRotation(lookAt.transform.position - transform.position);
         if (shouldUpdate)
         {
@@ -60,7 +61,7 @@ public class RailMover : MonoBehaviour
         {
             Quaternion lerpedTarget = Quaternion.Slerp(myCamera.transform.rotation, targetRotation, moveSpeed * Time.deltaTime);
             Quaternion LookYAxis = Quaternion.Euler(lerpedTarget.eulerAngles.x, myCamera.transform.rotation.eulerAngles.y, myCamera.transform.rotation.eulerAngles.z);
-            myCamera.transform.rotation = LookYAxis; 
+            myCamera.transform.rotation = LookYAxis;
         }
 
     }
@@ -70,24 +71,12 @@ public class RailMover : MonoBehaviour
         //if controller is interacting zoom in
         //if not zoom out
         float targetDistance = (myCamera.transform.position - lookAt.position).sqrMagnitude;
+        float distanceIncrement = (targetDistance - previousDistance);
+        previousDistance = targetDistance;
 
-        if (controller.isInteracting)
-        {
-            float delta = (interactFOV - myCamera.fieldOfView) * Time.deltaTime * zoomSpeed;
-            myCamera.fieldOfView += delta;
-        }
-        else if(targetDistance >= maxDistanceToZoom)
-        {
-            float delta = (farFOV - myCamera.fieldOfView) * Time.deltaTime * zoomSpeed;
-            myCamera.fieldOfView += delta;
-        }
-        else
-        {
-            float delta = (myCamera.fieldOfView - initialFOV) * Time.deltaTime * zoomSpeed;
-            myCamera.fieldOfView -= delta;
+        myCamera.fieldOfView -= distanceIncrement * zoomSpeed * Time.deltaTime;
+        myCamera.fieldOfView = Mathf.Clamp(myCamera.fieldOfView, 40f, 50f);
 
-            myCamera.transform.rotation = Quaternion.Slerp(myCamera.transform.rotation, initialRotation, moveSpeed * Time.deltaTime);
-        }
     }
 
     private void LimitCamera()
