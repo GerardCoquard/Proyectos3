@@ -6,10 +6,11 @@ public class MoveObject : MonoBehaviour
     [SerializeField] Transform platform;
     [SerializeField] Transform initialPosition;
     [SerializeField] Transform finalPosition;
-    public float timeToReachDestination;
+    [SerializeField] float timeToReachDestination;
     Vector3 initPos;
     Vector3 finalPos;
     float distanceBetweenPositions;
+    bool locked;
 
     private void Start()
     {
@@ -18,19 +19,19 @@ public class MoveObject : MonoBehaviour
         platform.position = initPos;
         distanceBetweenPositions = Vector3.Distance(initPos, finalPos);
     }
-    public void MovePlatform()
+    public void Move()
     {
+        if(locked) return;
         StopAllCoroutines();
-        StartCoroutine(MovePlatformCoroutine());
+        StartCoroutine(MoveCoroutine());
     }
-
-    public void ResetPlatform()
+    public void ResetMove()
     {
+        if(locked) return;
         StopAllCoroutines();
-        StartCoroutine(ResetPlatformCoroutine());
+        StartCoroutine(ResetObjectCoroutine());
     }
-
-    IEnumerator MovePlatformCoroutine()
+    IEnumerator MoveCoroutine()
     {
         float distanceToTarget = Vector3.Distance(platform.position, finalPos);
         float time = distanceToTarget / distanceBetweenPositions * timeToReachDestination;
@@ -44,7 +45,7 @@ public class MoveObject : MonoBehaviour
         }
         platform.position = finalPos;
     }
-    IEnumerator ResetPlatformCoroutine()
+    IEnumerator ResetObjectCoroutine()
     {
         float distanceToTarget = Vector3.Distance(platform.position, initPos);
         float time = distanceToTarget / distanceBetweenPositions * timeToReachDestination;
@@ -57,11 +58,9 @@ public class MoveObject : MonoBehaviour
             yield return null;
         }
         platform.position = initPos;
-
     }
-
-
-
-
-
+    public void SetLocked(bool state)
+    {
+        locked = state;
+    }
 }

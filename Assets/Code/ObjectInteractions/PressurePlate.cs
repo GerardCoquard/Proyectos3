@@ -1,36 +1,48 @@
 ﻿using UnityEngine;
+using System;
+using System.Collections.Generic;
+using System.Collections;
+using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class PressurePlate : MonoBehaviour
 {
-    public Transform origin;
-    public LayerMask mask;
-
-    private Rigidbody rb;
-
-    private void Start()
-    {
-        rb = GetComponent<Rigidbody>();
+    public LayerMask whatPressesMe;
+    public UnityEvent OnPressed;
+    public UnityEvent OnUnpressed;
+    List<GameObject> onTop = new List<GameObject>();
+    bool locked;
+    Animator anim;
+    private void Start() {
+        anim = GetComponentInChildren<Animator>();
     }
-    private void Update()
+    public bool IsPressed()
     {
-
+        return onTop.Count > 0;
     }
-
-    private bool IsSomethingAbove(out RaycastHit collider)
+    private void OnTriggerEnter(Collider other) {
+        if(locked) return;
+        if(whatPressesMe == (whatPressesMe | (1 << other.gameObject.layer)))
+        {
+            if(onTop.Count == 0) OnPressed?.Invoke();
+            onTop.Add(other.gameObject);
+        }
+    }
+    private void OnTriggerExit(Collider other) {
+        if(locked) return;
+        if(onTop.Contains(other.gameObject))
+        {
+            onTop.Remove(other.gameObject);
+            if(onTop.Count == 0) OnUnpressed?.Invoke();
+        }
+    }
+    public void SetLocked(bool state)
     {
-        Ray r = new Ray(origin.position, Vector3.up);
-        RaycastHit hit;
-
-        if (Physics.Raycast(r, out hit, 1f, mask))
-        {
-            collider = hit;
-            return true;
-        }
-        else
-        {
-            collider = hit;
-            return false;
-        }
+        locked = state;
+    }
+    public void SetAnimPressed(bool state)
+    {
+        anim.SetBool("Pressed",state);
     }
 }
 
