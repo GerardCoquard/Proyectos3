@@ -11,7 +11,7 @@ public class RoomTrigger : MonoBehaviour
 
     public Transform firstLimitRot;
     public Transform lastLimitRot;
-
+    
     private Collider myCollider;
 
 

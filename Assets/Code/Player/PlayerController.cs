@@ -40,6 +40,10 @@ public class PlayerController : MonoBehaviour
     bool bookOpened;
     public bool isInteracting = false;
     [SerializeField] float offset;
+
+    [Header("Animation")]
+    private Animator myAnimator;
+
     private void Awake()
     {
         if(instance==null) instance = this;
@@ -253,4 +257,5 @@ public class PlayerController : MonoBehaviour
         }
     }
 }
+
 

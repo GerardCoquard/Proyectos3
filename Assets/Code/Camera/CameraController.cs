@@ -10,16 +10,12 @@ public class CameraController : MonoBehaviour
     public Rail rail;
     public Transform lookAt;
     public float moveSpeed = 5.0f;
-    public float interactFOV = 52f;
+
     public float zoomSpeed = 5f;
-    public float maxDistanceToZoom = 310f;
-    public float maxZoom = 41f;
-    public float distanceFactor = 10f;
-    public float fovReductionFactor = 0.1f;
+  
 
     private float previousDistance;
 
-    private Transform myTransform;
     private Vector3 lastPosition;
 
     private Camera myCamera;
@@ -55,8 +51,8 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         myCamera = GetComponent<Camera>();
-        myTransform = transform;
-        lastPosition = myTransform.position;
+ 
+        lastPosition = transform.position;
         previousDistance = (myCamera.transform.position - lookAt.position).sqrMagnitude;
 
         initYRotation = transform.eulerAngles.y;
@@ -73,11 +69,12 @@ public class CameraController : MonoBehaviour
 
     private void HandlePosition()
     {
+        //Set the limits of the camera and move the camera through the rails based on the position of the player
         if (transitioning) return;
 
         lastPosition = Vector3.Lerp(lastPosition, rail.ProjectPositionOnRail(lookAt.position), Time.deltaTime * moveSpeed);
         lastPosition.x = Mathf.Clamp(lastPosition.x, firstLimitPosition.position.x, lastLimitPosition.position.x);
-        myTransform.position = lastPosition;
+        transform.position = lastPosition;
     }
     private void HandlePlayerOnCamera()
     {
@@ -157,7 +154,7 @@ public class CameraController : MonoBehaviour
             lastPosition = Vector3.Lerp(lastPosition, rail.ProjectPositionOnRail(lookAt.position), Time.deltaTime * moveSpeed);
             lastPosition.x = Mathf.Clamp(lastPosition.x, firstLimitPosition.position.x, lastLimitPosition.position.x);
 
-            myTransform.position = Vector3.Lerp(initialPos, lastPosition, timer / timeToTransition);
+            transform.position = Vector3.Lerp(initialPos, lastPosition, timer / timeToTransition);
             timer += Time.deltaTime;
 
             yield return null;
