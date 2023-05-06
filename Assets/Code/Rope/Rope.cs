@@ -3,27 +3,28 @@ using UnityEngine;
 
 public class Rope : MonoBehaviour
 {
-    public Transform player;
+    public Transform startPos;
+    public Transform holder;
     public LineRenderer rope;
-    public LayerMask collMask;
     public float maxWidth;
     public float minWidth;
     [Range(0f,0.1f)]
     public float tolerance;
     List<RopePoint> ropePositions = new List<RopePoint>();
+    bool onUse;
 
-    private void Awake() => AddPosToRope(rope.transform.position,Vector3.zero);
-    private void OnDrawGizmos() {
+    private void Awake() => AddPosToRope(startPos.transform.position,Vector3.zero);
+    /* private void OnDrawGizmos() {
         Gizmos.color = Color.green;
         if(ropePositions.Count <= 2) return;
-        Vector3 lastPointToPlayer = player.position-ropePositions[ropePositions.Count - 2].point;
+        Vector3 lastPointToPlayer = holder.position-ropePositions[ropePositions.Count - 2].point;
         Vector3 lastPoint = ropePositions[ropePositions.Count - 2].point + lastPointToPlayer.normalized*0.5f + lastPointToPlayer*0.3f;
-        Gizmos.DrawLine(player.position,ropePositions[ropePositions.Count - 3].point);
+        Gizmos.DrawLine(holder.position,ropePositions[ropePositions.Count - 3].point);
         Gizmos.DrawLine(lastPoint,ropePositions[ropePositions.Count - 3].point);
-    }
+    } */
     private void Update()
     {
-        UpdateRope();
+        if(onUse) UpdateRope();
     }
     void UpdateRope()
     {
@@ -37,8 +38,9 @@ public class Rope : MonoBehaviour
     {
         RaycastHit hit;
         Vector3 pointPos = ropePositions[ropePositions.Count - 2].point;
-        if (Physics.Linecast(player.position, pointPos, out hit,collMask))
+        if (Physics.Linecast(holder.position, pointPos, out hit,Physics.AllLayers,QueryTriggerInteraction.Ignore))
         {
+            if(hit.collider.gameObject == holder) return;
             Vector3 hitPoint = hit.point+hit.normal*tolerance;
             AddPosToRope(hitPoint,hit.normal);
         }
@@ -48,11 +50,11 @@ public class Rope : MonoBehaviour
     {
         RaycastHit hit;
         Vector3 pointPos = ropePositions[ropePositions.Count - 3].point;
-        Vector3 lastPointToPlayer = player.position-ropePositions[ropePositions.Count - 2].point;
+        Vector3 lastPointToPlayer = holder.position-ropePositions[ropePositions.Count - 2].point;
         Vector3 lastPoint = ropePositions[ropePositions.Count - 2].point + lastPointToPlayer.normalized*0.5f + lastPointToPlayer*0.3f;
-        if (!Physics.Linecast(player.position, pointPos, out hit,collMask))
+        if (!Physics.Linecast(holder.position, pointPos, out hit,Physics.AllLayers,QueryTriggerInteraction.Ignore))
         {
-            if(!Physics.Linecast(lastPoint, pointPos, out hit,collMask)) ropePositions.RemoveAt(ropePositions.Count - 2);
+            if(!Physics.Linecast(lastPoint, pointPos, out hit,Physics.AllLayers,QueryTriggerInteraction.Ignore)) ropePositions.RemoveAt(ropePositions.Count - 2);
         }
     }
 
@@ -60,7 +62,7 @@ public class Rope : MonoBehaviour
     {
         if(ropePositions.Count>0) ropePositions.RemoveAt(ropePositions.Count - 1);
         ropePositions.Add(new RopePoint(_pos,_normal));
-        ropePositions.Add(new RopePoint(player.position,Vector3.zero));
+        ropePositions.Add(new RopePoint(holder.position,Vector3.zero));
     }
 
     void UpdateRopeGraphics()
@@ -74,7 +76,7 @@ public class Rope : MonoBehaviour
         }
     }
 
-    void LastSegmentGoToPlayerPos() => rope.SetPosition(rope.positionCount - 1, player.position);
+    void LastSegmentGoToPlayerPos() => rope.SetPosition(rope.positionCount - 1, holder.position);
     public struct RopePoint
     {
         public RopePoint(Vector3 _point,Vector3 _normal)

@@ -6,27 +6,18 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
     [Header("References")]
-    [SerializeField] Animator animator;
     [SerializeField] CharacterController characterController;
-    [SerializeField] Transform cam;
-
 
     [Header("Movement")]
     [SerializeField] float maxLinealSpeed;
-    [SerializeField] float maxAngularSpeed;
-    [SerializeField] float increment;
-    [SerializeField] float decrement;
     [SerializeField] float rotationFractionPerFrame;
     private bool isMovementPressed;
     private Vector3 movement;
 
     [Header("Jumping")]
-    [SerializeField] private float coyoteTime;
     [SerializeField] private float maxJumpHeight;
     [SerializeField] private float maxJumpTime;
     [SerializeField] private float groundedGravity;
-    private bool onGround = true;
-    private float timeOnAir;
     private float jumpForce;
     //[SerializeField] private float fallMultiplier;
     private float gravity;
@@ -178,7 +169,7 @@ public class PlayerController : MonoBehaviour
     {
         pusheable = null;
 
-        if(!onGround) return false;
+        if(isJumping) return false;
 
         Ray ray = new Ray(pushStartDetectionPoint.position, transform.forward);
         RaycastHit hit;
@@ -221,7 +212,7 @@ public class PlayerController : MonoBehaviour
 
     private bool CanJump()
     {
-        return onGround && currentObjectPushing==null;
+        return currentObjectPushing==null && !isJumping;
     }
 
     void SetGravity()
@@ -243,17 +234,7 @@ public class PlayerController : MonoBehaviour
         if ((collisionFlag & CollisionFlags.Below) != 0 && movement.y < 0.0f)
         {
             movement.y = 0.0f;
-            timeOnAir = 0.0f;
-            onGround = true;
             isJumping = false;
-        }
-        else
-        {
-            timeOnAir += Time.deltaTime;
-            if (timeOnAir > coyoteTime)
-            {
-                onGround = false;
-            }
         }
     }
 }
