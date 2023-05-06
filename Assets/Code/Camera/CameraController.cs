@@ -20,9 +20,6 @@ public class CameraController : MonoBehaviour
 
     private Camera myCamera;
 
-    public Transform firstLimitRotation;
-    public Transform lastLimitRotation;
-
     public Transform firstLimitPosition;
     public Transform lastLimitPosition;
 
@@ -30,8 +27,6 @@ public class CameraController : MonoBehaviour
 
     private float initYRotation;
     private float initZRotation;
-
-    public bool camFreezeYZRotation;
 
     private bool shouldUpdate;
     private bool transitioning;
@@ -63,7 +58,6 @@ public class CameraController : MonoBehaviour
     {
         HandlePosition();
         HandleZoomOnPlayer();
-        LimitCamera();
         HandlePlayerOnCamera();
     }
 
@@ -84,12 +78,6 @@ public class CameraController : MonoBehaviour
         rotationInDegrees.x = Mathf.Clamp(rotationInDegrees.x, 0, limitXRotation);
         targetRotation = Quaternion.Euler(rotationInDegrees);
 
-        if (camFreezeYZRotation)
-        {
-
-            targetRotation.y = initYRotation;
-            targetRotation.z = initZRotation;
-        }
         if (shouldUpdate)
         {
             myCamera.transform.rotation = Quaternion.Slerp(myCamera.transform.rotation, targetRotation, moveSpeed * Time.deltaTime);
@@ -115,31 +103,13 @@ public class CameraController : MonoBehaviour
 
     }
 
-    private void LimitCamera()
-    {
-
-        Vector3 f = myCamera.WorldToViewportPoint(firstLimitRotation.position);
-        Vector3 l = myCamera.WorldToViewportPoint(lastLimitRotation.position);
-
-        if ((f.x >= 0 && f.x <= 1) && (f.y >= 0 && f.y <= 1) || (l.x >= 0 && l.x <= 1) && (l.y >= 0 && l.y <= 1))
-        {
-            shouldUpdate = false;
-
-        }
-        else
-        {
-            shouldUpdate = true;
-        }
-    }
-
-    public void ChangeLimits(Transform fp, Transform lp, Transform fr, Transform lr)
+   
+    public void ChangeLimits(Transform fp, Transform lp)
     {
         transitioning = true;
         firstLimitPosition = fp == null ? firstLimitPosition : fp;
         lastLimitPosition = lp == null ? lastLimitPosition : lp;
-        firstLimitRotation = fr == null ? firstLimitRotation : fr;
-        lastLimitRotation = lr == null ? lastLimitRotation : lr;
-
+       
         StartCoroutine(TransitionLerp());
     }
 

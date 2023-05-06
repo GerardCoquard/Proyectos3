@@ -32,7 +32,7 @@ public class RoomTrigger : MonoBehaviour
     public void ChangeRoom()
     {
         myCollider.enabled = false;
-        CameraController.instance.ChangeLimits(firstLimitPos, lastLimitPos, firstLimitRot, lastLimitRot);
+        CameraController.instance.ChangeLimits(firstLimitPos, lastLimitPos);
         onRoomChanged?.Invoke();
         
     }
