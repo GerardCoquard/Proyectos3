@@ -264,22 +264,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc4cf647402f3884194079824732c8fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
   characterController: {fileID: 828900542119977032}
-  cam: {fileID: 0}
   maxLinealSpeed: 7
-  maxAngularSpeed: 10
-  increment: 1
-  decrement: 1
   rotationFractionPerFrame: 45
-  coyoteTime: 0.2
   maxJumpHeight: 4
   maxJumpTime: 0.5
-  groundedGravity: 0
+  isJumping: 0
   closeEnoughtDetection: 0.5
-  pushForce: 20
+  pushForce: 40
   pushStartDetectionPoint: {fileID: 828900542909014589}
-  offset: 0
+  angleDot: 0.8
+  isInteracting: 0
 --- !u!1 &828900542179580917
 GameObject:
   m_ObjectHideFlags: 0

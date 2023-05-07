@@ -9,11 +9,31 @@ public class Rope : MonoBehaviour
     public float maxWidth;
     public float minWidth;
     [Range(0f,0.1f)]
-    public float tolerance;
+    public float tolerance = 0.01f;
+    public GameObject colliderPrefab;
     List<RopePoint> ropePositions = new List<RopePoint>();
     bool onUse;
+    LayerMask layerMask;
+    List<BoxCollider> colliders = new List<BoxCollider>();
 
-    private void Awake() => AddPosToRope(startPos.transform.position,Vector3.zero);
+    private void Awake()
+    {
+       AddPosToRope(startPos.transform.position,Vector3.zero);
+    }
+    private void Start() {
+        Transform[] childs = transform.GetComponentsInChildren<Transform>();
+        foreach (Transform child in childs)
+        {
+            child.SetParent(null);
+        }
+        transform.position = Vector3.zero;
+        layerMask = Physics.AllLayers;
+        layerMask &= ~(1 << LayerMask.NameToLayer("Rope"));
+        layerMask &= ~(1 << LayerMask.NameToLayer("Player"));
+        UpdateRopeGraphics();
+        UpdateLineWidth();
+        AddLastCollider();
+    }
     /* private void OnDrawGizmos() {
         Gizmos.color = Color.green;
         if(ropePositions.Count <= 2) return;
@@ -32,13 +52,14 @@ public class Rope : MonoBehaviour
         LastSegmentGoToPlayerPos();
         DetectCollisionEnter();
         if (ropePositions.Count > 2) DetectCollisionExits();
+        UpdateLineWidth();
     }
 
     void DetectCollisionEnter()
     {
         RaycastHit hit;
         Vector3 pointPos = ropePositions[ropePositions.Count - 2].point;
-        if (Physics.Linecast(holder.position, pointPos, out hit,Physics.AllLayers,QueryTriggerInteraction.Ignore))
+        if (Physics.Linecast(holder.position, pointPos, out hit,layerMask,QueryTriggerInteraction.Ignore))
         {
             if(hit.collider.gameObject == holder) return;
             Vector3 hitPoint = hit.point+hit.normal*tolerance;
@@ -52,9 +73,13 @@ public class Rope : MonoBehaviour
         Vector3 pointPos = ropePositions[ropePositions.Count - 3].point;
         Vector3 lastPointToPlayer = holder.position-ropePositions[ropePositions.Count - 2].point;
         Vector3 lastPoint = ropePositions[ropePositions.Count - 2].point + lastPointToPlayer.normalized*0.5f + lastPointToPlayer*0.3f;
-        if (!Physics.Linecast(holder.position, pointPos, out hit,Physics.AllLayers,QueryTriggerInteraction.Ignore))
+        if (!Physics.Linecast(holder.position, pointPos, out hit,layerMask,QueryTriggerInteraction.Ignore))
         {
-            if(!Physics.Linecast(lastPoint, pointPos, out hit,Physics.AllLayers,QueryTriggerInteraction.Ignore)) ropePositions.RemoveAt(ropePositions.Count - 2);
+            if(!Physics.Linecast(lastPoint, pointPos, out hit,layerMask,QueryTriggerInteraction.Ignore))
+            {
+                ropePositions.RemoveAt(ropePositions.Count - 2);
+                RemoveLastCollider();
+            }
         }
     }
 
@@ -63,6 +88,7 @@ public class Rope : MonoBehaviour
         if(ropePositions.Count>0) ropePositions.RemoveAt(ropePositions.Count - 1);
         ropePositions.Add(new RopePoint(_pos,_normal));
         ropePositions.Add(new RopePoint(holder.position,Vector3.zero));
+        if(ropePositions.Count>2) AddCollider();
     }
 
     void UpdateRopeGraphics()
@@ -75,7 +101,43 @@ public class Rope : MonoBehaviour
             rope.SetPosition(i,graphicPoint);
         }
     }
+    void UpdateLineWidth()
+    {
 
+    }
+    void AddCollider()
+    {
+        Vector3 pointA = ropePositions[ropePositions.Count-2].point;
+        Vector3 pointB = ropePositions[ropePositions.Count-3].point;
+        Vector3 pointAB = pointB-pointA;
+        GameObject colGameObject = Instantiate(colliderPrefab,pointB-pointAB/2,Quaternion.identity,transform);
+        colGameObject.transform.forward = Vector3.Cross(pointAB,Vector3.up);
+        BoxCollider box = colGameObject.GetComponent<BoxCollider>();
+        box.size = new Vector3(Vector3.Distance(pointA,pointB),rope.widthMultiplier,rope.widthMultiplier);
+        colliders.Add(box);
+    }
+    void AddLastCollider()
+    {
+        Vector3 pointA = rope.GetPosition(rope.positionCount-1);
+        Vector3 pointB = rope.GetPosition(rope.positionCount-2);
+        Vector3 pointAB = pointB-pointA;
+        GameObject colGameObject = Instantiate(colliderPrefab,pointB-pointAB/2,Quaternion.identity,transform);
+        colGameObject.transform.forward = Vector3.Cross(pointAB,Vector3.up);
+        BoxCollider box = colGameObject.GetComponent<BoxCollider>();
+        box.size = new Vector3(Vector3.Distance(pointA,pointB),rope.widthMultiplier,rope.widthMultiplier);
+        colliders.Add(box);
+    }
+    void RemoveLastCollider()
+    {
+        Destroy(colliders[colliders.Count-1].gameObject);
+        colliders.RemoveAt(colliders.Count-1);
+    }
+    public void SetUse(bool state)
+    {
+        onUse = state;
+        if(onUse) RemoveLastCollider();
+        else AddLastCollider();
+    }
     void LastSegmentGoToPlayerPos() => rope.SetPosition(rope.positionCount - 1, holder.position);
     public struct RopePoint
     {

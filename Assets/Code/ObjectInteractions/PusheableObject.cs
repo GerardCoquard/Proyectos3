@@ -1,7 +1,12 @@
 ﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.Events;
 [RequireComponent(typeof(Rigidbody))]
 public class PusheableObject : MonoBehaviour
 {
+    public UnityEvent OnSelected;
+    public UnityEvent OnUnselected;
     Rigidbody rb;
     private void Start()
     {
@@ -10,15 +15,16 @@ public class PusheableObject : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezePositionY;
         rb.freezeRotation = true;
         rb.useGravity = false;
-        gameObject.layer = LayerMask.NameToLayer("Pusheable");
     }
     public void MakePusheable()
     {
         rb.isKinematic = false;
+        OnSelected?.Invoke();
     }
     public void NotPusheable()
     {
         rb.isKinematic = true;
+        OnUnselected?.Invoke();
     }
     public void AddForceTowardsDirection(float force, Vector3 direction)
     {

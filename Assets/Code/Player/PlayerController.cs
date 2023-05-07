@@ -9,28 +9,27 @@ public class PlayerController : MonoBehaviour
     [SerializeField] CharacterController characterController;
 
     [Header("Movement")]
-    [SerializeField] float maxLinealSpeed;
-    [SerializeField] float rotationFractionPerFrame;
-    private bool isMovementPressed;
-    private Vector3 movement;
+    [SerializeField] float maxLinealSpeed = 7f;
+    [SerializeField] float rotationFractionPerFrame = 45f;
+    bool isMovementPressed;
+    Vector3 movement;
 
     [Header("Jumping")]
-    [SerializeField] private float maxJumpHeight;
-    [SerializeField] private float maxJumpTime;
-    [SerializeField] private float groundedGravity;
-    private float jumpForce;
+    [SerializeField] private float maxJumpHeight = 4;
+    [SerializeField] private float maxJumpTime = 0.5f;
+    float jumpForce;
     //[SerializeField] private float fallMultiplier;
-    private float gravity;
-    public bool isJumping;
+    float gravity;
+    bool isJumping;
 
     [Header("Push")]
-    [SerializeField] float closeEnoughtDetection;
-    [SerializeField] float pushForce;
+    [SerializeField] float closeEnoughtDetection = 0.5f;
+    [SerializeField] float pushForce = 40f;
+    [SerializeField] float angleDot = 0.8f;
     [SerializeField] Transform pushStartDetectionPoint;
-    private PusheableObject currentObjectPushing;
+    [Range(0f,1f)]
+    PusheableObject currentObjectPushing;
     bool bookOpened;
-    public bool isInteracting = false;
-    [SerializeField] float offset;
 
     [Header("Animation")]
     private Animator myAnimator;
@@ -174,12 +173,14 @@ public class PlayerController : MonoBehaviour
         Ray ray = new Ray(pushStartDetectionPoint.position, transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, closeEnoughtDetection, LayerMask.GetMask("Pusheable"),QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(ray, out hit, closeEnoughtDetection, Physics.AllLayers,QueryTriggerInteraction.Ignore))
         {
             pusheable = hit.collider.GetComponent<PusheableObject>();
-            transform.forward = -hit.normal;
-            
-            return true;
+            if(pusheable!=null && Vector3.Dot(transform.forward,-hit.normal) >= angleDot)
+            {
+                transform.forward = -hit.normal;
+                return true;
+            }
         }
         return false;
     }
@@ -188,7 +189,6 @@ public class PlayerController : MonoBehaviour
         PusheableObject pusheable;
         if (PusheableDetected(out pusheable) && !isJumping)
         {
-            isInteracting = true;
             currentObjectPushing = pusheable;
             currentObjectPushing.MakePusheable();
             characterController.enabled = false;
@@ -199,7 +199,6 @@ public class PlayerController : MonoBehaviour
     {
         if(currentObjectPushing == null) return;
 
-        isInteracting = false;
         currentObjectPushing.NotPusheable();
         currentObjectPushing = null;
         characterController.enabled = true;
