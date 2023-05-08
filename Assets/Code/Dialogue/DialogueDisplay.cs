@@ -10,8 +10,9 @@ public class DialogueDisplay : MonoBehaviour
 {
     [SerializeField] GameObject dialogueRender;
     [SerializeField] TextMeshProUGUI dialogueText;
-    [SerializeField] List<string> sentencesList = new List<string>();
-    private int index;
+    [SerializeField] DialogueNode startNode;
+    [SerializeField] List<Transform> positions = new List<Transform>();
+    private DialogueNode currentNode;
     [SerializeField] float defaultTypeSpeed;
     [SerializeField] float fastTypeSpeed;
     private float currentTypeSpeed;
@@ -20,20 +21,17 @@ public class DialogueDisplay : MonoBehaviour
 
     public static Action<string> OnEndDialogue;
     private DIALOGUE_STATE currentState = DIALOGUE_STATE.DEFAULT;
-    private void Start()
-    {
-        StartCoroutine(Type());
-        currentTypeSpeed = defaultTypeSpeed;
-    }
-
     private void OnEnable()
     {
-        InputManager.GetAction("Jump").action += Interact;
+        currentNode = startNode;
+        currentTypeSpeed = defaultTypeSpeed;
+        dialogueRender.transform.position = positions[currentNode.emisor].position;
+        InputManager.GetAction("Push").action += Interact;
     }
 
     private void OnDisable()
     {
-        InputManager.GetAction("Jump").action -= Interact;
+        InputManager.GetAction("Push").action -= Interact;
     }
 
     private void Interact(InputAction.CallbackContext context)
@@ -65,10 +63,15 @@ public class DialogueDisplay : MonoBehaviour
 
     }
 
+    public void StartDialogue()
+    {
+        StartCoroutine(Type());
+    }
+
     IEnumerator Type()
     {
         isTextFinished = false;
-        foreach (char letter in sentencesList[index].ToCharArray())
+        foreach (char letter in currentNode.Text.ToCharArray())
         {
             dialogueText.text += letter;
             yield return new WaitForSeconds(currentTypeSpeed);
@@ -79,10 +82,11 @@ public class DialogueDisplay : MonoBehaviour
     private void NextSentence()
     {
 
-        if (index < sentencesList.Count - 1)
+        if (currentNode.TargetNode != null)
         {
-            index++;
+            currentNode = currentNode.TargetNode;
             dialogueText.text = "";
+            dialogueRender.transform.position = positions[currentNode.emisor].position;
             StartCoroutine(Type());
         }
         else
@@ -102,7 +106,7 @@ public class DialogueDisplay : MonoBehaviour
     {
         StopAllCoroutines();
         isTextFinished = true;
-        dialogueText.text = sentencesList[index].ToString();
+        dialogueText.text = currentNode.Text;
     }
 }
 
