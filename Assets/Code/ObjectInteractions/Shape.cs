@@ -16,6 +16,7 @@ public class Shape : MonoBehaviour
         Book.OnBookStateChanged -= SetOutline;
     }
     private void Start() {
+        layer = gameObject.layer;
         if(shapeCollider==null) shapeCollider = GetComponent<Collider>();
         switch (shapeCollider)
         {
@@ -39,7 +40,7 @@ public class Shape : MonoBehaviour
     void SetOutline(bool state)
     {
         if(state) gameObject.layer = LayerMask.NameToLayer("Outline");
-        else gameObject.layer = LayerMask.NameToLayer("Pusheable");
+        else gameObject.layer = layer;
     }
     public void SetSelected()
     {
