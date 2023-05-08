@@ -6,6 +6,8 @@ public class Rope : MonoBehaviour
     public Transform startPos;
     public Transform holder;
     public LineRenderer rope;
+    public float maxLength;
+    float currentLenght;
     public float maxWidth;
     public float minWidth;
     [Range(0f,0.1f)]
@@ -15,12 +17,14 @@ public class Rope : MonoBehaviour
     bool onUse;
     LayerMask layerMask;
     List<BoxCollider> colliders = new List<BoxCollider>();
+    PusheableObject holderPusheable;
 
     private void Awake()
     {
-       AddPosToRope(startPos.transform.position,Vector3.zero);
+       AddPosToRope(startPos.transform.position,Vector3.zero,null);
     }
     private void Start() {
+        holderPusheable = holder.GetComponent<PusheableObject>();
         Transform[] childs = transform.GetComponentsInChildren<Transform>();
         foreach (Transform child in childs)
         {
@@ -30,9 +34,10 @@ public class Rope : MonoBehaviour
         layerMask = Physics.AllLayers;
         layerMask &= ~(1 << LayerMask.NameToLayer("Rope"));
         layerMask &= ~(1 << LayerMask.NameToLayer("Player"));
+        MaxLenghtReached();
         UpdateRopeGraphics();
-        UpdateLineWidth();
         AddLastCollider();
+        UpdateLineWidth();
     }
     /* private void OnDrawGizmos() {
         Gizmos.color = Color.green;
@@ -52,6 +57,7 @@ public class Rope : MonoBehaviour
         LastSegmentGoToPlayerPos();
         DetectCollisionEnter();
         if (ropePositions.Count > 2) DetectCollisionExits();
+        CheckLength();
         UpdateLineWidth();
     }
 
@@ -61,9 +67,8 @@ public class Rope : MonoBehaviour
         Vector3 pointPos = ropePositions[ropePositions.Count - 2].point;
         if (Physics.Linecast(holder.position, pointPos, out hit,layerMask,QueryTriggerInteraction.Ignore))
         {
-            if(hit.collider.gameObject == holder) return;
             Vector3 hitPoint = hit.point+hit.normal*tolerance;
-            AddPosToRope(hitPoint,hit.normal);
+            AddPosToRope(hitPoint,hit.normal,hit.collider.GetComponent<Pilar>());
         }
     }
 
@@ -77,17 +82,19 @@ public class Rope : MonoBehaviour
         {
             if(!Physics.Linecast(lastPoint, pointPos, out hit,layerMask,QueryTriggerInteraction.Ignore))
             {
+                if(ropePositions[ropePositions.Count - 2].pilar!=null) ropePositions[ropePositions.Count - 2].pilar.OnExitCollision();
                 ropePositions.RemoveAt(ropePositions.Count - 2);
                 RemoveLastCollider();
             }
         }
     }
 
-    void AddPosToRope(Vector3 _pos,Vector3 _normal)
+    void AddPosToRope(Vector3 _pos,Vector3 _normal,Pilar pilar)
     {
         if(ropePositions.Count>0) ropePositions.RemoveAt(ropePositions.Count - 1);
-        ropePositions.Add(new RopePoint(_pos,_normal));
-        ropePositions.Add(new RopePoint(holder.position,Vector3.zero));
+        ropePositions.Add(new RopePoint(_pos,_normal,pilar));
+        if(pilar!=null) pilar.OnCollision();
+        ropePositions.Add(new RopePoint(holder.position,Vector3.zero,null));
         if(ropePositions.Count>2) AddCollider();
     }
 
@@ -103,7 +110,18 @@ public class Rope : MonoBehaviour
     }
     void UpdateLineWidth()
     {
-
+        float currentWidth = currentLenght/maxLength*(maxWidth-minWidth);
+        currentWidth = maxWidth-currentWidth;
+        rope.widthMultiplier = currentWidth;
+        for (int i = 0; i < colliders.Count; i++)
+        {
+            Vector3 pointA = rope.GetPosition(i+1);
+            Vector3 pointB = rope.GetPosition(i);
+            Vector3 pointAB = pointB-pointA;
+            
+            colliders[i].transform.position = pointB-pointAB/2;
+            colliders[i].size = new Vector3(colliders[i].size.x,currentWidth,currentWidth);
+        }
     }
     void AddCollider()
     {
@@ -132,6 +150,21 @@ public class Rope : MonoBehaviour
         Destroy(colliders[colliders.Count-1].gameObject);
         colliders.RemoveAt(colliders.Count-1);
     }
+    void CheckLength()
+    {
+        if(MaxLenghtReached()) holderPusheable.SetConstraint(true,rope.GetPosition(rope.positionCount-2)-rope.GetPosition(rope.positionCount-1));
+        else holderPusheable.SetConstraint(false,Vector3.zero);
+    }
+    public bool MaxLenghtReached()
+    {
+        float distance = 0;
+        for (int i = 1; i < rope.positionCount; i++)
+        {
+            distance += Vector3.Distance(rope.GetPosition(i-1),rope.GetPosition(i));
+        }
+        currentLenght = distance;
+        return distance > maxLength;
+    }
     public void SetUse(bool state)
     {
         onUse = state;
@@ -141,12 +174,14 @@ public class Rope : MonoBehaviour
     void LastSegmentGoToPlayerPos() => rope.SetPosition(rope.positionCount - 1, holder.position);
     public struct RopePoint
     {
-        public RopePoint(Vector3 _point,Vector3 _normal)
+        public RopePoint(Vector3 _point,Vector3 _normal,Pilar _pilar)
         {
             point = _point;
             normal = _normal;
+            pilar = _pilar;
         }
         public Vector3 point;
         public Vector3 normal;
+        public Pilar pilar;
     }
 }

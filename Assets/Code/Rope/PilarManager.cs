@@ -1,18 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PilarManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public UnityEvent OnComplete;
+    public UnityEvent OnUncomplete;
+    public List<Pilar> correctPilarsOrder;
+    List<Pilar> currentPilars = new List<Pilar>();
+    bool completed;
+    public void AddPilar(Pilar pilar)
     {
-        
+        currentPilars.Add(pilar);
+        if(!completed) CheckPilars();
     }
-
-    // Update is called once per frame
-    void Update()
+    public void RemovePilar(Pilar pilar)
     {
-        
+        currentPilars.Remove(pilar);
+        if(completed) CheckPilars();
+    }
+    void CheckPilars()
+    {
+        if(CorrectOrder()) OnComplete?.Invoke();
+        else OnUncomplete?.Invoke();
+        completed = CorrectOrder();
+    }
+    bool CorrectOrder()
+    {
+        if(currentPilars.Count < correctPilarsOrder.Count) return false;
+        for (int i = 0; i < currentPilars.Count; i++)
+        {
+            if(currentPilars[i] != correctPilarsOrder[i]) return false;
+        }
+        return true;
     }
 }

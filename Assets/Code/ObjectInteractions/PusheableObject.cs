@@ -8,6 +8,8 @@ public class PusheableObject : MonoBehaviour
     public UnityEvent OnSelected;
     public UnityEvent OnUnselected;
     Rigidbody rb;
+    bool constrained;
+    Vector3 constrainDirection;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -26,9 +28,25 @@ public class PusheableObject : MonoBehaviour
         rb.isKinematic = true;
         OnUnselected?.Invoke();
     }
-    public void AddForceTowardsDirection(float force, Vector3 direction)
+    public void AddForceTowardsDirection(float force, Vector2 direction)
     {
-        rb.velocity = direction * force * Time.fixedDeltaTime;
+        direction.Normalize();
+        Vector3 newDir = new Vector3(direction.x,0,direction.y);
+        if(constrained)
+        {
+            if(Vector3.Dot(newDir,constrainDirection) <= 0)
+            {
+                rb.velocity = Vector3.zero;
+                return;
+            }
+        }
+
+        rb.velocity = newDir * force * Time.fixedDeltaTime;
+    }
+    public void SetConstraint(bool state, Vector3 ropeDirection)
+    {
+        constrained = state;
+        constrainDirection = new Vector3(ropeDirection.x,0,ropeDirection.z).normalized;
     }
 }
 

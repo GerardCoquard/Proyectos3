@@ -206,7 +206,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Push()
     {
-        currentObjectPushing.AddForceTowardsDirection(pushForce, movement);
+        currentObjectPushing.AddForceTowardsDirection(pushForce, new Vector2(movement.x,movement.z));
     }
 
     private bool CanJump()
