@@ -4,28 +4,30 @@ using UnityEngine.Events;
 public class Interactable : MonoBehaviour
 {
     public GameObject interactVisuals;
-    public UnityEvent interactEvent;
+    private DialogueDisplay dialogueDisplay;
+
+    private bool canInteract;
 
     private void Start()
     {
+        dialogueDisplay = GetComponent<DialogueDisplay>();
         interactVisuals.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if(canInteract && InputManager.GetAction("Push").context.WasPerformedThisFrame())
+        {
+            canInteract = false;
+            dialogueDisplay.StartDialogue();
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
             interactVisuals.SetActive(true);
-        }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            if (InputManager.GetAction("Push").context.WasPerformedThisFrame())
-            {
-                interactEvent?.Invoke();
-            }
+            canInteract = true;
         }
     }
 
@@ -34,6 +36,7 @@ public class Interactable : MonoBehaviour
         if (other.tag == "Player")
         {
             interactVisuals.SetActive(false);
+            canInteract = false;
         }
     }
 

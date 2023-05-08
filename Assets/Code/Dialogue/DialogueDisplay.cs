@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using System;
 using UnityEngine.InputSystem;
@@ -11,7 +10,7 @@ public class DialogueDisplay : MonoBehaviour
     [SerializeField] GameObject dialogueRender;
     [SerializeField] TextMeshProUGUI dialogueText;
     [SerializeField] DialogueNode startNode;
-    [SerializeField] List<Transform> positions = new List<Transform>();
+    [SerializeField] Transform myPosition;
     private DialogueNode currentNode;
     [SerializeField] float defaultTypeSpeed;
     [SerializeField] float fastTypeSpeed;
@@ -19,13 +18,17 @@ public class DialogueDisplay : MonoBehaviour
     [SerializeField] string dialogueID;
     private bool isTextFinished;
 
+    private Interactable myInteractable;
+
     public static Action<string> OnEndDialogue;
     private DIALOGUE_STATE currentState = DIALOGUE_STATE.DEFAULT;
+
+    private void Start()
+    {
+        myInteractable = GetComponent<Interactable>();
+    }
     private void OnEnable()
     {
-        currentNode = startNode;
-        currentTypeSpeed = defaultTypeSpeed;
-        dialogueRender.transform.position = positions[currentNode.emisor].position;
         InputManager.GetAction("Push").action += Interact;
     }
 
@@ -38,7 +41,6 @@ public class DialogueDisplay : MonoBehaviour
     {
         if (context.performed)
         {
-
             if (isTextFinished)
             {
                 currentTypeSpeed = defaultTypeSpeed;
@@ -60,11 +62,16 @@ public class DialogueDisplay : MonoBehaviour
                 }
             }
         }
-
     }
 
     public void StartDialogue()
     {
+        myInteractable.enabled = false;
+        dialogueText.text = "";
+        currentNode = startNode;
+        currentState = DIALOGUE_STATE.DEFAULT;
+        currentTypeSpeed = defaultTypeSpeed;
+        dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? myPosition.position : PlayerController.instance.transform.position;
         StartCoroutine(Type());
     }
 
@@ -73,6 +80,7 @@ public class DialogueDisplay : MonoBehaviour
         isTextFinished = false;
         foreach (char letter in currentNode.Text.ToCharArray())
         {
+            
             dialogueText.text += letter;
             yield return new WaitForSeconds(currentTypeSpeed);
         }
@@ -81,12 +89,11 @@ public class DialogueDisplay : MonoBehaviour
 
     private void NextSentence()
     {
-
         if (currentNode.TargetNode != null)
         {
             currentNode = currentNode.TargetNode;
             dialogueText.text = "";
-            dialogueRender.transform.position = positions[currentNode.emisor].position;
+            dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? myPosition.position : PlayerController.instance.transform.position;
             StartCoroutine(Type());
         }
         else
@@ -94,10 +101,9 @@ public class DialogueDisplay : MonoBehaviour
             EndDialogue();
         }
     }
-
-
     private void EndDialogue()
     {
+        myInteractable.enabled = true;
         OnEndDialogue?.Invoke(dialogueID);
         dialogueRender.SetActive(false);
     }
