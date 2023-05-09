@@ -103,6 +103,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ExitDialogue",
+                    "type": "Button",
+                    "id": "d8923120-6b9d-4222-9bde-c6b6a4d4a1bd",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -433,6 +442,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Shift",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "013d2b91-61b2-446f-a2a9-2f6f1b01eb16",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ExitDialogue",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

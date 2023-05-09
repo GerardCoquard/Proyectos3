@@ -13,12 +13,14 @@ public class Interactable : MonoBehaviour
     {
         dialogueDisplay = GetComponent<DialogueDisplay>();
         interactVisuals.SetActive(false);
+        dialogueDisplay.enabled = false;
     }
 
     private void Update()
     {
         if(canInteract && InputManager.GetAction("Push").context.WasPerformedThisFrame())
         {
+            dialogueDisplay.enabled = true;
             canInteract = false;
             dialogueDisplay.StartDialogue();
         }

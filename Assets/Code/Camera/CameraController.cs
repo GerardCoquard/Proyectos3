@@ -85,7 +85,7 @@ public class CameraController : MonoBehaviour
         if (transitioning) return;
 
         lastPosition = Vector3.Lerp(lastPosition, currentRail.ProjectPositionOnRail(lookAt.position), Time.deltaTime * moveSpeed);
-        lastPosition.x = Mathf.Clamp(lastPosition.x, firstLimitPosition.position.x, lastLimitPosition.position.x);
+        lastPosition.x = Mathf.Clamp(lastPosition.x, firstLimitPosition.position.x, lastLimitPosition.position.x); 
         transform.position = lastPosition;
     }
     private void HandlePlayerOnCamera()

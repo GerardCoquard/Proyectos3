@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 public class DialogueDisplay : MonoBehaviour
 {
-    [SerializeField] GameObject dialogueRender;
+    [SerializeField] public GameObject dialogueRender;
     [SerializeField] TextMeshProUGUI dialogueText;
     [SerializeField] DialogueNode startNode;
     [SerializeField] Transform myPosition;
@@ -21,6 +21,7 @@ public class DialogueDisplay : MonoBehaviour
     private Interactable myInteractable;
     private bool onAnimation;
 
+
     Vector3 initialScale;
     Vector3 finalScale;
     public float timeToReachScale;
@@ -30,11 +31,10 @@ public class DialogueDisplay : MonoBehaviour
     public static Action<string> OnEndDialogue;
     private DIALOGUE_STATE currentState = DIALOGUE_STATE.DEFAULT;
 
-    private void Start()
+    private void Awake()
     {
         dialogueRender.SetActive(false);
         myInteractable = GetComponent<Interactable>();
-
         initialScale = dialogueRender.transform.localScale;
         finalScale = initialScale * finalScaleMultiplier;
         distanceBetweenScales = Vector3.Distance(initialScale, finalScale);
@@ -42,11 +42,13 @@ public class DialogueDisplay : MonoBehaviour
     private void OnEnable()
     {
         InputManager.GetAction("Push").action += Interact;
+        InputManager.GetAction("ExitDialogue").action += End;
     }
 
     private void OnDisable()
     {
         InputManager.GetAction("Push").action -= Interact;
+        InputManager.GetAction("ExitDialogue").action -= End;
     }
 
     private void Interact(InputAction.CallbackContext context)
@@ -75,12 +77,18 @@ public class DialogueDisplay : MonoBehaviour
             }
         }
     }
+    private void End(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            EndDialogue();
+        }
+    }
 
     public void StartDialogue()
     {
         PlayerController.instance.characterController.enabled = false;
         dialogueRender.SetActive(true);
-        myInteractable.enabled = false;
         dialogueText.text = "";
         currentNode = startNode;
         currentState = DIALOGUE_STATE.DEFAULT;
@@ -140,6 +148,7 @@ public class DialogueDisplay : MonoBehaviour
         myInteractable.enabled = true;
         OnEndDialogue?.Invoke(dialogueID);
         dialogueRender.SetActive(false);
+        this.enabled = false;
     }
 
     private void ShowFullText()
