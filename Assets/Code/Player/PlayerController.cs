@@ -6,7 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
     [Header("References")]
-    [SerializeField] CharacterController characterController;
+    [SerializeField] public CharacterController characterController;
+    [SerializeField] public Transform dialogueSpawnReference;
 
     [Header("Movement")]
     [SerializeField] float maxLinealSpeed = 7f;

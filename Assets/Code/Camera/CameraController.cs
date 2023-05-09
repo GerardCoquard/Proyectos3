@@ -17,7 +17,10 @@ public class CameraController : MonoBehaviour
     public float moveSpeed = 5.0f;
 
     public float zoomSpeed = 5f;
-  
+
+    public float minFOV;
+    public float maxFOV;
+
 
     private float previousDistance;
 
@@ -114,7 +117,7 @@ public class CameraController : MonoBehaviour
         previousDistance = targetDistance;
 
         myCamera.fieldOfView -= distanceIncrement * zoomSpeed * Time.deltaTime;
-        myCamera.fieldOfView = Mathf.Clamp(myCamera.fieldOfView, 40f, 50f);
+        myCamera.fieldOfView = Mathf.Clamp(myCamera.fieldOfView, minFOV, maxFOV);
 
     }
 

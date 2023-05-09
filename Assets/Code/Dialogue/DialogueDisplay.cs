@@ -19,13 +19,25 @@ public class DialogueDisplay : MonoBehaviour
     private bool isTextFinished;
 
     private Interactable myInteractable;
+    private bool onAnimation;
+
+    Vector3 initialScale;
+    Vector3 finalScale;
+    public float timeToReachScale;
+    public float finalScaleMultiplier;
+    float distanceBetweenScales;
 
     public static Action<string> OnEndDialogue;
     private DIALOGUE_STATE currentState = DIALOGUE_STATE.DEFAULT;
 
     private void Start()
     {
+        dialogueRender.SetActive(false);
         myInteractable = GetComponent<Interactable>();
+
+        initialScale = dialogueRender.transform.localScale;
+        finalScale = initialScale * finalScaleMultiplier;
+        distanceBetweenScales = Vector3.Distance(initialScale, finalScale);
     }
     private void OnEnable()
     {
@@ -47,7 +59,7 @@ public class DialogueDisplay : MonoBehaviour
                 currentState = DIALOGUE_STATE.DEFAULT;
                 NextSentence();
             }
-            else
+            else if(!onAnimation)
             {
                 switch (currentState)
                 {
@@ -66,21 +78,41 @@ public class DialogueDisplay : MonoBehaviour
 
     public void StartDialogue()
     {
+        PlayerController.instance.characterController.enabled = false;
+        dialogueRender.SetActive(true);
         myInteractable.enabled = false;
         dialogueText.text = "";
         currentNode = startNode;
         currentState = DIALOGUE_STATE.DEFAULT;
         currentTypeSpeed = defaultTypeSpeed;
         dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? myPosition.position : PlayerController.instance.transform.position;
+        StartCoroutine(ScaleCoroutine());
+    }
+
+    IEnumerator ScaleCoroutine()
+    {
+        isTextFinished = false;
+        onAnimation = true;
+        float distanceToScale = Vector3.Distance(dialogueRender.transform.localScale, finalScale * 1.5f);
+        float time = distanceToScale / distanceBetweenScales * timeToReachScale;
+        Vector3 _initScale = dialogueRender.transform.localScale;
+        float timer = 0f;
+        while (timer < time)
+        {
+            dialogueRender.transform.localScale = Vector3.Lerp(_initScale, finalScale * 1.5f, timer / time);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        dialogueRender.transform.localScale = finalScale;
         StartCoroutine(Type());
     }
 
     IEnumerator Type()
-    {
-        isTextFinished = false;
-        foreach (char letter in currentNode.Text.ToCharArray())
+    {        
+        onAnimation = false;
+        foreach (char letter in LocalizationManager.GetLocalizedValue(currentNode.textID).ToCharArray())
         {
-            
+
             dialogueText.text += letter;
             yield return new WaitForSeconds(currentTypeSpeed);
         }
@@ -93,8 +125,9 @@ public class DialogueDisplay : MonoBehaviour
         {
             currentNode = currentNode.TargetNode;
             dialogueText.text = "";
-            dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? myPosition.position : PlayerController.instance.transform.position;
-            StartCoroutine(Type());
+            dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? myPosition.position : PlayerController.instance.dialogueSpawnReference.position;
+            dialogueRender.transform.localScale = initialScale;
+            StartCoroutine(ScaleCoroutine());
         }
         else
         {
@@ -103,6 +136,7 @@ public class DialogueDisplay : MonoBehaviour
     }
     private void EndDialogue()
     {
+        PlayerController.instance.characterController.enabled = true;
         myInteractable.enabled = true;
         OnEndDialogue?.Invoke(dialogueID);
         dialogueRender.SetActive(false);
@@ -112,7 +146,7 @@ public class DialogueDisplay : MonoBehaviour
     {
         StopAllCoroutines();
         isTextFinished = true;
-        dialogueText.text = currentNode.Text;
+        dialogueText.text = LocalizationManager.GetLocalizedValue(currentNode.textID);
     }
 }
 

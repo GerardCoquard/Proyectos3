@@ -5,6 +5,7 @@ public class Interactable : MonoBehaviour
 {
     public GameObject interactVisuals;
     private DialogueDisplay dialogueDisplay;
+   
 
     private bool canInteract;
 

@@ -7,8 +7,8 @@ using UnityEngine;
 public class DialogueNode : ScriptableObject
 {
     [TextArea(5, 20)]
-    public string Text;
-    public AudioClip audio;
+    public string textID;
+    public AudioClip[] audio;
     public DialogueNode TargetNode;
     public SPEAKER emisor;
 }
