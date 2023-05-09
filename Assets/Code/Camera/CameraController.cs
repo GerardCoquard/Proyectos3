@@ -9,11 +9,11 @@ public class CameraController : MonoBehaviour
     public static CameraController instance { get; private set; }
 
     public Rail rail;
-    private Rail auxiliarRail;
+    public Rail auxiliarRail;
     private Rail currentRail;
 
     public Transform lookAt;
-    private Transform maxYLevel;
+    public Transform maxYLevel;
     public float moveSpeed = 5.0f;
 
     public float zoomSpeed = 5f;
