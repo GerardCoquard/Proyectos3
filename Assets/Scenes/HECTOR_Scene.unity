@@ -2329,11 +2329,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rail: {fileID: 366554182}
+  auxiliarRail: {fileID: 0}
   lookAt: {fileID: 1669500684}
+  maxYLevel: {fileID: 0}
   moveSpeed: 2
-  zoomSpeed: 2
+  zoomSpeed: 35
   minFOV: 40
   maxFOV: 55
+  nodeZLimit: -12.43
+  desiredDistance: 10
   firstLimitPosition: {fileID: 1881099329}
   lastLimitPosition: {fileID: 856193474}
   limitXRotation: 50

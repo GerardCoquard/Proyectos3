@@ -21,10 +21,12 @@ public class CameraController : MonoBehaviour
     public float minFOV;
     public float maxFOV;
 
+    public float nodeZLimit;
 
     private float previousDistance;
-
+    public float desiredDistance = 10f;
     private Vector3 lastPosition;
+
 
     private Camera myCamera;
 
@@ -40,7 +42,7 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -60,17 +62,17 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
         HandlePosition();
-        HandleZoomOnPlayer();
         HandlePlayerOnCamera();
         HandleCurrentRail();
-        
+        HandleZoomOnPlayer();
+
     }
 
-   private void HandleCurrentRail()
+    private void HandleCurrentRail()
     {
 
         if (!auxiliarRail) return;
-        if(lookAt.position.y > maxYLevel.position.y)
+        if (lookAt.position.y > maxYLevel.position.y)
         {
             currentRail = auxiliarRail;
         }
@@ -84,9 +86,18 @@ public class CameraController : MonoBehaviour
         //Set the limits of the camera and move the camera through the rails based on the position of the player
         if (transitioning) return;
 
-        lastPosition = Vector3.Lerp(lastPosition, currentRail.ProjectPositionOnRail(lookAt.position), Time.deltaTime * moveSpeed);
-        lastPosition.x = Mathf.Clamp(lastPosition.x, firstLimitPosition.position.x, lastLimitPosition.position.x); 
-        transform.position = lastPosition;
+        float targetDistance = lookAt.position.z - myCamera.transform.position.z;
+        float distanceIncrement = (targetDistance - previousDistance);
+        previousDistance = targetDistance;
+
+        lastPosition.y = currentRail.ProjectPositionOnRail(lookAt.position).y;
+        lastPosition.x = currentRail.ProjectPositionOnRail(lookAt.position).x;
+        lastPosition.x = Mathf.Clamp(lastPosition.x, firstLimitPosition.position.x, lastLimitPosition.position.x);
+        lastPosition.z += distanceIncrement * zoomSpeed * Time.deltaTime;
+        lastPosition.z = Mathf.Clamp(lastPosition.z, nodeZLimit, lastPosition.z);
+
+
+        transform.position = Vector3.Lerp(transform.position, lastPosition, Time.deltaTime * moveSpeed);
     }
     private void HandlePlayerOnCamera()
     {
@@ -112,22 +123,20 @@ public class CameraController : MonoBehaviour
     private void HandleZoomOnPlayer()
     {
 
-        float targetDistance = (myCamera.transform.position - lookAt.position).sqrMagnitude;
-        float distanceIncrement = (targetDistance - previousDistance);
-        previousDistance = targetDistance;
 
-        myCamera.fieldOfView -= distanceIncrement * zoomSpeed * Time.deltaTime;
-        myCamera.fieldOfView = Mathf.Clamp(myCamera.fieldOfView, minFOV, maxFOV);
+        
+
+
 
     }
 
-   
+
     public void ChangeLimits(Transform fp, Transform lp)
     {
         transitioning = true;
         firstLimitPosition = fp == null ? firstLimitPosition : fp;
         lastLimitPosition = lp == null ? lastLimitPosition : lp;
-       
+
         StartCoroutine(TransitionLerp());
     }
 
