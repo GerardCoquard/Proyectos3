@@ -90,10 +90,14 @@ public class CameraController : MonoBehaviour
         float distanceIncrement = (targetDistance - previousDistance);
         previousDistance = targetDistance;
 
+        Vector3 directionToTarget = (lookAt.position - transform.position).normalized;
+        Vector3 desiredPos = lookAt.position -  directionToTarget * desiredDistance;
+
         lastPosition.y = currentRail.ProjectPositionOnRail(lookAt.position).y;
         lastPosition.x = currentRail.ProjectPositionOnRail(lookAt.position).x;
+
         lastPosition.x = Mathf.Clamp(lastPosition.x, firstLimitPosition.position.x, lastLimitPosition.position.x);
-        lastPosition.z += distanceIncrement * zoomSpeed * Time.deltaTime;
+        lastPosition.z = desiredPos.z;
         lastPosition.z = Mathf.Clamp(lastPosition.z, nodeZLimit, lastPosition.z);
 
 
