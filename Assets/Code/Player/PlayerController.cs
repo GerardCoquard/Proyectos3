@@ -160,6 +160,7 @@ public class PlayerController : MonoBehaviour
             CollisionFlags collisionFlags = characterController.Move(movement * Time.deltaTime);
             CheckCollision(collisionFlags);
         }
+        CheckPushAvailable();
         SetGravity();
     }
     private void Jump()
@@ -170,6 +171,24 @@ public class PlayerController : MonoBehaviour
             isJumping = true;
         }
         
+    }
+    void CheckPushAvailable()
+    {
+        PusheableObject pusheable;
+        if(CanPush(out pusheable))
+        {
+            WorldScreenUI.instance.SetIcon(IconType.Push,pusheable.col.bounds.center);
+        }
+        else WorldScreenUI.instance.HideIcon(IconType.Push);
+    }
+    bool CanPush(out PusheableObject pusheable)
+    {
+        pusheable = null;
+        if(!PusheableDetected(out pusheable)) return false;
+        if(isJumping) return false;
+        if(currentObjectPushing!=null) return false;
+        if(bookOpened) return false;
+        return true;
     }
     bool PusheableDetected(out PusheableObject pusheable)
     {

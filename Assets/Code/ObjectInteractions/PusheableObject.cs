@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using System;
 [RequireComponent(typeof(Rigidbody))]
 public class PusheableObject : MonoBehaviour
 {
@@ -10,8 +11,11 @@ public class PusheableObject : MonoBehaviour
     Rigidbody rb;
     bool constrained;
     Vector3 constrainDirection;
+    [NonSerialized]
+    public Collider col;
     private void Start()
     {
+        col = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.constraints = RigidbodyConstraints.FreezePositionY;
