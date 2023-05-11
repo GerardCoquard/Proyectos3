@@ -32,7 +32,11 @@ public class Book : MonoBehaviour
         Gizmos.DrawLine(bookGhost.transform.position,bookGhost.transform.position+new Vector3(-playerWidth,0,0));
     }
     private void Awake() {
-        if(instance==null) instance = this;
+        if(instance==null)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
         else Destroy(this);
     }
     private void Start() {

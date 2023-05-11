@@ -7,7 +7,6 @@ public class BookGhost : MonoBehaviour
 {
     public float speed;
     public float shapeDetectionRadius;
-    public GameObject canvas;
     Vector2 movement;
     bool up;
     bool down;
@@ -23,20 +22,20 @@ public class BookGhost : MonoBehaviour
     private void OnEnable() {
         InputManager.GetAction("Move").action += OnMovementInput;
         InputManager.GetAction("Jump").action += OnUpInput;
-        InputManager.GetAction("Shift").action += OnDownInput;
+        InputManager.GetAction("Down").action += OnDownInput;
         InputManager.GetAction("Push").action += OnInteractInput;
-        canvas.SetActive(false);
+        WorldScreenUI.instance.HideIcon(IconType.Book);
         movement = Vector2.zero;
         up = false;
         down = false;
         if(InputManager.GetAction("Move").GetEnabled()) movement = InputManager.GetAction("Move").context.ReadValue<Vector2>();
         if(InputManager.GetAction("Jump").GetEnabled()) up = InputManager.GetAction("Jump").context.ReadValue<float>() == 1;
-        if(InputManager.GetAction("Shift").GetEnabled()) down = InputManager.GetAction("Shift").context.ReadValue<float>() == 1;
+        if(InputManager.GetAction("Down").GetEnabled()) down = InputManager.GetAction("Down").context.ReadValue<float>() == 1;
     }
     private void OnDisable() {
         InputManager.GetAction("Move").action -= OnMovementInput;
         InputManager.GetAction("Jump").action -= OnUpInput;
-        InputManager.GetAction("Shift").action -= OnDownInput;
+        InputManager.GetAction("Down").action -= OnDownInput;
         InputManager.GetAction("Push").action -= OnInteractInput;
 
         ClearSelected();
@@ -77,8 +76,7 @@ public class BookGhost : MonoBehaviour
         ClearSelected();
         selectedShape = newShape;
         selectedShape.SetSelected();
-        canvas.transform.position = selectedShape.shapeCollider.bounds.center;
-        canvas.SetActive(true);
+        WorldScreenUI.instance.SetIcon(IconType.Book,selectedShape.shapeCollider.bounds.center);
     }
     private void OnTriggerExit(Collider other) {
         if(other.gameObject.layer != LayerMask.NameToLayer("Outline")) return;
@@ -92,7 +90,7 @@ public class BookGhost : MonoBehaviour
         if(selectedShape==null) return;
         selectedShape.Unselect();
         selectedShape = null;
-        canvas.SetActive(false);
+        WorldScreenUI.instance.HideIcon(IconType.Book);
     }
     void SelectShape()
     {

@@ -37,7 +37,11 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        if(instance==null) instance = this;
+        if(instance==null)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
         else Destroy(this);
         SetUpJumpVariables();
     }
@@ -96,6 +100,7 @@ public class PlayerController : MonoBehaviour
             InputManager.GetAction("Jump").action += OnJumpInput;
             bookOpened = false;
             characterController.enabled = true;
+            CameraController.instance.ChangeFocus(transform);
             if(InputManager.GetAction("Move").GetEnabled())
             {
                 Vector2 tempDirection = InputManager.GetAction("Move").context.ReadValue<Vector2>();
@@ -114,6 +119,7 @@ public class PlayerController : MonoBehaviour
             isMovementPressed = false;
             movement = Vector3.zero;
             characterController.enabled = false;
+            CameraController.instance.ChangeFocus(Book.instance.bookGhost.transform);
             StopPushing();
         }
     }

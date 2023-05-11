@@ -45,6 +45,7 @@ public class CameraController : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(instance);
         }
         else
         {
@@ -167,6 +168,10 @@ public class CameraController : MonoBehaviour
 
         }
         transitioning = false;
+    }
+    public void ChangeFocus(Transform target)
+    {
+        lookAt = target;
     }
 
 }
