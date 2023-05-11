@@ -36,7 +36,8 @@ public class WorldScreenUI : MonoBehaviour
         }
 
         targetIcon.SetActive(true);
-        targetIcon.transform.position = cam.WorldToScreenPoint(_pos);
+        Vector3 newPos = cam.WorldToScreenPoint(_pos);
+        if(targetIcon.transform.position!= newPos) targetIcon.transform.position = newPos;
     }
     public void HideIcon(IconType iconType)
     {
