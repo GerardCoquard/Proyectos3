@@ -7,7 +7,6 @@ using UnityEngine.Events;
 
 public class PressurePlate : MonoBehaviour
 {
-    public LayerMask whatPressesMe;
     public UnityEvent OnPressed;
     public UnityEvent OnUnpressed;
     List<GameObject> onTop = new List<GameObject>();
@@ -15,6 +14,8 @@ public class PressurePlate : MonoBehaviour
     Animator anim;
     private void Start() {
         anim = GetComponentInChildren<Animator>();
+        OnPressed.AddListener(()=> anim.SetBool("Pressed",true));
+        OnPressed.AddListener(()=> anim.SetBool("Pressed",false));
     }
     public bool IsPressed()
     {
@@ -22,11 +23,8 @@ public class PressurePlate : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other) {
         if(locked) return;
-        if(whatPressesMe == (whatPressesMe | (1 << other.gameObject.layer)))
-        {
-            if(onTop.Count == 0) OnPressed?.Invoke();
-            onTop.Add(other.gameObject);
-        }
+        if(onTop.Count == 0) OnPressed?.Invoke();
+        onTop.Add(other.gameObject);
     }
     private void OnTriggerExit(Collider other) {
         if(locked) return;
@@ -39,10 +37,6 @@ public class PressurePlate : MonoBehaviour
     public void SetLocked(bool state)
     {
         locked = state;
-    }
-    public void SetAnimPressed(bool state)
-    {
-        anim.SetBool("Pressed",state);
     }
 }
 
