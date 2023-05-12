@@ -11,11 +11,9 @@ public class PusheableObject : MonoBehaviour
     Rigidbody rb;
     bool constrained;
     Vector3 constrainDirection;
-    [NonSerialized]
-    public Collider col;
+    public Transform uiPosition;
     private void Start()
     {
-        col = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.constraints = RigidbodyConstraints.FreezePositionY;

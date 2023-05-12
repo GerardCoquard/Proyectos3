@@ -177,7 +177,7 @@ public class PlayerController : MonoBehaviour
         PusheableObject pusheable;
         if(CanInteract() && PusheableDetected(out pusheable))
         {
-            WorldScreenUI.instance.SetIcon(IconType.Push,pusheable.col.bounds.center);
+            WorldScreenUI.instance.SetIcon(IconType.Push,pusheable.uiPosition.position);
         }
         else WorldScreenUI.instance.HideIcon(IconType.Push);
     }
@@ -200,7 +200,7 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, closeEnoughtDetection, Physics.AllLayers,QueryTriggerInteraction.Ignore))
         {
-            pusheable = hit.collider.GetComponent<PusheableObject>();
+            pusheable = hit.collider.GetComponentInParent<PusheableObject>();
             if(pusheable!=null && Vector3.Dot(transform.forward,-hit.normal) >= angleDot)
             {
                 transform.forward = -hit.normal;
