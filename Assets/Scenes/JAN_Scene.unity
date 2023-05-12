@@ -4462,7 +4462,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 414441377}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.0562515, y: 11.8, z: 0.8}
+  m_LocalPosition: {x: 7.0562515, y: 13.54, z: 0.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -20190,13 +20190,12 @@ MonoBehaviour:
   maxYLevel: {fileID: 1511527427}
   moveSpeed: 5
   zoomSpeed: 50
-  minFOV: 0
-  maxFOV: 0
   nodeZLimit: -4.72
   desiredDistance: 10
   firstLimitPosition: {fileID: 431401701}
   lastLimitPosition: {fileID: 1084691094}
-  limitXRotation: 50
+  maxXrotation: 50
+  minXRotation: -90
   timeToTransition: 1
 --- !u!43 &842556373
 Mesh:

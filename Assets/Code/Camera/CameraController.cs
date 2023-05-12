@@ -18,9 +18,6 @@ public class CameraController : MonoBehaviour
 
     public float zoomSpeed = 5f;
 
-    public float minFOV;
-    public float maxFOV;
-
     public float nodeZLimit;
 
     public float desiredDistance = 10f;
@@ -32,10 +29,9 @@ public class CameraController : MonoBehaviour
     public Transform firstLimitPosition;
     public Transform lastLimitPosition;
 
-    public float limitXRotation = 50f;
+    public float maxXrotation = 50f;
+    public float minXRotation = -90f;
 
-
-    private bool shouldUpdate;
     private bool transitioning;
     public float timeToTransition;
 
@@ -83,14 +79,13 @@ public class CameraController : MonoBehaviour
         //Set the limits of the camera and move the camera through the rails based on the position of the player
         if (transitioning) return;
 
-        Vector3 directionToTarget = (lookAt.position - transform.position).normalized;
-        Vector3 desiredPos = lookAt.position - directionToTarget * desiredDistance;
+        float desiredPosZ = lookAt.position.z - desiredDistance;
 
         lastPosition.y = currentRail.ProjectPositionOnRail(lookAt.position).y;
         lastPosition.x = currentRail.ProjectPositionOnRail(lookAt.position).x;
 
         lastPosition.x = Mathf.Clamp(lastPosition.x, firstLimitPosition.position.x, lastLimitPosition.position.x);
-        lastPosition.z = desiredPos.z;
+        lastPosition.z = desiredPosZ;
         lastPosition.z = Mathf.Clamp(lastPosition.z, nodeZLimit, lastPosition.z);
 
 
@@ -101,22 +96,23 @@ public class CameraController : MonoBehaviour
 
         Quaternion targetRotation = Quaternion.LookRotation(lookAt.transform.position - transform.position);
         Vector3 rotationInDegrees = targetRotation.eulerAngles;
-        rotationInDegrees.x = Mathf.Clamp(rotationInDegrees.x, 0, limitXRotation);
+        rotationInDegrees.x = ClampAngle(rotationInDegrees.x, minXRotation, maxXrotation);
         targetRotation = Quaternion.Euler(rotationInDegrees);
 
-        if (shouldUpdate)
-        {
-            myCamera.transform.rotation = Quaternion.Slerp(myCamera.transform.rotation, targetRotation, moveSpeed * Time.deltaTime);
-        }
-        else
-        {
-            Quaternion lerpedTarget = Quaternion.Slerp(myCamera.transform.rotation, targetRotation, moveSpeed * Time.deltaTime);
-            Quaternion LookYAxis = Quaternion.Euler(lerpedTarget.eulerAngles.x, myCamera.transform.rotation.eulerAngles.y, myCamera.transform.rotation.eulerAngles.z);
-            myCamera.transform.rotation = LookYAxis;
-        }
+
+        Quaternion lerpedTarget = Quaternion.Slerp(myCamera.transform.rotation, targetRotation, moveSpeed * Time.deltaTime);
+        Quaternion LookYAxis = Quaternion.Euler(lerpedTarget.eulerAngles.x, myCamera.transform.rotation.eulerAngles.y, myCamera.transform.rotation.eulerAngles.z);
+        myCamera.transform.rotation = LookYAxis;
+        
 
     }
 
+    float ClampAngle(float angle, float from, float to)
+    {
+        if (angle < 0f) angle = 360 + angle;
+        if (angle > 180f) return Mathf.Max(angle, 360 + from);
+        return Mathf.Min(angle, to);
+    }
     public void ChangeLimits(Transform fp, Transform lp)
     {
         firstLimitPosition = fp == null ? firstLimitPosition : fp;
@@ -152,9 +148,7 @@ public class CameraController : MonoBehaviour
     }
     public void ChangeFocus(Transform target)
     {
-        if(target == PlayerController.instance.transform) StartCoroutine(TransitionLerp());
         lookAt = target;
-       
     }
 
 }
