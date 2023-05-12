@@ -39,7 +39,7 @@ public class DialogueDisplay : MonoBehaviour
     private void Update()
     {
 
-        dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? WorldScreenUI.instance.WorldPosToScreen(interactablePos.position) : WorldScreenUI.instance.WorldPosToScreen(PlayerController.instance.dialogueSpawnReference.position);
+        dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? WorldScreenUI.instance.WorldPosToScreen(interactablePos.position) : WorldScreenUI.instance.WorldPosToScreen(Book.instance.dialoguePosition.position);
 
     }
     private void OnEnable()

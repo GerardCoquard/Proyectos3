@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
     public static PlayerController instance;
     [Header("References")]
     [SerializeField] public CharacterController characterController;
-    [SerializeField] public Transform dialogueSpawnReference;
 
     [Header("Movement")]
     [SerializeField] float maxLinealSpeed = 7f;
@@ -28,7 +27,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float pushForce = 40f;
     [SerializeField] float angleDot = 0.8f;
     [SerializeField] Transform pushStartDetectionPoint;
-    [Range(0f,1f)]
     PusheableObject currentObjectPushing;
     bool bookOpened;
 

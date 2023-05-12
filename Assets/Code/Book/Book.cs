@@ -20,6 +20,7 @@ public class Book : MonoBehaviour
     public GameObject bookGraphics;
     public GameObject bookGhost;
     public Transform bookGhostStartPosition;
+    public Transform dialoguePosition;
     public Vector3 bookOffset;
     public VisualEffect particles;
     public delegate void BookStateChanged(bool state);
