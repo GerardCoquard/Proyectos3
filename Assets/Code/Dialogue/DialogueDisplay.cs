@@ -17,8 +17,6 @@ public class DialogueDisplay : MonoBehaviour
     private float currentTypeSpeed;
     [SerializeField] string dialogueID;
     private bool isTextFinished;
-
-    private Interactable myInteractable;
     private bool onAnimation;
 
 
@@ -34,7 +32,6 @@ public class DialogueDisplay : MonoBehaviour
     private void Awake()
     {
         dialogueRender.SetActive(false);
-        myInteractable = GetComponent<Interactable>();
         initialScale = dialogueRender.transform.localScale;
         finalScale = initialScale * finalScaleMultiplier;
         distanceBetweenScales = Vector3.Distance(initialScale, finalScale);
@@ -93,7 +90,7 @@ public class DialogueDisplay : MonoBehaviour
         currentNode = startNode;
         currentState = DIALOGUE_STATE.DEFAULT;
         currentTypeSpeed = defaultTypeSpeed;
-        dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? interactablePos.position : PlayerController.instance.transform.position;
+        dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? WorldScreenUI.instance.WorldPosToScreen(interactablePos.position) : WorldScreenUI.instance.WorldPosToScreen(PlayerController.instance.dialogueSpawnReference.position);
         StartCoroutine(ScaleCoroutine());
     }
 
@@ -102,9 +99,9 @@ public class DialogueDisplay : MonoBehaviour
         this.startNode = startNode;
     }
 
-    public void SetInteractablePos(Vector3 pos)
+    public void SetInteractablePos(Transform pos)
     {
-        interactablePos.position = pos;
+        interactablePos = pos;
     }
 
     IEnumerator ScaleCoroutine()
@@ -143,7 +140,7 @@ public class DialogueDisplay : MonoBehaviour
         {
             currentNode = currentNode.TargetNode;
             dialogueText.text = "";
-            dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? interactablePos.position : PlayerController.instance.dialogueSpawnReference.position;
+            dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? WorldScreenUI.instance.WorldPosToScreen(interactablePos.position) : WorldScreenUI.instance.WorldPosToScreen(PlayerController.instance.dialogueSpawnReference.position);
             dialogueRender.transform.localScale = initialScale;
             StartCoroutine(ScaleCoroutine());
         }
@@ -155,9 +152,8 @@ public class DialogueDisplay : MonoBehaviour
     private void EndDialogue()
     {
         PlayerController.instance.characterController.enabled = true;
-        myInteractable.enabled = true;
         OnEndDialogue?.Invoke(dialogueID);
-        dialogueRender.SetActive(false);
+        dialogueRender.gameObject.SetActive(false);
         this.enabled = false;
     }
 

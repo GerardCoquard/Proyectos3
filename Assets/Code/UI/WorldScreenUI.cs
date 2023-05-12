@@ -10,6 +10,7 @@ public class WorldScreenUI : MonoBehaviour
     public GameObject bookIcon;
     public GameObject pushIcon;
     private DialogueDisplay dialogueDisplay;
+
     private void Awake() {
         if(instance==null)
         {
@@ -20,7 +21,7 @@ public class WorldScreenUI : MonoBehaviour
         dialogueDisplay = GetComponent<DialogueDisplay>();
         dialogueDisplay.enabled = false;
     }
-    public void SetDialogue(DialogueNode startNode, Vector3 interactablePosition)
+    public void SetDialogue(DialogueNode startNode, Transform interactablePosition)
     {
         dialogueDisplay.SetStartNode(startNode);
         dialogueDisplay.SetInteractablePos(interactablePosition);
@@ -29,6 +30,7 @@ public class WorldScreenUI : MonoBehaviour
     }
     public void SetIcon(IconType iconType,Vector3 _pos)
     {
+        
         GameObject targetIcon;
         switch (iconType)
         {
@@ -48,6 +50,12 @@ public class WorldScreenUI : MonoBehaviour
         targetIcon.SetActive(true);
         Vector3 newPos = cam.WorldToScreenPoint(_pos);
         if(targetIcon.transform.position!= newPos) targetIcon.transform.position = newPos;
+    }
+
+    public Vector3 WorldPosToScreen(Vector3 pos)
+    {
+        Vector3 newPos = cam.WorldToScreenPoint(pos);
+        return newPos;
     }
     public void HideIcon(IconType iconType)
     {

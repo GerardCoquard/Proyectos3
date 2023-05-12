@@ -8,23 +8,25 @@ public class Interactable : MonoBehaviour
     public Transform textDisplayPos;
     public DialogueNode startNode;
     private bool playerIn;
-   
-    private void Start()
-    {
-    }
-   
+
     private void Update()
     {
-        if (!playerIn) return;
-        if (PlayerController.instance.CanInteract()) WorldScreenUI.instance.SetIcon(IconType.Dialogue, iconDisplayPos.position);
-        else WorldScreenUI.instance.HideIcon(IconType.Dialogue);
+        
+        if (PlayerController.instance.CanInteract() && playerIn)
+        {
+            WorldScreenUI.instance.SetIcon(IconType.Dialogue, iconDisplayPos.position);
+        }
+        else
+        {
+            WorldScreenUI.instance.HideIcon(IconType.Dialogue);
+        }
     }
 
     private void DialogueInteract(InputAction.CallbackContext context)
     {
         if (context.performed && PlayerController.instance.CanInteract())
         {
-            WorldScreenUI.instance.SetDialogue(startNode, textDisplayPos.position);
+            WorldScreenUI.instance.SetDialogue(startNode, textDisplayPos);
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -32,7 +34,7 @@ public class Interactable : MonoBehaviour
         if (other.tag == "Player")
         {
             InputManager.GetAction("Push").action += DialogueInteract;
-
+            playerIn = true;
         }
     }
 
@@ -41,6 +43,7 @@ public class Interactable : MonoBehaviour
         if (other.tag == "Player")
         {
             InputManager.GetAction("Push").action -= DialogueInteract;
+            playerIn=false;
         }
     }
 
