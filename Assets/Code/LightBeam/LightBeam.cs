@@ -13,8 +13,9 @@ public class LightBeam
     List<LightReciever> lightRecieverList = new List<LightReciever>();
     List<LightReciever> currentLightRecivers = new List<LightReciever>();
     public int maxBounces;
+    public RayColor rayType;
 
-    public LightBeam(Vector3 pos, Vector3 dir, Material material, LayerMask layerMask, int maxBounces)
+    public LightBeam(Vector3 pos, Vector3 dir, Material material, LayerMask layerMask, int maxBounces, RayColor _rayType)
     {
         lineRenderer = new LineRenderer();
         lightGameObject = new GameObject();
@@ -24,6 +25,7 @@ public class LightBeam
         this.layerMask = layerMask;
         this.maxBounces = maxBounces;
         this.material = material;
+        this.rayType = _rayType;
 
         lineRenderer = lightGameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
         lineRenderer.startWidth = 0.1f;
@@ -44,6 +46,7 @@ public class LightBeam
         this.layerMask = beam.layerMask;
         this.maxBounces = beam.maxBounces;
         this.material = beam.material;
+        this.rayType = beam.rayType;
 
         lineRenderer = lightGameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
         lineRenderer.startWidth = 0.1f;
@@ -132,4 +135,13 @@ public class LightBeam
             }
         }
     }
+}
+public enum RayColor
+{
+    Red,
+    Green,
+    Blue,
+    Purple,
+    Yellow,
+    Anyone
 }

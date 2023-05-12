@@ -502,6 +502,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7728874987317079285, guid: 9967aff4f4090b44d9fb719c3730ef0f, type: 3}
+      propertyPath: rayColor
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9967aff4f4090b44d9fb719c3730ef0f, type: 3}
 --- !u!1 &387481810
@@ -930,7 +934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe4ab2a755ba9f04fba985765be2d65d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToReach: 0
+  timeToReach: 1
   finalScaleMultiplier: 2
 --- !u!114 &444197581
 MonoBehaviour:
@@ -8760,8 +8764,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4617416045177351214, guid: 029fb20d53ca4cc4e8a25440a8719e74, type: 3}
+      propertyPath: currentColor
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617416045177351214, guid: 029fb20d53ca4cc4e8a25440a8719e74, type: 3}
       propertyPath: lightGoesThrough
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4617416045177351214, guid: 029fb20d53ca4cc4e8a25440a8719e74, type: 3}
       propertyPath: OnLightRecived.m_PersistentCalls.m_Calls.Array.size
@@ -9761,6 +9769,10 @@ PrefabInstance:
     - target: {fileID: 2831937563620678289, guid: e9139009351d4e54c951e009d753dd84, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2831937563620678293, guid: e9139009351d4e54c951e009d753dd84, type: 3}
+      propertyPath: timeToReach
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2831937563620678298, guid: e9139009351d4e54c951e009d753dd84, type: 3}
       propertyPath: m_Name

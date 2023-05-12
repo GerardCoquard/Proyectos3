@@ -9,16 +9,18 @@ public class LightReciever : MonoBehaviour
     public UnityEvent OnLightRecived;
     public UnityEvent OnLightNotRecived;
     public bool lightGoesThrough;
+    public RayColor currentColor = RayColor.Anyone;
     Dictionary<LightBeam,LightBeamData> crossingBeams = new Dictionary<LightBeam, LightBeamData>();
     public void DoAction(LightBeam beam)
     {
+        if(beam.rayType != currentColor && currentColor != RayColor.Anyone) return;
         if(crossingBeams.Count == 0) OnLightRecived?.Invoke();
-
         if(lightGoesThrough) StartCoroutine(AddBeam(beam));
         else crossingBeams.Add(beam,new LightBeamData(null,Vector3.zero,Vector3.zero));
     }
     public void UpdatePoint(LightBeam beam,Vector3 _pos,Vector3 _dir)
     {
+        if(beam.rayType != currentColor && currentColor != RayColor.Anyone) return;
         if(!lightGoesThrough) return;
         foreach (KeyValuePair<LightBeam, LightBeamData> entry in crossingBeams)
         {
@@ -31,6 +33,7 @@ public class LightReciever : MonoBehaviour
     }
     public void UndoAction(LightBeam beam)
     {
+        if(beam.rayType != currentColor && currentColor != RayColor.Anyone) return;
         if(lightGoesThrough) CheckChildBeams(beam);
         else
         {
