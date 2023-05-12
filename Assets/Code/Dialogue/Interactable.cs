@@ -1,36 +1,38 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class Interactable : MonoBehaviour
 {
-    public GameObject interactVisuals;
-    private DialogueDisplay dialogueDisplay;
+    public Transform iconDisplayPos;
+    public Transform textDisplayPos;
+    public DialogueNode startNode;
+    private bool playerIn;
    
-
-    private bool canInteract;
-
     private void Start()
     {
-        dialogueDisplay = GetComponent<DialogueDisplay>();
-        interactVisuals.SetActive(false);
-        dialogueDisplay.enabled = false;
     }
-
+   
     private void Update()
     {
-        if(canInteract && InputManager.GetAction("Push").context.WasPerformedThisFrame())
+        if (!playerIn) return;
+        if (PlayerController.instance.CanInteract()) WorldScreenUI.instance.SetIcon(IconType.Dialogue, iconDisplayPos.position);
+        else WorldScreenUI.instance.HideIcon(IconType.Dialogue);
+    }
+
+    private void DialogueInteract(InputAction.CallbackContext context)
+    {
+        if (context.performed && PlayerController.instance.CanInteract())
         {
-            dialogueDisplay.enabled = true;
-            canInteract = false;
-            dialogueDisplay.StartDialogue();
+            WorldScreenUI.instance.SetDialogue(startNode, textDisplayPos.position);
         }
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
-            interactVisuals.SetActive(true);
-            canInteract = true;
+            InputManager.GetAction("Push").action += DialogueInteract;
+
         }
     }
 
@@ -38,8 +40,7 @@ public class Interactable : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            interactVisuals.SetActive(false);
-            canInteract = false;
+            InputManager.GetAction("Push").action -= DialogueInteract;
         }
     }
 

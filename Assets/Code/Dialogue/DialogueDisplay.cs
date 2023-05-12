@@ -9,8 +9,8 @@ public class DialogueDisplay : MonoBehaviour
 {
     [SerializeField] public GameObject dialogueRender;
     [SerializeField] TextMeshProUGUI dialogueText;
-    [SerializeField] DialogueNode startNode;
-    [SerializeField] Transform myPosition;
+    private DialogueNode startNode;
+    private Transform interactablePos;
     private DialogueNode currentNode;
     [SerializeField] float defaultTypeSpeed;
     [SerializeField] float fastTypeSpeed;
@@ -93,8 +93,18 @@ public class DialogueDisplay : MonoBehaviour
         currentNode = startNode;
         currentState = DIALOGUE_STATE.DEFAULT;
         currentTypeSpeed = defaultTypeSpeed;
-        dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? myPosition.position : PlayerController.instance.transform.position;
+        dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? interactablePos.position : PlayerController.instance.transform.position;
         StartCoroutine(ScaleCoroutine());
+    }
+
+    public void SetStartNode(DialogueNode startNode)
+    {
+        this.startNode = startNode;
+    }
+
+    public void SetInteractablePos(Vector3 pos)
+    {
+        interactablePos.position = pos;
     }
 
     IEnumerator ScaleCoroutine()
@@ -133,7 +143,7 @@ public class DialogueDisplay : MonoBehaviour
         {
             currentNode = currentNode.TargetNode;
             dialogueText.text = "";
-            dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? myPosition.position : PlayerController.instance.dialogueSpawnReference.position;
+            dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? interactablePos.position : PlayerController.instance.dialogueSpawnReference.position;
             dialogueRender.transform.localScale = initialScale;
             StartCoroutine(ScaleCoroutine());
         }

@@ -9,6 +9,7 @@ public class WorldScreenUI : MonoBehaviour
     public GameObject dialogueIcon;
     public GameObject bookIcon;
     public GameObject pushIcon;
+    private DialogueDisplay dialogueDisplay;
     private void Awake() {
         if(instance==null)
         {
@@ -16,6 +17,15 @@ public class WorldScreenUI : MonoBehaviour
         }
         else Destroy(this);
         cam = Camera.main;
+        dialogueDisplay = GetComponent<DialogueDisplay>();
+        dialogueDisplay.enabled = false;
+    }
+    public void SetDialogue(DialogueNode startNode, Vector3 interactablePosition)
+    {
+        dialogueDisplay.SetStartNode(startNode);
+        dialogueDisplay.SetInteractablePos(interactablePosition);
+        dialogueDisplay.enabled = true;
+        dialogueDisplay.StartDialogue();
     }
     public void SetIcon(IconType iconType,Vector3 _pos)
     {
