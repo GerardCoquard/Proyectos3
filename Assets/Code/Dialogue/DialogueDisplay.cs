@@ -38,11 +38,9 @@ public class DialogueDisplay : MonoBehaviour
     }
     private void Update()
     {
-        if (!isTextFinished)
-        {
 
-            dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? WorldScreenUI.instance.WorldPosToScreen(interactablePos.position) : WorldScreenUI.instance.WorldPosToScreen(PlayerController.instance.dialogueSpawnReference.position);
-        }
+        dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? WorldScreenUI.instance.WorldPosToScreen(interactablePos.position) : WorldScreenUI.instance.WorldPosToScreen(PlayerController.instance.dialogueSpawnReference.position);
+
     }
     private void OnEnable()
     {
@@ -98,7 +96,6 @@ public class DialogueDisplay : MonoBehaviour
         currentNode = startNode;
         currentState = DIALOGUE_STATE.DEFAULT;
         currentTypeSpeed = defaultTypeSpeed;
-        dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? WorldScreenUI.instance.WorldPosToScreen(interactablePos.position) : WorldScreenUI.instance.WorldPosToScreen(PlayerController.instance.dialogueSpawnReference.position);
         StartCoroutine(ScaleCoroutine());
     }
 
@@ -148,7 +145,6 @@ public class DialogueDisplay : MonoBehaviour
         {
             currentNode = currentNode.TargetNode;
             dialogueText.text = "";
-            dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? WorldScreenUI.instance.WorldPosToScreen(interactablePos.position) : WorldScreenUI.instance.WorldPosToScreen(PlayerController.instance.dialogueSpawnReference.position);
             dialogueRender.transform.localScale = initialScale;
             StartCoroutine(ScaleCoroutine());
         }

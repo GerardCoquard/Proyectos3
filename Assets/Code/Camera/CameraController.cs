@@ -23,7 +23,6 @@ public class CameraController : MonoBehaviour
 
     public float nodeZLimit;
 
-    private float previousDistance;
     public float desiredDistance = 10f;
     private Vector3 lastPosition;
 
@@ -57,7 +56,6 @@ public class CameraController : MonoBehaviour
         myCamera = GetComponent<Camera>();
         currentRail = rail;
         lastPosition = transform.position;
-        previousDistance = (myCamera.transform.position - lookAt.position).sqrMagnitude;
     }
 
     private void Update()
@@ -86,7 +84,7 @@ public class CameraController : MonoBehaviour
         if (transitioning) return;
 
         Vector3 directionToTarget = (lookAt.position - transform.position).normalized;
-        Vector3 desiredPos = lookAt.position -  directionToTarget * desiredDistance;
+        Vector3 desiredPos = lookAt.position - directionToTarget * desiredDistance;
 
         lastPosition.y = currentRail.ProjectPositionOnRail(lookAt.position).y;
         lastPosition.x = currentRail.ProjectPositionOnRail(lookAt.position).x;
@@ -121,7 +119,6 @@ public class CameraController : MonoBehaviour
 
     public void ChangeLimits(Transform fp, Transform lp)
     {
-        transitioning = true;
         firstLimitPosition = fp == null ? firstLimitPosition : fp;
         lastLimitPosition = lp == null ? lastLimitPosition : lp;
 
@@ -136,6 +133,7 @@ public class CameraController : MonoBehaviour
     IEnumerator TransitionLerp()
     {
         float timer = 0f;
+        transitioning = true;
         Vector3 initialPos = myCamera.transform.position;
 
         while (timer < timeToTransition)
@@ -154,7 +152,9 @@ public class CameraController : MonoBehaviour
     }
     public void ChangeFocus(Transform target)
     {
+        if(target == PlayerController.instance.transform) StartCoroutine(TransitionLerp());
         lookAt = target;
+       
     }
 
 }
