@@ -74,7 +74,9 @@ public class Book : MonoBehaviour
     void SpotFound(Vector3 pos, GameObject clone)
     {
         shapeshiftedObject = Instantiate(clone,pos, clone.transform.rotation);
-        Destroy(shapeshiftedObject.GetComponent<Shape>());
+        Shape shape = shapeshiftedObject.GetComponent<Shape>();
+        shape.SetOutline(false);
+        Destroy(shape);
         particles.Play();
         bookGraphics.SetActive(false);
     }
@@ -96,7 +98,7 @@ public class Book : MonoBehaviour
                 for (int i = 0; i < 2; i++)
                 {
                     if(angle == 180 || angle == 0) i++;
-                    Vector3 desiredPosition =  player.position + OrientationToVector(player.eulerAngles.y + (inverted? -angle : angle)).normalized * distance + new Vector3(0,0.05f,0);
+                    Vector3 desiredPosition =  player.position + OrientationToVector(player.eulerAngles.y + (inverted? -angle : angle)).normalized * distance + new Vector3(0,-0.06f,0);
                     inverted = true;
                     if(Overlapping(type,desiredPosition,largerExtent,verticalExtent,extents)) continue;
                     if(!VisibleToPlayer(desiredPosition+verticalExtent)) continue;

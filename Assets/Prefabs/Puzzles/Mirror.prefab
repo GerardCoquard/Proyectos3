@@ -500,6 +500,8 @@ GameObject:
   - component: {fileID: 4400557346040714390}
   - component: {fileID: 4400557346040714388}
   - component: {fileID: 4400557346040714389}
+  - component: {fileID: 2088865780719896997}
+  - component: {fileID: 3830830335127256897}
   m_Layer: 0
   m_Name: Mirror
   m_TagString: Untagged
@@ -568,6 +570,32 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   uiPosition: {fileID: 3543548982686742585}
+--- !u!114 &2088865780719896997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3916507953943694892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6f963b60cbcd9c43a18897fb7b2f06a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shapeCollider: {fileID: 3830830335127256897}
+--- !u!65 &3830830335127256897
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3916507953943694892}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.8422822, y: 2.0980554, z: 1.5783243}
+  m_Center: {x: 0.21790968, y: 1.1119728, z: -0.064324975}
 --- !u!1 &4307098297007473669
 GameObject:
   m_ObjectHideFlags: 0

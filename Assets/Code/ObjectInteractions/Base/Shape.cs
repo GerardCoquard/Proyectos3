@@ -8,6 +8,7 @@ public class Shape : MonoBehaviour
     LayerMask layer;
     public Collider shapeCollider;
     [NonSerialized] public ShapeType type;
+    List<GameObject> childs = new List<GameObject>();
 
     private void OnEnable() {
         Book.OnBookStateChanged += SetOutline;
@@ -17,6 +18,11 @@ public class Shape : MonoBehaviour
     }
     private void Start() {
         layer = gameObject.layer;
+        childs.Add(gameObject);
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            childs.Add(transform.GetChild(i).gameObject);
+        }
         if(shapeCollider==null) shapeCollider = GetComponent<Collider>();
         switch (shapeCollider)
         {
@@ -37,10 +43,22 @@ public class Shape : MonoBehaviour
     public void Shift() {
         Book.instance.Shapehift(this,shapeCollider.bounds.extents);
     }
-    void SetOutline(bool state)
+    public void SetOutline(bool state)
     {
-        if(state) gameObject.layer = LayerMask.NameToLayer("Outline");
-        else gameObject.layer = layer;
+        if(state)
+        {
+            foreach (GameObject child in childs)
+            {
+                child.layer = LayerMask.NameToLayer("Outline");
+            }
+        }
+        else
+        {
+            foreach (GameObject child in childs)
+            {
+                child.layer = layer;
+            }
+        }
     }
     public void SetSelected()
     {
