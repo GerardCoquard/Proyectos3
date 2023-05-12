@@ -65,8 +65,6 @@ public class CameraController : MonoBehaviour
         HandlePosition();
         HandlePlayerOnCamera();
         HandleCurrentRail();
-        HandleZoomOnPlayer();
-
     }
 
     private void HandleCurrentRail()
@@ -86,10 +84,6 @@ public class CameraController : MonoBehaviour
     {
         //Set the limits of the camera and move the camera through the rails based on the position of the player
         if (transitioning) return;
-
-        float targetDistance = lookAt.position.z - myCamera.transform.position.z;
-        float distanceIncrement = (targetDistance - previousDistance);
-        previousDistance = targetDistance;
 
         Vector3 directionToTarget = (lookAt.position - transform.position).normalized;
         Vector3 desiredPos = lookAt.position -  directionToTarget * desiredDistance;
@@ -124,17 +118,6 @@ public class CameraController : MonoBehaviour
         }
 
     }
-
-    private void HandleZoomOnPlayer()
-    {
-
-
-        
-
-
-
-    }
-
 
     public void ChangeLimits(Transform fp, Transform lp)
     {

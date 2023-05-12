@@ -36,6 +36,14 @@ public class DialogueDisplay : MonoBehaviour
         finalScale = initialScale * finalScaleMultiplier;
         distanceBetweenScales = Vector3.Distance(initialScale, finalScale);
     }
+    private void Update()
+    {
+        if (!isTextFinished)
+        {
+
+            dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? WorldScreenUI.instance.WorldPosToScreen(interactablePos.position) : WorldScreenUI.instance.WorldPosToScreen(PlayerController.instance.dialogueSpawnReference.position);
+        }
+    }
     private void OnEnable()
     {
         InputManager.GetAction("Push").action += Interact;
@@ -58,7 +66,7 @@ public class DialogueDisplay : MonoBehaviour
                 currentState = DIALOGUE_STATE.DEFAULT;
                 NextSentence();
             }
-            else if(!onAnimation)
+            else if (!onAnimation)
             {
                 switch (currentState)
                 {
@@ -123,7 +131,7 @@ public class DialogueDisplay : MonoBehaviour
     }
 
     IEnumerator Type()
-    {        
+    {
         onAnimation = false;
         foreach (char letter in LocalizationManager.GetLocalizedValue(currentNode.textID).ToCharArray())
         {
