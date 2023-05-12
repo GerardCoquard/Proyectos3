@@ -3,10 +3,8 @@ using UnityEngine;
 
 public class MoveObject : MonoBehaviour
 {
-    [SerializeField] Transform platform;
-    [SerializeField] Transform initialPosition;
     [SerializeField] Transform finalPosition;
-    [SerializeField] float timeToReachDestination;
+    [SerializeField] float timeToReach;
     Vector3 initPos;
     Vector3 finalPos;
     float distanceBetweenPositions;
@@ -14,9 +12,8 @@ public class MoveObject : MonoBehaviour
 
     private void Start()
     {
-        initPos = initialPosition.position;
+        initPos = transform.position;
         finalPos = finalPosition.position;
-        platform.position = initPos;
         distanceBetweenPositions = Vector3.Distance(initPos, finalPos);
     }
     public void Move()
@@ -33,31 +30,31 @@ public class MoveObject : MonoBehaviour
     }
     IEnumerator MoveCoroutine()
     {
-        float distanceToTarget = Vector3.Distance(platform.position, finalPos);
-        float time = distanceToTarget / distanceBetweenPositions * timeToReachDestination;
-        Vector3 _initPos = platform.position;
+        float distanceToTarget = Vector3.Distance(transform.position, finalPos);
+        float time = distanceToTarget / distanceBetweenPositions * timeToReach;
+        Vector3 _initPos = transform.position;
         float timer = 0f;
         while (timer<time)
         {
-            platform.position = Vector3.Lerp(_initPos, finalPos, timer / time);
+            transform.position = Vector3.Lerp(_initPos, finalPos, timer / time);
             timer += Time.deltaTime;
             yield return null;
         }
-        platform.position = finalPos;
+        transform.position = finalPos;
     }
     IEnumerator ResetObjectCoroutine()
     {
-        float distanceToTarget = Vector3.Distance(platform.position, initPos);
-        float time = distanceToTarget / distanceBetweenPositions * timeToReachDestination;
-        Vector3 _initPos = platform.position;
+        float distanceToTarget = Vector3.Distance(transform.position, initPos);
+        float time = distanceToTarget / distanceBetweenPositions * timeToReach;
+        Vector3 _initPos = transform.position;
         float timer = 0f;
         while (timer<time)
         {
-            platform.position = Vector3.Lerp(_initPos, initPos, timer / time);
+            transform.position = Vector3.Lerp(_initPos, initPos, timer / time);
             timer += Time.deltaTime;
             yield return null;
         }
-        platform.position = initPos;
+        transform.position = initPos;
     }
     public void SetLocked(bool state)
     {

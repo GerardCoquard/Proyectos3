@@ -6,7 +6,7 @@ public class ResizeObject : MonoBehaviour
 {
     Vector3 initialScale;
     Vector3 finalScale;
-    public float timeToReachScale;
+    public float timeToReach;
     public float finalScaleMultiplier;
     float distanceBetweenScales;
     bool locked;
@@ -32,7 +32,7 @@ public class ResizeObject : MonoBehaviour
     IEnumerator ScaleCoroutine()
     {
         float distanceToScale = Vector3.Distance(transform.localScale, finalScale);
-        float time = distanceToScale / distanceBetweenScales * timeToReachScale;
+        float time = distanceToScale / distanceBetweenScales * timeToReach;
         Vector3 _initScale = transform.localScale;
         float timer = 0f;
         while (timer<time)
@@ -46,7 +46,7 @@ public class ResizeObject : MonoBehaviour
     IEnumerator ResetCoroutine()
     {
         float distanceToScale = Vector3.Distance(transform.localScale, initialScale);
-        float time = distanceToScale / distanceBetweenScales * timeToReachScale;
+        float time = distanceToScale / distanceBetweenScales * timeToReach;
         Vector3 _initScale = transform.localScale;
         float timer = 0f;
         while (timer<time)
