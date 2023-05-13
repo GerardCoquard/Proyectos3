@@ -9,14 +9,14 @@ public class RoomTrigger : MonoBehaviour
     public Transform firstLimitPos;
     public Transform lastLimitPos;
 
-    public Transform firstLimitRot;
-    public Transform lastLimitRot;
-
     public Transform yReference;
 
     public Rail newRail;
+    public Rail newAuxiliarRail;
     
     private Collider myCollider;
+
+    public Transform newZLimit;
 
 
     private void Start()
@@ -36,8 +36,8 @@ public class RoomTrigger : MonoBehaviour
     public void ChangeRoom()
     {
         myCollider.enabled = false;
-        CameraController.instance.ChangeLimits(firstLimitPos, lastLimitPos);
-        CameraController.instance.ChangeRail(newRail, yReference);
+        CameraController.instance.ChangeLimits(firstLimitPos, lastLimitPos, newZLimit.position.z);
+        CameraController.instance.ChangeRails(newRail, newAuxiliarRail, yReference);
         onRoomChanged?.Invoke();
         
     }

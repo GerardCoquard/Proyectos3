@@ -113,18 +113,21 @@ public class CameraController : MonoBehaviour
         if (angle > 180f) return Mathf.Max(angle, 360 + from);
         return Mathf.Min(angle, to);
     }
-    public void ChangeLimits(Transform fp, Transform lp)
+    public void ChangeLimits(Transform fp, Transform lp, float zLimit)
     {
         firstLimitPosition = fp == null ? firstLimitPosition : fp;
         lastLimitPosition = lp == null ? lastLimitPosition : lp;
+        nodeZLimit = zLimit;
 
         StartCoroutine(TransitionLerp());
     }
 
-    public void ChangeRail(Rail newRail, Transform yReference)
+    public void ChangeRails(Rail newRail, Rail newAuxiliar, Transform yReference)
     {
-        auxiliarRail = newRail;
+        auxiliarRail = newAuxiliar;
+        rail = newRail;
         maxYLevel = yReference;
+        currentRail = rail;
     }
     IEnumerator TransitionLerp()
     {
