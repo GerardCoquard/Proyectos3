@@ -8,8 +8,8 @@ public class CameraController : MonoBehaviour
 
     public static CameraController instance { get; private set; }
 
-    public Rail rail;
-    public Rail auxiliarRail;
+    public Rail bottomRail;
+    public Rail topRail;
     private Rail currentRail;
 
     public Transform lookAt;
@@ -50,7 +50,7 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         myCamera = GetComponent<Camera>();
-        currentRail = rail;
+        currentRail = bottomRail;
         lastPosition = transform.position;
     }
 
@@ -64,14 +64,14 @@ public class CameraController : MonoBehaviour
     private void HandleCurrentRail()
     {
 
-        if (!auxiliarRail) return;
+        if (!topRail) return;
         if (lookAt.position.y > maxYLevel.position.y)
         {
-            currentRail = auxiliarRail;
+            currentRail = topRail;
         }
         else
         {
-            currentRail = rail;
+            currentRail = bottomRail;
         }
     }
     private void HandlePosition()
@@ -124,10 +124,10 @@ public class CameraController : MonoBehaviour
 
     public void ChangeRails(Rail newRail, Rail newAuxiliar, Transform yReference)
     {
-        auxiliarRail = newAuxiliar;
-        rail = newRail;
+        topRail = newAuxiliar;
+        bottomRail = newRail;
         maxYLevel = yReference;
-        currentRail = rail;
+        currentRail = bottomRail;
     }
     IEnumerator TransitionLerp()
     {
