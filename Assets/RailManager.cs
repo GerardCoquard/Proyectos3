@@ -9,11 +9,15 @@ public class RailManager : MonoBehaviour
 
     public Transform yReference;
 
-    public Rail newRail;
-    public Rail newAuxiliarRail;
+    public Rail bottomRail;
+    public Rail topRail;
 
-    private void Start()
+    public Transform newZLimit;
+
+    public void SetNewRails()
     {
-        newRail = GetComponent<Rail>();
+        CameraController.instance.ChangeLimits(firstLimitPos, lastLimitPos, newZLimit.position.z);
+        CameraController.instance.ChangeRails(bottomRail, topRail, yReference);
     }
+
 }

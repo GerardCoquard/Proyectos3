@@ -569,6 +569,7 @@ MonoBehaviour:
   OnUnselected:
     m_PersistentCalls:
       m_Calls: []
+  uiPosition: {fileID: 0}
 --- !u!54 &143974897
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -967,12 +968,7 @@ MonoBehaviour:
   onRoomChanged:
     m_PersistentCalls:
       m_Calls: []
-  firstLimitPos: {fileID: 709240200}
-  lastLimitPos: {fileID: 1342781694}
-  firstLimitRot: {fileID: 1607454531}
-  lastLimitRot: {fileID: 0}
-  yReference: {fileID: 308091648}
-  newRail: {fileID: 543016321}
+  railManager: {fileID: 0}
 --- !u!4 &252937774
 Transform:
   m_ObjectHideFlags: 0
@@ -2083,19 +2079,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1402a664bbc1edd42ae64aca65a7a8a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rail: {fileID: 366554182}
-  auxiliarRail: {fileID: 0}
+  bottomRail: {fileID: 0}
+  topRail: {fileID: 0}
   lookAt: {fileID: 1669500684}
   maxYLevel: {fileID: 0}
   moveSpeed: 2
   zoomSpeed: 35
-  minFOV: 40
-  maxFOV: 55
   nodeZLimit: -12.43
   desiredDistance: 10
   firstLimitPosition: {fileID: 1881099329}
   lastLimitPosition: {fileID: 856193474}
-  limitXRotation: 50
+  maxXrotation: 50
+  minXRotation: -90
   timeToTransition: 1
 --- !u!1001 &570028810
 PrefabInstance:
@@ -2831,6 +2826,7 @@ MonoBehaviour:
   OnUnselected:
     m_PersistentCalls:
       m_Calls: []
+  uiPosition: {fileID: 0}
 --- !u!54 &756649275
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3172,6 +3168,7 @@ MonoBehaviour:
   OnUnselected:
     m_PersistentCalls:
       m_Calls: []
+  uiPosition: {fileID: 0}
 --- !u!65 &1211091935
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3296,12 +3293,7 @@ MonoBehaviour:
   onRoomChanged:
     m_PersistentCalls:
       m_Calls: []
-  firstLimitPos: {fileID: 0}
-  lastLimitPos: {fileID: 1342781694}
-  firstLimitRot: {fileID: 1607454531}
-  lastLimitRot: {fileID: 0}
-  yReference: {fileID: 0}
-  newRail: {fileID: 0}
+  railManager: {fileID: 0}
 --- !u!4 &1270695369
 Transform:
   m_ObjectHideFlags: 0
@@ -4508,6 +4500,7 @@ MonoBehaviour:
   OnUnselected:
     m_PersistentCalls:
       m_Calls: []
+  uiPosition: {fileID: 0}
 --- !u!54 &1883979949
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4547,6 +4540,7 @@ MonoBehaviour:
   OnUnselected:
     m_PersistentCalls:
       m_Calls: []
+  uiPosition: {fileID: 0}
 --- !u!54 &1927409965
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -5,18 +5,11 @@ using UnityEngine.Events;
 public class RoomTrigger : MonoBehaviour
 {
     public UnityEvent onRoomChanged;
-
-    public Transform firstLimitPos;
-    public Transform lastLimitPos;
-
-    public Transform yReference;
-
-    public Rail newRail;
-    public Rail newAuxiliarRail;
-    
+   
     private Collider myCollider;
 
-    public Transform newZLimit;
+    public RailManager railManager;
+
 
 
     private void Start()
@@ -36,8 +29,7 @@ public class RoomTrigger : MonoBehaviour
     public void ChangeRoom()
     {
         myCollider.enabled = false;
-        CameraController.instance.ChangeLimits(firstLimitPos, lastLimitPos, newZLimit.position.z);
-        CameraController.instance.ChangeRails(newRail, newAuxiliarRail, yReference);
+        railManager.SetNewRails();
         onRoomChanged?.Invoke();
         
     }
