@@ -15,7 +15,7 @@ public class PressurePlate : MonoBehaviour
     private void Start() {
         anim = GetComponentInChildren<Animator>();
         OnPressed.AddListener(()=> anim.SetBool("Pressed",true));
-        OnPressed.AddListener(()=> anim.SetBool("Pressed",false));
+        OnUnpressed.AddListener(()=> anim.SetBool("Pressed",false));
     }
     public bool IsPressed()
     {
