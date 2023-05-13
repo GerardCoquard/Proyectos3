@@ -115,8 +115,8 @@ public class CameraController : MonoBehaviour
     }
     public void ChangeLimits(Transform fp, Transform lp, float zLimit)
     {
-        firstLimitPosition = fp == null ? firstLimitPosition : fp;
-        lastLimitPosition = lp == null ? lastLimitPosition : lp;
+        firstLimitPosition = fp;
+        lastLimitPosition = lp;
         nodeZLimit = zLimit;
 
         StartCoroutine(TransitionLerp());

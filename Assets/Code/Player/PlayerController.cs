@@ -222,10 +222,10 @@ public class PlayerController : MonoBehaviour
     {
         if(currentObjectPushing == null) return;
 
+        transform.SetParent(null);
         currentObjectPushing.NotPusheable();
         currentObjectPushing = null;
         characterController.enabled = true;
-        transform.SetParent(null);
     }
     private void Push()
     {

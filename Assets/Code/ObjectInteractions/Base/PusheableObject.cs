@@ -19,6 +19,7 @@ public class PusheableObject : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezePositionY;
         rb.freezeRotation = true;
         rb.useGravity = false;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
     public void MakePusheable()
     {
