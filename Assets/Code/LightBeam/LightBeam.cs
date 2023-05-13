@@ -14,8 +14,9 @@ public class LightBeam
     List<LightReciever> currentLightRecivers = new List<LightReciever>();
     public int maxBounces;
     public RayColor rayType;
+    public float width;
 
-    public LightBeam(Vector3 pos, Vector3 dir, Material material, LayerMask layerMask, int maxBounces, RayColor _rayType)
+    public LightBeam(Vector3 pos, Vector3 dir, Material material, LayerMask layerMask, int maxBounces, RayColor _rayType, float width)
     {
         lineRenderer = new LineRenderer();
         lightGameObject = new GameObject();
@@ -26,10 +27,11 @@ public class LightBeam
         this.maxBounces = maxBounces;
         this.material = material;
         this.rayType = _rayType;
+        this.width = width;
 
         lineRenderer = lightGameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
-        lineRenderer.startWidth = 0.1f;
-        lineRenderer.endWidth = 0.1f;
+        lineRenderer.startWidth = width;
+        lineRenderer.endWidth = width;
         lineRenderer.material = material;
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
@@ -47,10 +49,11 @@ public class LightBeam
         this.maxBounces = beam.maxBounces;
         this.material = beam.material;
         this.rayType = beam.rayType;
+        this.width = beam.width;
 
         lineRenderer = lightGameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
-        lineRenderer.startWidth = 0.1f;
-        lineRenderer.endWidth = 0.1f;
+        lineRenderer.startWidth = width;
+        lineRenderer.endWidth = width;
         lineRenderer.material = beam.material;
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
@@ -71,13 +74,13 @@ public class LightBeam
         Ray ray = new Ray(pos, dir);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 50, layerMask,QueryTriggerInteraction.Ignore) && lightIndices.Count < maxBounces)
+        if (Physics.Raycast(ray, out hit, 300, layerMask,QueryTriggerInteraction.Ignore) && lightIndices.Count < maxBounces)
         {
             CheckHit(hit, dir, renderer);
         }
         else
         {
-            lightIndices.Add(ray.GetPoint(50));
+            lightIndices.Add(ray.GetPoint(300));
         }
     }
 
