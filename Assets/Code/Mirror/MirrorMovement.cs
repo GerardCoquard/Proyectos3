@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class MirrorMovement : MonoBehaviour
 {
-    public Transform target;
+    Transform target;
     public Transform mirror;
 
+    void Start()
+    {
+        target = Camera.main.transform;
+    }
     void Update()
     {
        Vector3 localTarget = mirror.InverseTransformPoint(target.position);     
