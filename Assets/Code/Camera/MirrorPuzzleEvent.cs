@@ -28,6 +28,7 @@ public class MirrorPuzzleEvent : MonoBehaviour
     {
         if(other.tag == "Player" && !activated)
         {
+            
             activated = true;
             StartEvent();
         }
