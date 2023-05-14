@@ -25,11 +25,8 @@ public class Rope : MonoBehaviour
     }
     private void Start() {
         holderPusheable = holder.GetComponent<PusheableObject>();
-        Transform[] childs = transform.GetComponentsInChildren<Transform>();
-        foreach (Transform child in childs)
-        {
-            child.SetParent(null);
-        }
+        holder.SetParent(null);
+        startPos.SetParent(null);
         transform.position = Vector3.zero;
         layerMask = Physics.AllLayers;
         layerMask &= ~(1 << LayerMask.NameToLayer("Rope"));
@@ -77,7 +74,7 @@ public class Rope : MonoBehaviour
         RaycastHit hit;
         Vector3 pointPos = ropePositions[ropePositions.Count - 3].point;
         Vector3 lastPointToPlayer = holder.position-ropePositions[ropePositions.Count - 2].point;
-        Vector3 lastPoint = ropePositions[ropePositions.Count - 2].point + lastPointToPlayer.normalized*0.5f + lastPointToPlayer*0.3f;
+        Vector3 lastPoint = ropePositions[ropePositions.Count - 2].point + lastPointToPlayer*0.2f;
         if (!Physics.Linecast(holder.position, pointPos, out hit,layerMask,QueryTriggerInteraction.Ignore))
         {
             if(!Physics.Linecast(lastPoint, pointPos, out hit,layerMask,QueryTriggerInteraction.Ignore))
