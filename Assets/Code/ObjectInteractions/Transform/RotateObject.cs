@@ -13,7 +13,7 @@ public class RotateObject : MonoBehaviour
 
     private void Start()
     {
-        initialRotation = transform.rotation;
+        initialRotation = transform.localRotation;
         finalRotation = Quaternion.Euler(_finalRotation);
         angleBetweenRotations = Quaternion.Angle(initialRotation,finalRotation);
     }
@@ -31,31 +31,35 @@ public class RotateObject : MonoBehaviour
     }
     IEnumerator RotateCoroutine()
     {
-        float angleToRotation =  Quaternion.Angle(transform.rotation, finalRotation);
+        float angleToRotation =  Quaternion.Angle(transform.localRotation, finalRotation);
         float time = angleToRotation / angleBetweenRotations * timeToReach;
-        Quaternion _initRot = transform.rotation;
+        Quaternion _initRot = transform.localRotation;
         float timer = 0f;
         while (timer<time)
         {
-            transform.rotation = Quaternion.Lerp(_initRot,finalRotation,timer/time);
+            transform.localRotation = Quaternion.Lerp(_initRot,finalRotation,timer/time);
             timer += Time.deltaTime;
             yield return null;
         }
-        transform.rotation = finalRotation;
+        transform.localRotation = finalRotation;
     }
     IEnumerator ResetCoroutine()
     {
-        float angleToRotation =  Quaternion.Angle(transform.rotation, initialRotation);
+        float angleToRotation =  Quaternion.Angle(transform.localRotation, initialRotation);
         float time = angleToRotation / angleBetweenRotations * timeToReach;
-        Quaternion _initRot = transform.rotation;
+        Quaternion _initRot = transform.localRotation;
         float timer = 0f;
         while (timer<time)
         {
-            transform.rotation = Quaternion.Lerp(_initRot,initialRotation,timer/time);
+            transform.localRotation = Quaternion.Lerp(_initRot,initialRotation,timer/time);
             timer += Time.deltaTime;
             yield return null;
         }
-        transform.rotation = initialRotation;
+        transform.localRotation = initialRotation;
+    }
+    public void SetFinalRotation()
+    {
+        transform.localRotation = finalRotation;
     }
     
     public void SetLocked(bool state)

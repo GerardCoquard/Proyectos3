@@ -15,8 +15,9 @@ public class LightBeam
     public int maxBounces;
     public RayColor rayType;
     public float width;
+    public Transform parent;
 
-    public LightBeam(Vector3 pos, Vector3 dir, Material material, LayerMask layerMask, int maxBounces, RayColor _rayType, float width)
+    public LightBeam(Vector3 pos, Vector3 dir, Material material, LayerMask layerMask, int maxBounces, RayColor _rayType, float width, Transform parent)
     {
         lineRenderer = new LineRenderer();
         lightGameObject = new GameObject();
@@ -28,6 +29,7 @@ public class LightBeam
         this.material = material;
         this.rayType = _rayType;
         this.width = width;
+        this.parent = parent;
 
         lineRenderer = lightGameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
         lineRenderer.startWidth = width;
@@ -35,6 +37,7 @@ public class LightBeam
         lineRenderer.material = material;
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
+        lightGameObject.transform.SetParent(parent);
 
         CastLight(position, direction, lineRenderer);
     }
@@ -57,6 +60,7 @@ public class LightBeam
         lineRenderer.material = beam.material;
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
+        lightGameObject.transform.SetParent(beam.parent);
     }
     public void ExecuteRay(Vector3 pos, Vector3 dir, LineRenderer renderer)
     {

@@ -6,7 +6,6 @@ public class RotatingPlatform : MonoBehaviour
 {
     public List<Collider> noRotate = new List<Collider>();
     private List<PusheableObject> pushObjects = new List<PusheableObject>();
-    public Transform myPlatform;
 
     public float degreesToRotate;
     public float rotationTime = 10f;
@@ -17,7 +16,7 @@ public class RotatingPlatform : MonoBehaviour
         if (!isRotating)
         {
 
-            StartCoroutine(RotateObject(myPlatform.rotation, myPlatform.rotation * Quaternion.Euler(0, degreesToRotate, 0), rotationTime));
+            StartCoroutine(RotateObject(transform.rotation, transform.rotation * Quaternion.Euler(0, degreesToRotate, 0), rotationTime));
         }
     }
     public void RotatePlatformLeft()
@@ -25,21 +24,40 @@ public class RotatingPlatform : MonoBehaviour
         if (!isRotating)
         {
 
-            StartCoroutine(RotateObject(myPlatform.rotation, myPlatform.rotation * Quaternion.Euler(0, -degreesToRotate, 0), rotationTime));
+            StartCoroutine(RotateObject(transform.rotation, transform.rotation * Quaternion.Euler(0, -degreesToRotate, 0), rotationTime));
         }
     }
 
     IEnumerator RotateObject(Quaternion startRotation, Quaternion endRotation, float duration)
     {
+        for (int i = 0; i < pushObjects.Count; i++)
+        {
+            if(pushObjects[i] == null)
+            {
+                pushObjects.RemoveAt(i);
+                i++;
+            }
+            else pushObjects[i].rb.interpolation = RigidbodyInterpolation.None;
+        }
+
         float t = 0f;
         isRotating = true;
         while (t < duration)
         {
             t += Time.deltaTime;
-            myPlatform.rotation = Quaternion.Lerp(startRotation, endRotation, t / duration);
+            transform.rotation = Quaternion.Lerp(startRotation, endRotation, t / duration);
             yield return null;
         }
         isRotating = false;
+        for (int i = 0; i < pushObjects.Count; i++)
+        {
+            if(pushObjects[i] == null)
+            {
+                pushObjects.RemoveAt(i);
+                i++;
+            }
+            else pushObjects[i].rb.interpolation = RigidbodyInterpolation.Interpolate;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -48,7 +66,7 @@ public class RotatingPlatform : MonoBehaviour
         PusheableObject pusheableObject = other.GetComponentInParent<PusheableObject>();
         if (pusheableObject != null) 
         {
-            pusheableObject.transform.SetParent(myPlatform);
+            pusheableObject.transform.SetParent(transform);
             pushObjects.Add(pusheableObject);
         }
 

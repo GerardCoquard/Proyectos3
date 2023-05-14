@@ -36,7 +36,6 @@ public class DialogueDisplay : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(instance);
         }
         else Destroy(this);
 

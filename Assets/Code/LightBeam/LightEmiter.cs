@@ -11,7 +11,7 @@ public class LightEmiter : MonoBehaviour
 
     private void Start()
     {
-        beam = new LightBeam(transform.position, transform.forward, material, Physics.AllLayers,maxBounces,rayColor,width);
+        beam = new LightBeam(transform.position, transform.forward, material, Physics.AllLayers,maxBounces,rayColor,width, transform);
     }
 
     private void Update()

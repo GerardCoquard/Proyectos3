@@ -8,7 +8,8 @@ public class PusheableObject : MonoBehaviour
 {
     public UnityEvent OnSelected;
     public UnityEvent OnUnselected;
-    Rigidbody rb;
+    [NonSerialized]
+    public Rigidbody rb;
     bool constrained;
     Vector3 constrainDirection;
     public Transform uiPosition;

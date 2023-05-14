@@ -8,7 +8,7 @@ public class Interactable : MonoBehaviour
     public Transform textDisplayPos;
     public DialogueNode startNode;
     private bool playerIn;
-
+    public UnityEvent OnEnd;
     private void Update()
     {
         
@@ -26,12 +26,13 @@ public class Interactable : MonoBehaviour
     {
         if (context.performed && PlayerController.instance.CanInteract())
         {
+            DialogueDisplay.instance.onEndEvent = OnEnd;
             WorldScreenUI.instance.SetDialogue(startNode, textDisplayPos);
         }
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player" && !playerIn)
         {
             InputManager.GetAction("Push").action += DialogueInteract;
             playerIn = true;
@@ -40,7 +41,7 @@ public class Interactable : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player" && playerIn)
         {
             InputManager.GetAction("Push").action -= DialogueInteract;
             playerIn=false;
