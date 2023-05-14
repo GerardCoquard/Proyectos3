@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        if(instance==null)
+        if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(instance);
@@ -43,40 +43,43 @@ public class PlayerController : MonoBehaviour
         else Destroy(this);
         SetUpJumpVariables();
     }
-    private void OnEnable() {
+    private void OnEnable()
+    {
         InputManager.GetAction("Move").action += OnMovementInput;
         InputManager.GetAction("ChangeMode").action += OnChangeModeInput;
         InputManager.GetAction("Push").action += OnPushInput;
         InputManager.GetAction("Jump").action += OnJumpInput;
     }
-    private void OnDisable() {
+    private void OnDisable()
+    {
         InputManager.GetAction("Move").action -= OnMovementInput;
         InputManager.GetAction("ChangeMode").action -= OnChangeModeInput;
         InputManager.GetAction("Push").action -= OnPushInput;
         InputManager.GetAction("Jump").action -= OnJumpInput;
     }
-    private void OnDrawGizmos() {
+    private void OnDrawGizmos()
+    {
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(pushStartDetectionPoint.position,pushStartDetectionPoint.position+transform.forward*closeEnoughtDetection);
+        Gizmos.DrawLine(pushStartDetectionPoint.position, pushStartDetectionPoint.position + transform.forward * closeEnoughtDetection);
     }
     void OnPushInput(InputAction.CallbackContext context)
     {
-        if(context.started)
+        if (context.started)
         {
-            if(currentObjectPushing!=null) StopPushing();
+            if (currentObjectPushing != null) StopPushing();
             else CheckPush();
         }
     }
     void OnChangeModeInput(InputAction.CallbackContext context)
     {
-        if(context.started)
+        if (context.started)
         {
             SwapControl();
         }
     }
     private void OnJumpInput(InputAction.CallbackContext context)
     {
-        if(context.started) Jump();
+        if (context.started) Jump();
     }
 
     private void OnMovementInput(InputAction.CallbackContext context)
@@ -88,10 +91,10 @@ public class PlayerController : MonoBehaviour
     }
     public void SwapControl()
     {
-        if(isJumping) return;
-        
-        if(bookOpened)
+        if (isJumping) return;
+        if (bookOpened)
         {
+            if (CanInteract()) return;
             Book.instance.DeactivateBook();
             InputManager.GetAction("Move").action += OnMovementInput;
             InputManager.GetAction("Push").action += OnPushInput;
@@ -99,7 +102,7 @@ public class PlayerController : MonoBehaviour
             bookOpened = false;
             characterController.enabled = true;
             CameraController.instance.ChangeFocus(transform);
-            if(InputManager.GetAction("Move").GetEnabled())
+            if (InputManager.GetAction("Move").GetEnabled())
             {
                 Vector2 tempDirection = InputManager.GetAction("Move").context.ReadValue<Vector2>();
                 movement.x = tempDirection.x * maxLinealSpeed;
@@ -152,7 +155,7 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        if(characterController.enabled)
+        if (characterController.enabled)
         {
             HandleRotation();
             CollisionFlags collisionFlags = characterController.Move(movement * Time.deltaTime);
@@ -163,43 +166,43 @@ public class PlayerController : MonoBehaviour
     }
     private void Jump()
     {
-        if (CanJump()) 
+        if (CanJump())
         {
             movement.y = jumpForce * .5f;
             isJumping = true;
         }
-        
+
     }
     void CheckPushAvailable()
     {
         PusheableObject pusheable;
-        if(CanInteract() && PusheableDetected(out pusheable))
+        if (CanInteract() && PusheableDetected(out pusheable))
         {
-            WorldScreenUI.instance.SetIcon(IconType.Push,pusheable.uiPosition.position);
+            WorldScreenUI.instance.SetIcon(IconType.Push, pusheable.uiPosition.position);
         }
         else WorldScreenUI.instance.HideIcon(IconType.Push);
     }
     public bool CanInteract()
     {
-        if(isJumping) return false;
-        if(currentObjectPushing!=null) return false;
-        if(bookOpened) return false;
-        if(!characterController.enabled) return false; 
+        if (isJumping) return false;
+        if (currentObjectPushing != null) return false;
+        if (bookOpened) return false;
+        if (!characterController.enabled) return false;
         return true;
     }
     bool PusheableDetected(out PusheableObject pusheable)
     {
         pusheable = null;
 
-        if(isJumping) return false;
+        if (isJumping) return false;
 
         Ray ray = new Ray(pushStartDetectionPoint.position, transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, closeEnoughtDetection, Physics.AllLayers,QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(ray, out hit, closeEnoughtDetection, Physics.AllLayers, QueryTriggerInteraction.Ignore))
         {
             pusheable = hit.collider.GetComponentInParent<PusheableObject>();
-            if(pusheable!=null && Vector3.Dot(transform.forward,-hit.normal) >= angleDot)
+            if (pusheable != null && Vector3.Dot(transform.forward, -hit.normal) >= angleDot)
             {
                 transform.forward = -hit.normal;
                 return true;
@@ -210,7 +213,7 @@ public class PlayerController : MonoBehaviour
     void CheckPush()
     {
         PusheableObject pusheable;
-        if (PusheableDetected(out pusheable) && !isJumping)
+        if (PusheableDetected(out pusheable) && CanInteract())
         {
             currentObjectPushing = pusheable;
             currentObjectPushing.MakePusheable();
@@ -220,7 +223,7 @@ public class PlayerController : MonoBehaviour
     }
     void StopPushing()
     {
-        if(currentObjectPushing == null) return;
+        if (currentObjectPushing == null) return;
 
         transform.SetParent(null);
         currentObjectPushing.NotPusheable();
@@ -229,12 +232,12 @@ public class PlayerController : MonoBehaviour
     }
     private void Push()
     {
-        currentObjectPushing.AddForceTowardsDirection(pushForce, new Vector2(movement.x,movement.z));
+        currentObjectPushing.AddForceTowardsDirection(pushForce, new Vector2(movement.x, movement.z));
     }
 
     private bool CanJump()
     {
-        return currentObjectPushing==null && !isJumping;
+        return currentObjectPushing == null && !isJumping;
     }
 
     void SetGravity()
@@ -260,5 +263,4 @@ public class PlayerController : MonoBehaviour
         }
     }
 }
-
 

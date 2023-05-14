@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7742908393942476232}
   - component: {fileID: 7742908393942476231}
   - component: {fileID: 7742908393942476235}
+  - component: {fileID: 4699852882333975315}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -131,8 +132,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1402a664bbc1edd42ae64aca65a7a8a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rail: {fileID: 0}
-  auxiliarRail: {fileID: 0}
+  bottomRail: {fileID: 0}
+  topRail: {fileID: 0}
   lookAt: {fileID: 0}
   maxYLevel: {fileID: 0}
   moveSpeed: 5
@@ -144,3 +145,16 @@ MonoBehaviour:
   maxXrotation: 50
   minXRotation: -90
   timeToTransition: 1
+--- !u!114 &4699852882333975315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7742908393942476230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b6d32caf3d87b54181a1214596a6325, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeMagnitude: 2
