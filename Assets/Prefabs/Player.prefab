@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1371775501440019628}
   - component: {fileID: 4946602187093425964}
   - component: {fileID: 4737056310838946826}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Torso_LP00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,8 +99,7 @@ GameObject:
   - component: {fileID: 828900542119977039}
   - component: {fileID: 828900542119977032}
   - component: {fileID: 828900542119977033}
-  - component: {fileID: 1341484743635244779}
-  m_Layer: 3
+  m_Layer: 10
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -163,20 +162,6 @@ MonoBehaviour:
   pushForce: 300
   angleDot: 0.8
   pushStartDetectionPoint: {fileID: 828900542909014589}
---- !u!136 &1341484743635244779
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 828900542119977034}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1.8
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!1 &828900542909014590
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,7 +204,7 @@ GameObject:
   - component: {fileID: 4241356768157622937}
   - component: {fileID: 291161285737070554}
   - component: {fileID: 5236611101647942315}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Mochila_LP00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -304,7 +289,7 @@ GameObject:
   - component: {fileID: 3826507998128542375}
   - component: {fileID: 6785292767083803486}
   - component: {fileID: 3572543090325955644}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Gafas_LP00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -390,7 +375,7 @@ GameObject:
   - component: {fileID: 1037546796729944292}
   - component: {fileID: 6449736020623147383}
   - component: {fileID: 3047499015698886768}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Hat_LP00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -475,7 +460,7 @@ GameObject:
   - component: {fileID: 5038896947686194243}
   - component: {fileID: 2095673826875331254}
   - component: {fileID: 6100805197273859186}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bota redonda left_LP00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -557,9 +542,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3475749445404808867}
-  m_Layer: 0
+  - component: {fileID: 5589821105457276404}
+  m_Layer: 3
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -587,6 +573,20 @@ Transform:
   m_Father: {fileID: 828900542119977039}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!136 &5589821105457276404
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5792282764364684159}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1.8
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!1 &6079455530801074631
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,7 +598,7 @@ GameObject:
   - component: {fileID: 5391662010513648436}
   - component: {fileID: 7338872091942452381}
   - component: {fileID: 1008872653788613994}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Bota redonda right_LP00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -682,7 +682,7 @@ GameObject:
   - component: {fileID: 7487910628643245188}
   - component: {fileID: 3077263603512035585}
   - component: {fileID: 5473047583977200913}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cintas mochilaI_LP00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -765,7 +765,7 @@ GameObject:
   - component: {fileID: 2776153303723044703}
   - component: {fileID: 365426825286259479}
   - component: {fileID: 7026933309894246245}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cintas mochilaD_LP00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
