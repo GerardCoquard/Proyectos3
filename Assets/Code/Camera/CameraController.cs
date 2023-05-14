@@ -84,7 +84,7 @@ public class CameraController : MonoBehaviour
         lastPosition.y = currentRail.ProjectPositionOnRail(lookAt.position).y;
         lastPosition.x = currentRail.ProjectPositionOnRail(lookAt.position).x;
 
-        lastPosition.x = Mathf.Clamp(lastPosition.x, firstLimitPosition.position.x, lastLimitPosition.position.x);
+        //lastPosition.x = Mathf.Clamp(lastPosition.x, firstLimitPosition.position.x, lastLimitPosition.position.x);
         lastPosition.z = desiredPosZ;
         lastPosition.z = Mathf.Clamp(lastPosition.z, nodeZLimit, lastPosition.z);
 
