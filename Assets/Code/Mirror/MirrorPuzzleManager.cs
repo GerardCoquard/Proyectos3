@@ -12,6 +12,7 @@ public class MirrorPuzzleManager : MonoBehaviour
     void Start()
     {
         mirrorObjects = FindObjectsOfType<MirrorObject>();
+        
         SetDistance();
     }
 
@@ -42,7 +43,6 @@ public class MirrorPuzzleManager : MonoBehaviour
     {
         if (!isCompleted)
         {
-            Debug.Log("COMPLETED");
             eventOnComplete?.Invoke();
         }
     }

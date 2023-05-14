@@ -21,7 +21,7 @@ public class MirrorObject : MonoBehaviour
             foreach (WorldObject item in worldObjects)
             {
                 float distance = Vector3.Distance(item.transform.position, gameObject.transform.position);
-                if (distance < distanceToDetect && item.id == id)
+                if (distance < distanceToDetect)
                 {
                     isValid = true;
                 }
@@ -29,6 +29,7 @@ public class MirrorObject : MonoBehaviour
                 {
                     isValid = false;
                 }
+
             }
         }
     }
@@ -36,7 +37,11 @@ public class MirrorObject : MonoBehaviour
     {
         if (other.GetComponent<WorldObject>() != null)
         {
-            worldObjects.Add(other.GetComponent<WorldObject>());
+            if (other.GetComponent<WorldObject>().id == id)
+            {
+
+                worldObjects.Add(other.GetComponent<WorldObject>());
+            }
         }
     }
     public void SetDistance(float d)
