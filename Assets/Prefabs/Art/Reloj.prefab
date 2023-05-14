@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6272809663768887800}
   - component: {fileID: 6963309061745544797}
   - component: {fileID: 5135884763177613975}
+  - component: {fileID: 1828323159558360472}
   m_Layer: 0
   m_Name: Reloj
   m_TagString: Untagged
@@ -84,3 +85,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1828323159558360472
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649194911698869058}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.018707989, y: 0.019305786, z: 0.055300016}
+  m_Center: {x: 0.0000000097788915, y: -0.0000000019351285, z: 0.027650006}

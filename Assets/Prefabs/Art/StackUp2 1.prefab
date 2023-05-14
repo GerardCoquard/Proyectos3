@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1171385031057751059}
   - component: {fileID: 2877311909896860598}
   - component: {fileID: 3013375151294332}
+  - component: {fileID: 2716177262150037076}
   m_Layer: 0
   m_Name: StackUp2 1
   m_TagString: Untagged
@@ -84,3 +85,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2716177262150037076
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948449873386301097}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.5472306, y: 0.6083726, z: 0.64005786}
+  m_Center: {x: -0.7921338, y: 0.014121943, z: 0.02218404}
