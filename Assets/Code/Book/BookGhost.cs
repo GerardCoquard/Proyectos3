@@ -24,7 +24,6 @@ public class BookGhost : MonoBehaviour
         InputManager.GetAction("Jump").action += OnUpInput;
         InputManager.GetAction("Down").action += OnDownInput;
         InputManager.GetAction("Push").action += OnInteractInput;
-        WorldScreenUI.instance.HideIcon(IconType.Book);
         movement = Vector2.zero;
         up = false;
         down = false;
