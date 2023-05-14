@@ -33,6 +33,7 @@ public class MirrorPuzzleManager : MonoBehaviour
         {
             foreach (MirrorObject item in mirrorObjects)
             {
+                Debug.Log(item + " :" + item.GetIsValid());
                 if (!item.GetIsValid()) return;
             }
             CompletePuzzle();
@@ -43,7 +44,9 @@ public class MirrorPuzzleManager : MonoBehaviour
     {
         if (!isCompleted)
         {
+            Debug.Log("IN COMPLETE");
             eventOnComplete?.Invoke();
+            isCompleted = true;
         }
     }
 }
