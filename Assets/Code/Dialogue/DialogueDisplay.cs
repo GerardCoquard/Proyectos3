@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class DialogueDisplay : MonoBehaviour
 {
@@ -19,18 +20,26 @@ public class DialogueDisplay : MonoBehaviour
     private bool isTextFinished;
     private bool onAnimation;
 
-
     Vector3 initialScale;
     Vector3 finalScale;
     public float timeToReachScale;
     public float finalScaleMultiplier;
     float distanceBetweenScales;
 
-    public static Action<string> OnEndDialogue;
+    public UnityEvent onEndEvent;
     private DIALOGUE_STATE currentState = DIALOGUE_STATE.DEFAULT;
+
+    public static DialogueDisplay instance;
 
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
+        else Destroy(this);
+
         dialogueRender.SetActive(false);
         initialScale = dialogueRender.transform.localScale;
         finalScale = initialScale * finalScaleMultiplier;
@@ -156,7 +165,7 @@ public class DialogueDisplay : MonoBehaviour
     private void EndDialogue()
     {
         PlayerController.instance.characterController.enabled = true;
-        OnEndDialogue?.Invoke(dialogueID);
+        onEndEvent?.Invoke();
         dialogueRender.gameObject.SetActive(false);
         this.enabled = false;
     }
