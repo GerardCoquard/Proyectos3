@@ -4,20 +4,13 @@ using UnityEngine;
 
 public class RailManager : MonoBehaviour
 {
-    public Transform firstLimitPos;
-    public Transform lastLimitPos;
+    public BoxCollider box;
+    public float extraHeight;
+    public float maxAngle;
 
-    public Transform yReference;
-
-    public Rail bottomRail;
-    public Rail topRail;
-
-    public Transform newZLimit;
-
-    public void SetNewRails()
+    public void SetRoomParams()
     {
-        CameraController.instance.ChangeLimits(firstLimitPos, lastLimitPos, newZLimit.position.z);
-        CameraController.instance.ChangeRails(bottomRail, topRail, yReference);
+        //CameraController.instance.ChangeRoom(box, extraHeight, maxAngle);
     }
 
 }

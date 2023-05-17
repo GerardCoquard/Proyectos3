@@ -7,31 +7,36 @@ public class CameraController : MonoBehaviour
 {
 
     public static CameraController instance { get; private set; }
-
+    public RoomTrigger firstRoom;
+    BoxCollider box;
+    public float speed;
+    public float height;
+    public float depth;
+    public float offset;
+    float extraDepth;
+    float extraHeight;
+    float maxAngle;
+    Transform target;
+    float xMin;
+    float xMax;
+    float zMin;
+    float zMax;
+    //
     public Rail bottomRail;
     public Rail topRail;
     private Rail currentRail;
-
     public Transform lookAt;
     public Transform maxYLevel;
     public float moveSpeed = 5.0f;
-
     public float zoomSpeed = 5f;
-
     public float nodeZLimit;
-
     public float desiredDistance = 10f;
     private Vector3 lastPosition;
-
-
     private Camera myCamera;
-
     public Transform firstLimitPosition;
     public Transform lastLimitPosition;
-
     public float maxXrotation = 50f;
     public float minXRotation = -90f;
-
     private bool transitioning;
     public float timeToTransition;
 
@@ -50,46 +55,24 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         myCamera = GetComponent<Camera>();
-        currentRail = bottomRail;
-        lastPosition = transform.position;
+        ChangeFocus(PlayerController.instance.transform);
+        firstRoom.ChangeRoom();
     }
 
     private void Update()
     {
         HandlePosition();
         HandlePlayerOnCamera();
-        HandleCurrentRail();
-    }
-
-    private void HandleCurrentRail()
-    {
-
-        if (!topRail) return;
-        if (lookAt.position.y > maxYLevel.position.y)
-        {
-            currentRail = topRail;
-        }
-        else
-        {
-            currentRail = bottomRail;
-        }
     }
     private void HandlePosition()
     {
         //Set the limits of the camera and move the camera through the rails based on the position of the player
-        if (transitioning) return;
-
-        float desiredPosZ = lookAt.position.z - desiredDistance;
-
-        lastPosition.y = currentRail.ProjectPositionOnRail(lookAt.position).y;
-        lastPosition.x = currentRail.ProjectPositionOnRail(lookAt.position).x;
-
-        //lastPosition.x = Mathf.Clamp(lastPosition.x, firstLimitPosition.position.x, lastLimitPosition.position.x);
-        lastPosition.z = desiredPosZ;
-        lastPosition.z = Mathf.Clamp(lastPosition.z, nodeZLimit, lastPosition.z);
-
-
-        transform.position = Vector3.Lerp(transform.position, lastPosition, Time.deltaTime * moveSpeed);
+        Vector3 targetPos = target.position + new Vector3(PlayerController.instance.GetDirection().x,0,PlayerController.instance.GetDirection().y) * offset;
+        float xPos = Mathf.Clamp(targetPos.x,xMin,xMax);
+        float yPos = targetPos.y + height + extraHeight;
+        float zPos = Mathf.Clamp(targetPos.z - depth - extraDepth,zMin,zMax);
+        targetPos = new Vector3(xPos,yPos,zPos);
+        transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * speed);
     }
     private void HandlePlayerOnCamera()
     {
@@ -103,8 +86,6 @@ public class CameraController : MonoBehaviour
         Quaternion lerpedTarget = Quaternion.Slerp(myCamera.transform.rotation, targetRotation, moveSpeed * Time.deltaTime);
         Quaternion LookYAxis = Quaternion.Euler(lerpedTarget.eulerAngles.x, myCamera.transform.rotation.eulerAngles.y, myCamera.transform.rotation.eulerAngles.z);
         myCamera.transform.rotation = LookYAxis;
-        
-
     }
 
     float ClampAngle(float angle, float from, float to)
@@ -113,45 +94,25 @@ public class CameraController : MonoBehaviour
         if (angle > 180f) return Mathf.Max(angle, 360 + from);
         return Mathf.Min(angle, to);
     }
-    public void ChangeLimits(Transform fp, Transform lp, float zLimit)
+    public void ChangeRoom(BoxCollider box, float extraHeight, float extraDepth, float maxAngle)
     {
-        firstLimitPosition = fp;
-        lastLimitPosition = lp;
-        nodeZLimit = zLimit;
-
-        StartCoroutine(TransitionLerp());
-    }
-
-    public void ChangeRails(Rail newRail, Rail newAuxiliar, Transform yReference)
-    {
-        topRail = newAuxiliar;
-        bottomRail = newRail;
-        maxYLevel = yReference;
-        currentRail = bottomRail;
-    }
-    IEnumerator TransitionLerp()
-    {
-        float timer = 0f;
-        transitioning = true;
-        Vector3 initialPos = myCamera.transform.position;
-
-        while (timer < timeToTransition)
-        {
-
-            lastPosition = Vector3.Lerp(lastPosition, currentRail.ProjectPositionOnRail(lookAt.position), Time.deltaTime * moveSpeed);
-            lastPosition.x = Mathf.Clamp(lastPosition.x, firstLimitPosition.position.x, lastLimitPosition.position.x);
-
-            transform.position = Vector3.Lerp(initialPos, lastPosition, timer / timeToTransition);
-            timer += Time.deltaTime;
-
-            yield return null;
-
-        }
-        transitioning = false;
+        this.box = box;
+        this.extraHeight = extraHeight;
+        this.maxAngle = maxAngle;
+        this.extraDepth = extraDepth;
+        xMax = box.bounds.center.x + box.bounds.extents.x;
+        xMin = box.bounds.center.x - box.bounds.extents.x;
+        zMax = box.bounds.center.z + box.bounds.extents.z;
+        zMin = box.bounds.center.z - box.bounds.extents.z;
     }
     public void ChangeFocus(Transform target)
     {
         lookAt = target;
+        this.target = target;
+    }
+    public float MaxBookHeight()
+    {
+        return box.bounds.center.y + box.bounds.extents.y;
     }
 
 }

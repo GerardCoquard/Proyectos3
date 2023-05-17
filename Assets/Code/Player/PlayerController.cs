@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float maxLinealSpeed = 7f;
     [SerializeField] float rotationFractionPerFrame = 45f;
     bool isMovementPressed;
-    Vector3 movement;
+    public Vector3 movement;
 
     [Header("Jumping")]
     [SerializeField] private float maxJumpHeight = 4;
@@ -261,6 +262,10 @@ public class PlayerController : MonoBehaviour
             movement.y = 0.0f;
             isJumping = false;
         }
+    }
+    public Vector2 GetDirection()
+    {
+        return new Vector2(movement.x,movement.z).normalized;
     }
 }
 

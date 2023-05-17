@@ -5,35 +5,21 @@ using UnityEngine.Events;
 public class RoomTrigger : MonoBehaviour
 {
     public UnityEvent onRoomChanged;
-   
-    private Collider myCollider;
-
-    public RailManager railManager;
-
-
-
-    private void Start()
-    {
-        myCollider = GetComponent<Collider>();  
-        
-    }
-
+    public BoxCollider trigger;
+    public BoxCollider cameraBox;
+    public float extraHeight;
+    public float extraDepth;
+    public float maxAngle;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
-        {
-            ChangeRoom();
-        }
+        if (other.tag == "Player") ChangeRoom();
     }
-
     public void ChangeRoom()
     {
-        myCollider.enabled = false;
-        railManager.SetNewRails();
+        trigger.enabled = false;
+        CameraController.instance.ChangeRoom(cameraBox, extraHeight, extraDepth, maxAngle);
         onRoomChanged?.Invoke();
-        
     }
-
 }
 
 
