@@ -16,8 +16,11 @@ public class LightBeam
     public RayColor rayType;
     public float width;
     public Transform parent;
+    public float currentLength;
+    public float growthSpeed;
+    float currentGrowth;
 
-    public LightBeam(Vector3 pos, Vector3 dir, Material material, LayerMask layerMask, int maxBounces, RayColor _rayType, float width, Transform parent)
+    public LightBeam(Vector3 pos, Vector3 dir, Material material, LayerMask layerMask, int maxBounces, RayColor _rayType, float width, Transform parent, float growth)
     {
         lineRenderer = new LineRenderer();
         lightGameObject = new GameObject();
@@ -30,6 +33,7 @@ public class LightBeam
         this.rayType = _rayType;
         this.width = width;
         this.parent = parent;
+        this.growthSpeed = growth;
 
         lineRenderer = lightGameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
         lineRenderer.startWidth = width;
@@ -37,7 +41,10 @@ public class LightBeam
         lineRenderer.material = material;
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
+        lineRenderer.textureMode = LineTextureMode.Tile;
         lightGameObject.transform.SetParent(parent);
+        currentLength = 0;
+        lineRenderer.positionCount = 0;
 
         CastLight(position, direction, lineRenderer);
     }
@@ -53,6 +60,7 @@ public class LightBeam
         this.material = beam.material;
         this.rayType = beam.rayType;
         this.width = beam.width;
+        this.growthSpeed = beam.growthSpeed;
 
         lineRenderer = lightGameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
         lineRenderer.startWidth = width;
@@ -60,11 +68,16 @@ public class LightBeam
         lineRenderer.material = beam.material;
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
+        lineRenderer.textureMode = LineTextureMode.Tile;
         lightGameObject.transform.SetParent(beam.parent);
+        lineRenderer.positionCount = 0;
+        currentLength = 0;
     }
     public void ExecuteRay(Vector3 pos, Vector3 dir, LineRenderer renderer)
     {
+        currentGrowth = 0;
         //Start the cast of the ray
+        currentLength = Mathf.Clamp(currentLength+growthSpeed*Time.deltaTime,0,200);
         lineRenderer.positionCount = 0;
         lightIndices.Clear();
         CastLight(pos, dir, renderer);
@@ -74,17 +87,18 @@ public class LightBeam
     public void CastLight(Vector3 pos, Vector3 dir, LineRenderer renderer)
     {
         lightIndices.Add(pos);
-
         Ray ray = new Ray(pos, dir);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 300, layerMask,QueryTriggerInteraction.Ignore) && lightIndices.Count < maxBounces)
+        if (Physics.Raycast(ray, out hit, currentLength-currentGrowth, layerMask,QueryTriggerInteraction.Ignore) && lightIndices.Count < maxBounces)
         {
+            currentGrowth+=Vector3.Distance(pos,hit.point);
             CheckHit(hit, dir, renderer);
         }
         else
         {
-            lightIndices.Add(ray.GetPoint(300));
+            lightIndices.Add(ray.GetPoint(currentLength-currentGrowth));
+            currentGrowth+=Vector3.Distance(pos,ray.GetPoint(currentLength-currentGrowth));
         }
     }
 
