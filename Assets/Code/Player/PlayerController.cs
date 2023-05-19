@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float gravityIncreseValue;
     [SerializeField] private float accelerationOnAirMultiplier;
     [SerializeField] private float linealSpeedAirMultiplier;
+    bool onGround;
     float jumpForce;
     float gravity;
     float initialGravity;
@@ -98,7 +99,7 @@ public class PlayerController : MonoBehaviour
     }
     public void SwapControl()
     {
-        if (isJumping) return;
+        if (isJumping || !onGround) return;
         if (bookOpened)
         {
             if (CanInteract()) return;
@@ -176,7 +177,6 @@ public class PlayerController : MonoBehaviour
     {
         if (tempDirection != Vector2.zero)
         {
-            Debug.Log(isJumping);
             movementAcceleration += isJumping ? tempDirection * acceleration * accelerationOnAirMultiplier * Time.deltaTime : tempDirection * acceleration * Time.deltaTime;
             movementAcceleration = Vector2.ClampMagnitude(movementAcceleration, tempDirection.magnitude);
         }
@@ -198,6 +198,7 @@ public class PlayerController : MonoBehaviour
         {
             movement.y = jumpForce * .5f;
             isJumping = true;
+            onGround = false;
         }
 
     }
@@ -212,7 +213,7 @@ public class PlayerController : MonoBehaviour
     }
     public bool CanInteract()
     {
-        if (isJumping) return false;
+        if (isJumping || !onGround) return false;
         if (currentObjectPushing != null) return false;
         if (bookOpened) return false;
         if (!characterController.enabled) return false;
@@ -222,7 +223,7 @@ public class PlayerController : MonoBehaviour
     {
         pusheable = null;
 
-        if (isJumping) return false;
+        if (isJumping || !onGround) return false;
 
         Ray ray = new Ray(pushStartDetectionPoint.position, transform.forward);
         RaycastHit hit;
@@ -265,13 +266,13 @@ public class PlayerController : MonoBehaviour
 
     private bool CanJump()
     {
-        return currentObjectPushing == null && !isJumping;
+        return currentObjectPushing == null && !isJumping && onGround;
     }
 
     void SetGravity()
     {
 
-        if (isJumping)
+        if (isJumping || onGround)
         {
             gravity -= gravityIncreseValue * Time.deltaTime;
         }
@@ -296,6 +297,7 @@ public class PlayerController : MonoBehaviour
             movement.y = 0.0f;
             gravity = initialGravity;
             isJumping = false;
+            onGround = true;
         }
     }
     public Vector2 GetDirection()
