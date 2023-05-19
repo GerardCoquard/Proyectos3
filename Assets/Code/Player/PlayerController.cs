@@ -299,7 +299,12 @@ public class PlayerController : MonoBehaviour
     public Vector2 GetDirection()
     {
         if(currentObjectPushing!=null) return tempDirection;
-        else return new Vector2(movement.x, movement.z).normalized;
+        else 
+        {
+            Vector2 dir = new Vector2(movement.x, movement.z);
+            dir = dir.normalized*dir.magnitude/maxLinealSpeed;
+            return dir.magnitude>0.01? dir : Vector2.zero;
+        }
     }
 }
 
