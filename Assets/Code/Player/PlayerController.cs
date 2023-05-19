@@ -11,12 +11,12 @@ public class PlayerController : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] float maxLinealSpeed = 7f;
-    float currentSpeed;
+    [SerializeField] float acceleration;
     [SerializeField] float rotationFractionPerFrame = 45f;
-    public Vector3 movement;
+    float currentSpeed;
+    Vector3 movement;
     private Vector2 tempDirection;
     private Vector2 movementAcceleration;
-    [SerializeField] float acceleration;
    
 
     [Header("Jumping")]
@@ -178,8 +178,6 @@ public class PlayerController : MonoBehaviour
 
             movementAcceleration += tempDirection * acceleration * Time.deltaTime;
             movementAcceleration = Vector2.ClampMagnitude(movementAcceleration, tempDirection.magnitude);
-
-
         }
         else
         {
@@ -196,7 +194,6 @@ public class PlayerController : MonoBehaviour
     {
         if (CanJump())
         {
-            //Debug.Log("IN");
             movement.y = jumpForce * .5f;
             isJumping = true;
         }
@@ -261,7 +258,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Push()
     {
-        currentObjectPushing.AddForceTowardsDirection(pushForce, new Vector2(movement.x, movement.z));
+        currentObjectPushing.AddForceTowardsDirection(pushForce, tempDirection);
     }
 
     private bool CanJump()
@@ -274,7 +271,7 @@ public class PlayerController : MonoBehaviour
 
         if (isJumping)
         {
-            gravity += gravityIncreseValue * Time.deltaTime;
+            gravity -= gravityIncreseValue * Time.deltaTime;
         }
 
         float previousYVelocity = movement.y;
@@ -301,7 +298,8 @@ public class PlayerController : MonoBehaviour
     }
     public Vector2 GetDirection()
     {
-        return new Vector2(movement.x, movement.z).normalized;
+        if(currentObjectPushing!=null) return tempDirection;
+        else return new Vector2(movement.x, movement.z).normalized;
     }
 }
 
