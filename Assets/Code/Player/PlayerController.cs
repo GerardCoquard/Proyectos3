@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float maxJumpTime = 0.5f;
     [SerializeField] private float gravityIncreseValue;
     [SerializeField] private float accelerationOnAirMultiplier;
+    [SerializeField] private float linealSpeedAirMultiplier;
     float jumpForce;
     float gravity;
     float initialGravity;
@@ -186,7 +187,8 @@ public class PlayerController : MonoBehaviour
             movementAcceleration = Vector2.ClampMagnitude(movementAcceleration, 1);
 
         }
-        Vector2 currentSpeedVector = maxLinealSpeed * movementAcceleration;
+        
+        Vector2 currentSpeedVector = isJumping? maxLinealSpeed * movementAcceleration * linealSpeedAirMultiplier : maxLinealSpeed* movementAcceleration;
         movement.x = currentSpeedVector.x;
         movement.z = currentSpeedVector.y;
     }
