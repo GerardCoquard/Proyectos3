@@ -17,14 +17,14 @@ public class PlayerController : MonoBehaviour
     Vector3 movement;
     private Vector2 tempDirection;
     private Vector2 movementAcceleration;
-   
+
 
     [Header("Jumping")]
     [SerializeField] private float maxJumpHeight = 4;
     [SerializeField] private float maxJumpTime = 0.5f;
     [SerializeField] private float gravityIncreseValue;
+    [SerializeField] private float accelerationOnAirMultiplier;
     float jumpForce;
-    //[SerializeField] private float fallMultiplier;
     float gravity;
     float initialGravity;
     bool isJumping;
@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
                 Vector2 tempDirection = InputManager.GetAction("Move").context.ReadValue<Vector2>();
                 movement.x = tempDirection.x * currentSpeed;
                 movement.z = tempDirection.y * currentSpeed;
-                
+
             }
         }
         else
@@ -175,8 +175,8 @@ public class PlayerController : MonoBehaviour
     {
         if (tempDirection != Vector2.zero)
         {
-
-            movementAcceleration += tempDirection * acceleration * Time.deltaTime;
+            Debug.Log(isJumping);
+            movementAcceleration += isJumping ? tempDirection * acceleration * accelerationOnAirMultiplier * Time.deltaTime : tempDirection * acceleration * Time.deltaTime;
             movementAcceleration = Vector2.ClampMagnitude(movementAcceleration, tempDirection.magnitude);
         }
         else
@@ -298,12 +298,12 @@ public class PlayerController : MonoBehaviour
     }
     public Vector2 GetDirection()
     {
-        if(currentObjectPushing!=null) return tempDirection;
-        else 
+        if (currentObjectPushing != null) return tempDirection;
+        else
         {
             Vector2 dir = new Vector2(movement.x, movement.z);
-            dir = dir.normalized*dir.magnitude/maxLinealSpeed;
-            return dir.magnitude>0.01? dir : Vector2.zero;
+            dir = dir.normalized * dir.magnitude / maxLinealSpeed;
+            return dir.magnitude > 0.01 ? dir : Vector2.zero;
         }
     }
 }
