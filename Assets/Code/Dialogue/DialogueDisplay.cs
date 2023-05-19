@@ -131,6 +131,22 @@ public class DialogueDisplay : MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
+        StartCoroutine(ScaleBack());
+    }
+
+    IEnumerator ScaleBack()
+    {
+        
+        float distanceToScale = Vector3.Distance(dialogueRender.transform.localScale, finalScale);
+        float time = distanceToScale / distanceBetweenScales * timeToReachScale;
+        Vector3 _initScale = dialogueRender.transform.localScale;
+        float timer = 0f;
+        while (timer < time)
+        {
+            dialogueRender.transform.localScale = Vector3.Lerp(_initScale, finalScale, timer / time);
+            timer += Time.deltaTime;
+            yield return null;
+        }
         dialogueRender.transform.localScale = finalScale;
         StartCoroutine(Type());
     }
