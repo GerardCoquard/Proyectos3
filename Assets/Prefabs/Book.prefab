@@ -5250,7 +5250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fda62ec335d9ae249884939e0e980a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerWidth: 1
+  playerWidth: 0.8
   angleIterations: 20
   extraAngleIterationsOnDistance: 4
   distanceIterations: 3
@@ -5259,8 +5259,8 @@ MonoBehaviour:
   bookGraphics: {fileID: 2334759947695977061}
   bookGhost: {fileID: 2334759947162953724}
   bookGhostStartPosition: {fileID: 2334759948106048180}
-  dialoguePosition: {fileID: 0}
-  bookOffset: {x: 0, y: 3, z: 0}
+  dialoguePosition: {fileID: 2334759947789851355}
+  bookOffset: {x: 0, y: 2, z: 0}
   particles: {fileID: 2334759947678566407}
 --- !u!1 &2334759948106048181
 GameObject:
