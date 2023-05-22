@@ -23,7 +23,8 @@ public class PressurePlateFixed : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other) {
         if(locked) return;
-        if(onTop.Count == 0) anim.SetBool("Pressed",true);
+        if (other.tag == "CharacterController") return;
+        if (onTop.Count == 0) anim.SetBool("Pressed",true);
         onTop.Add(other.gameObject);
         FixedPlateObject objectPressing = other.GetComponent<FixedPlateObject>();
         if(objectPressing!=null)
@@ -37,7 +38,7 @@ public class PressurePlateFixed : MonoBehaviour
     }
     private void OnTriggerExit(Collider other) {
         if(locked) return;
-        if(onTop.Contains(other.gameObject))
+        if (onTop.Contains(other.gameObject))
         {
             onTop.Remove(other.gameObject);
             if(onTop.Count == 0) anim.SetBool("Pressed",false);

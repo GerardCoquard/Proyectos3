@@ -7,6 +7,7 @@ public class TriggerEvent : MonoBehaviour
     private bool activated;
     private void OnTriggerEnter(Collider other)
     {
+        if (other.tag == "CharacterController") return;
         if (other.tag == "Player" && !activated)
         {
             eventToDo?.Invoke();

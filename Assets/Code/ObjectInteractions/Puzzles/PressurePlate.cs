@@ -23,12 +23,13 @@ public class PressurePlate : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other) {
         if(locked) return;
+        if (other.tag == "CharacterController") return;
         if(onTop.Count == 0) OnPressed?.Invoke();
         onTop.Add(other.gameObject);
     }
     private void OnTriggerExit(Collider other) {
         if(locked) return;
-        if(onTop.Contains(other.gameObject))
+        if (onTop.Contains(other.gameObject))
         {
             onTop.Remove(other.gameObject);
             if(onTop.Count == 0) OnUnpressed?.Invoke();

@@ -112,10 +112,7 @@ public class PlayerController : MonoBehaviour
             CameraController.instance.ChangeFocus(transform);
             if (InputManager.GetAction("Move").GetEnabled())
             {
-                Vector2 tempDirection = InputManager.GetAction("Move").context.ReadValue<Vector2>();
-                movement.x = tempDirection.x * currentSpeed;
-                movement.z = tempDirection.y * currentSpeed;
-
+                tempDirection = InputManager.GetAction("Move").context.ReadValue<Vector2>() * currentSpeed;
             }
         }
         else

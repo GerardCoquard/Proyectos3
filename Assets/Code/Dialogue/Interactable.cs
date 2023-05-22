@@ -32,6 +32,8 @@ public class Interactable : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        if (other.tag == "CharacterController") return;
+
         if (other.tag == "Player" && !playerIn)
         {
             InputManager.GetAction("Push").action += DialogueInteract;
@@ -41,6 +43,8 @@ public class Interactable : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (other.tag == "CharacterController") return;
+
         if (other.tag == "Player" && playerIn)
         {
             InputManager.GetAction("Push").action -= DialogueInteract;

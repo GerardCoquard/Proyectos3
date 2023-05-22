@@ -62,7 +62,9 @@ public class RotatingPlatform : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(noRotate.Contains(other)) return;
+        if (other.tag == "CharacterController") return;
+
+        if (noRotate.Contains(other)) return;
         PusheableObject pusheableObject = other.GetComponentInParent<PusheableObject>();
         if (pusheableObject != null) 
         {
@@ -73,6 +75,8 @@ public class RotatingPlatform : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
+        if (other.tag == "CharacterController") return;
+
         PusheableObject pusheableObject = other.GetComponentInParent<PusheableObject>();
         if (pushObjects.Contains(pusheableObject))
         {
