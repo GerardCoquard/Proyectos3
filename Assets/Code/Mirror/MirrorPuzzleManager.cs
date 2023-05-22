@@ -6,9 +6,23 @@ public class MirrorPuzzleManager : MonoBehaviour
 {
     MirrorObject[] mirrorObjects;
 
+    public static MirrorPuzzleManager instance;
+    public Transform planeReference;
     public UnityEvent eventOnComplete;
     public float distanceToDetect = 2f;
     private bool isCompleted;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
     void Start()
     {
         mirrorObjects = FindObjectsOfType<MirrorObject>();

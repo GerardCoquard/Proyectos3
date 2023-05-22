@@ -19,11 +19,11 @@ public class MirrorMovement : MonoBehaviour
     void Update()
     {
 
-        Vector3 localTarget = mirror.InverseTransformPoint(target.position - new Vector3(0, offsetX, 0));
+        /*Vector3 localTarget = mirror.InverseTransformPoint(target.position - new Vector3(0, offsetX, 0));
         Vector3 lookAtMirror = mirror.TransformPoint(new Vector3(-localTarget.x, localTarget.y, localTarget.z));
-        transform.LookAt(lookAtMirror);
+        transform.LookAt(lookAtMirror);*/
 
-        /*Vector3 l_WorldPosition = target.transform.position;
+        Vector3 l_WorldPosition = target.transform.position;
         Vector3 l_LocalPosition = mirror.InverseTransformPoint(l_WorldPosition);
         transform.position = mirror.transform.TransformPoint(new Vector3(l_LocalPosition.x, l_LocalPosition.y, -l_LocalPosition.z));
 
@@ -35,7 +35,7 @@ public class MirrorMovement : MonoBehaviour
 
         float l_Distance = Vector3.Distance(transform.position, mirror.transform.position);
         myCamera.nearClipPlane = l_Distance + offsetNearPlane;
-        */
+        
 
     }
 
