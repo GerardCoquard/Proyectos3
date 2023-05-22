@@ -10,7 +10,7 @@ public class RoomTrigger : MonoBehaviour
     public float extraHeight;
     public float extraDepth;
     public float maxAngle;
-    private void OnTriggerEnter(Collider other)
+    public void RoomOnTriggerEnter(Collider other)
     {
         if (other.tag == "CharacterController") return;
         if (other.tag == "Player") ChangeRoom();
