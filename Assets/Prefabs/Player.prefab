@@ -152,13 +152,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 828900542119977032}
-  maxLinealSpeed: 5
-  acceleration: 8
+  maxLinealSpeed: 4
+  acceleration: 10
   rotationFractionPerFrame: 45
   maxJumpHeight: 5
-  maxJumpTime: 1
+  maxJumpTime: 1.6
   gravityIncreseValue: 200
-  accelerationOnAirMultiplier: 1
+  accelerationOnAirMultiplier: 0.5
+  linealSpeedAirMultiplier: 1.55
   closeEnoughtDetection: 0.3
   pushForce: 200
   angleDot: 0.8
