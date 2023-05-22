@@ -132,6 +132,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1402a664bbc1edd42ae64aca65a7a8a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firstRoom: {fileID: 0}
+  speed: 1.3
+  height: 10
+  depth: 8
+  offset: 8
   bottomRail: {fileID: 0}
   topRail: {fileID: 0}
   lookAt: {fileID: 0}
@@ -142,7 +147,7 @@ MonoBehaviour:
   desiredDistance: 10
   firstLimitPosition: {fileID: 0}
   lastLimitPosition: {fileID: 0}
-  maxXrotation: 45
+  maxXrotation: 50
   minXRotation: -90
   timeToTransition: 1
 --- !u!114 &4699852882333975315
@@ -157,4 +162,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b6d32caf3d87b54181a1214596a6325, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeMagnitude: 2
+  magnitude: 0

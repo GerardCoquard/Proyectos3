@@ -25,6 +25,7 @@ public class LightEmiter : MonoBehaviour
         active = state;
         if(!active)
         {
+            Debug.Log("DESACTIVAO");
             beam.currentLength = 0;
             beam.lineRenderer.positionCount = 0;
         }
