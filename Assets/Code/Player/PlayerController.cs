@@ -114,6 +114,7 @@ public class PlayerController : MonoBehaviour
             {
                 tempDirection = InputManager.GetAction("Move").context.ReadValue<Vector2>() * currentSpeed;
             }
+            movement = Vector3.zero;
         }
         else
         {
