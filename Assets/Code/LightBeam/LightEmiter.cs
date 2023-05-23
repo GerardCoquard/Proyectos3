@@ -19,16 +19,15 @@ public class LightEmiter : MonoBehaviour
     private void Update()
     {
         if(active) beam.ExecuteRay(rayStartPos.position, rayStartPos.forward, beam.lineRenderer);
+        else
+        {
+            beam.currentLength = 0;
+            beam.lineRenderer.positionCount = 0;
+        }
     }
     public void SetPower(bool state)
     {
         active = state;
-        if(!active)
-        {
-            Debug.Log("DESACTIVAO");
-            beam.currentLength = 0;
-            beam.lineRenderer.positionCount = 0;
-        }
     }
 
 }
