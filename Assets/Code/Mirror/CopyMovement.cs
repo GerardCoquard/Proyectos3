@@ -6,7 +6,7 @@ using System;
 public class CopyMovement : MonoBehaviour
 {
     [SerializeField] private Transform elementToCopy;
-    
+
 
     private void Start()
     {
@@ -15,18 +15,27 @@ public class CopyMovement : MonoBehaviour
 
     private void Update()
     {
-        
+        UpdatePosition();
     }
-    
+
     private void SetElementInMirrorPosition()
     {
-        transform.position = elementToCopy.position;
-        Vector2 myPosition = new Vector2(transform.position.x, transform.position.z);
-        Vector2 otherPosition = new Vector2(elementToCopy.position.x, elementToCopy.position.z);
-        float distanceToReference = (otherPosition - myPosition).magnitude;
+        transform.rotation *= Quaternion.Euler(0, 0, 90f);
 
-        transform.position = new Vector3(transform.position.x, transform.position.y, -transform.position.z) + ((distanceToReference * transform.forward) * 2);
+    }
 
+
+    private void UpdatePosition()
+    {
+
+        float distanceToReference = Mathf.Abs(MirrorPuzzleManager.instance.planeReference.position.z - elementToCopy.position.z);
+        Vector3 newPosition = Vector3.zero;
+
+        newPosition.x = elementToCopy.position.x;
+        newPosition.z = (elementToCopy.position.z + (2 * distanceToReference));
+        newPosition.y = elementToCopy.position.y;
+
+        transform.position = newPosition;
     }
 
 }

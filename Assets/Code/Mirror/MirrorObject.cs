@@ -7,12 +7,30 @@ public class MirrorObject : MonoBehaviour
     public int id;
     private List<WorldObject> worldObjects = new List<WorldObject>();
     private float distanceToDetect;
+    private Collider myCollider;
 
+    private void Start()
+    {
+        SetColliderPosition();
+    }
     private void Update()
     {
         CheckList();
     }
 
+    private void SetColliderPosition()
+    {
+        myCollider = GetComponentInChildren<Collider>();
+
+        float distanceToReference = Mathf.Abs(MirrorPuzzleManager.instance.planeReference.position.z - myCollider.transform.position.z);
+        Vector3 newPosition = Vector3.zero;
+
+        newPosition.x = myCollider.transform.position.x;
+        newPosition.z = (myCollider.transform.position.z + (2 * distanceToReference));
+        newPosition.y = myCollider.transform.position.y;
+
+        myCollider.transform.position = newPosition;
+    }
     private void CheckList()
     {
         if (worldObjects.Count != 0)
