@@ -9,7 +9,6 @@ public class RoomTrigger : MonoBehaviour
     public BoxCollider cameraBox;
     public float extraHeight;
     public float extraDepth;
-    public float maxAngle;
     public void RoomOnTriggerEnter(Collider other)
     {
         if (other.tag == "CharacterController") return;
@@ -18,7 +17,7 @@ public class RoomTrigger : MonoBehaviour
     public void ChangeRoom()
     {
         trigger.enabled = false;
-        CameraController.instance.ChangeRoom(cameraBox, extraHeight, extraDepth, maxAngle);
+        CameraController.instance.ChangeRoom(cameraBox, extraHeight, extraDepth);
         onRoomChanged?.Invoke();
     }
 }
