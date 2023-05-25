@@ -60,7 +60,7 @@ public class Book : MonoBehaviour
         bookGhost.SetActive(false);
         OnBookStateChanged?.Invoke(false);
     }
-    void ResetBookGraphics()
+    public void ResetBookGraphics()
     {
         transform.position = player.position + bookOffset;
         if(shapeshiftedObject!=null)
