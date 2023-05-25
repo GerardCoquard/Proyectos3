@@ -133,23 +133,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firstRoom: {fileID: 0}
-  speed: 1.3
-  height: 10
-  depth: 8
-  offset: 8
-  bottomRail: {fileID: 0}
-  topRail: {fileID: 0}
-  lookAt: {fileID: 0}
-  maxYLevel: {fileID: 0}
-  moveSpeed: 5
-  zoomSpeed: 50
-  nodeZLimit: -7
-  desiredDistance: 10
-  firstLimitPosition: {fileID: 0}
-  lastLimitPosition: {fileID: 0}
-  maxXrotation: 50
-  minXRotation: -90
-  timeToTransition: 1
+  angle: 42
+  height: 7
+  depth: 7
+  lateralOffset: 8
+  lateralSpeed: 0.8
+  verticalOffset: 8
+  verticalSpeed: 0.8
 --- !u!114 &4699852882333975315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,4 +152,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b6d32caf3d87b54181a1214596a6325, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magnitude: 0
+  magnitude: 0.3

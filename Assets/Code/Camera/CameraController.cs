@@ -7,38 +7,22 @@ public class CameraController : MonoBehaviour
 {
 
     public static CameraController instance { get; private set; }
-    public RoomTrigger firstRoom;
     BoxCollider box;
-    public float speed;
+    Transform target;
+    public RoomTrigger firstRoom;
+    public float angle;
     public float height;
     public float depth;
-    public float offset;
+    public float lateralOffset;
+    public float lateralSpeed;
+    public float verticalOffset;
+    public float verticalSpeed;
     float extraDepth;
     float extraHeight;
-    float maxAngle;
-    Transform target;
     float xMin;
     float xMax;
     float zMin;
     float zMax;
-    //
-    public Rail bottomRail;
-    public Rail topRail;
-    private Rail currentRail;
-    public Transform lookAt;
-    public Transform maxYLevel;
-    public float moveSpeed = 5.0f;
-    public float zoomSpeed = 5f;
-    public float nodeZLimit;
-    public float desiredDistance = 10f;
-    private Vector3 lastPosition;
-    private Camera myCamera;
-    public Transform firstLimitPosition;
-    public Transform lastLimitPosition;
-    public float maxXrotation = 50f;
-    public float minXRotation = -90f;
-    private bool transitioning;
-    public float timeToTransition;
 
     private void Awake()
     {
@@ -54,7 +38,7 @@ public class CameraController : MonoBehaviour
     }
     private void Start()
     {
-        myCamera = GetComponent<Camera>();
+        transform.rotation = Quaternion.Euler(angle,0,0);
         ChangeFocus(PlayerController.instance.transform);
         firstRoom.ChangeRoom();
     }
@@ -62,30 +46,20 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
         HandlePosition();
-        HandlePlayerOnCamera();
+        HandleRotation();
     }
     private void HandlePosition()
     {
-        //Set the limits of the camera and move the camera through the rails based on the position of the player
-        Vector3 targetPos = target.position + new Vector3(PlayerController.instance.GetDirection().x,0,PlayerController.instance.GetDirection().y) * offset;
+        Vector3 targetPos = target.position + new Vector3(PlayerController.instance.GetDirection().x,0,PlayerController.instance.GetDirection().y) * lateralOffset;
         float xPos = Mathf.Clamp(targetPos.x,xMin,xMax);
         float yPos = targetPos.y + height + extraHeight;
-        float zPos = Mathf.Clamp(targetPos.z - depth - extraDepth,zMin,zMax);
+        float zPos = Mathf.Clamp(target.position.z - depth - extraDepth,zMin,zMax);
         targetPos = new Vector3(xPos,yPos,zPos);
-        transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * speed);
+        transform.position = new Vector3(Mathf.Lerp(transform.position.x,xPos,Time.deltaTime * lateralSpeed),Mathf.Lerp(transform.position.y,yPos,Time.deltaTime * lateralSpeed * 2),zPos);
     }
-    private void HandlePlayerOnCamera()
+    private void HandleRotation()
     {
-
-        Quaternion targetRotation = Quaternion.LookRotation(lookAt.transform.position - transform.position);
-        Vector3 rotationInDegrees = targetRotation.eulerAngles;
-        rotationInDegrees.x = ClampAngle(rotationInDegrees.x, minXRotation, maxXrotation);
-        targetRotation = Quaternion.Euler(rotationInDegrees);
-
-
-        Quaternion lerpedTarget = Quaternion.Slerp(myCamera.transform.rotation, targetRotation, moveSpeed * Time.deltaTime);
-        Quaternion LookYAxis = Quaternion.Euler(lerpedTarget.eulerAngles.x, myCamera.transform.rotation.eulerAngles.y, myCamera.transform.rotation.eulerAngles.z);
-        myCamera.transform.rotation = LookYAxis;
+        transform.rotation = Quaternion.Euler(Mathf.Lerp(transform.rotation.eulerAngles.x,angle-PlayerController.instance.GetDirection().y*verticalOffset,Time.deltaTime * verticalSpeed),0,0);
     }
 
     float ClampAngle(float angle, float from, float to)
@@ -98,7 +72,6 @@ public class CameraController : MonoBehaviour
     {
         this.box = box;
         this.extraHeight = extraHeight;
-        this.maxAngle = maxAngle;
         this.extraDepth = extraDepth;
         xMax = box.bounds.center.x + box.bounds.extents.x;
         xMin = box.bounds.center.x - box.bounds.extents.x;
@@ -107,7 +80,6 @@ public class CameraController : MonoBehaviour
     }
     public void ChangeFocus(Transform target)
     {
-        lookAt = target;
         this.target = target;
     }
     public float MaxBookHeight()

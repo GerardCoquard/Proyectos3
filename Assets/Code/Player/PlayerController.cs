@@ -152,7 +152,7 @@ public class PlayerController : MonoBehaviour
         positionToLookAt.z = movement.z;
         Quaternion currentRotation = transform.rotation;
 
-        if (tempDirection != Vector2.zero)
+        if (tempDirection != Vector2.zero && positionToLookAt != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
             transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, rotationFractionPerFrame * Time.deltaTime);
