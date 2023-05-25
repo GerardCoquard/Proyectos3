@@ -41,7 +41,7 @@ public class LightBeam
         lineRenderer.material = material;
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
-        lineRenderer.textureMode = LineTextureMode.Tile;
+        lineRenderer.textureMode = LineTextureMode.RepeatPerSegment;
         lightGameObject.transform.SetParent(parent);
         currentLength = 0;
         lineRenderer.positionCount = 0;
@@ -68,7 +68,7 @@ public class LightBeam
         lineRenderer.material = beam.material;
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
-        lineRenderer.textureMode = LineTextureMode.Tile;
+        lineRenderer.textureMode = LineTextureMode.RepeatPerSegment;
         lightGameObject.transform.SetParent(beam.parent);
         lineRenderer.positionCount = 0;
         currentLength = 0;
@@ -77,7 +77,7 @@ public class LightBeam
     {
         currentGrowth = 0;
         //Start the cast of the ray
-        currentLength = Mathf.Clamp(currentLength+growthSpeed*Time.deltaTime,0,200);
+        currentLength = Mathf.Clamp(currentLength+growthSpeed*Time.deltaTime,0,50);
         lineRenderer.positionCount = 0;
         lightIndices.Clear();
         CastLight(pos, dir, renderer);
