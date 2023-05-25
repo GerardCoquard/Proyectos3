@@ -62,15 +62,15 @@ public class WorldScreenUI : MonoBehaviour
         switch (iconType)
         {
             case IconType.Dialogue:
-            dialogueIcon.SetActive(false);
+            if(dialogueIcon!=null) dialogueIcon.SetActive(false);
             break;
 
             case IconType.Book:
-            bookIcon.SetActive(false);
+            if(bookIcon!=null) bookIcon.SetActive(false);
             break;
 
             default:
-            pushIcon.SetActive(false);
+            if(pushIcon!=null) pushIcon.SetActive(false);
             break;
         }
     }

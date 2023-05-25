@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
@@ -23,13 +23,16 @@ public class CameraController : MonoBehaviour
     float xMax;
     float zMin;
     float zMax;
+    Vector2 movement;
+    Vector2 tempDirection;
+    Vector2 movementAcceleration;
+    Vector2 direction;
 
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(instance);
         }
         else
         {
@@ -42,24 +45,52 @@ public class CameraController : MonoBehaviour
         ChangeFocus(PlayerController.instance.transform);
         firstRoom.ChangeRoom();
     }
+    private void OnEnable() {
+        InputManager.GetAction("Move").action += OnMovementInput;
+    }
+    private void OnDisable() {
+        InputManager.GetAction("Move").action -= OnMovementInput;
+    }
+    private void OnMovementInput(InputAction.CallbackContext context)
+    {
+        tempDirection = context.ReadValue<Vector2>();
+        tempDirection.Normalize();
+    }
 
     private void Update()
     {
+        HandleDirection();
         HandlePosition();
         HandleRotation();
     }
+    void HandleDirection()
+    {
+        if (tempDirection != Vector2.zero)
+        {
+            movementAcceleration += tempDirection * PlayerController.instance.acceleration * Time.deltaTime;
+            movementAcceleration = Vector2.ClampMagnitude(movementAcceleration, tempDirection.magnitude);
+        }
+        else
+        {
+            movementAcceleration -= movementAcceleration * PlayerController.instance.acceleration * Time.deltaTime;
+            movementAcceleration = Vector2.ClampMagnitude(movementAcceleration, 1);
+        }
+        
+        movement = PlayerController.instance.maxLinealSpeed* movementAcceleration;
+        direction = movement.normalized * movement.magnitude / PlayerController.instance.maxLinealSpeed;
+    }
     private void HandlePosition()
     {
-        Vector3 targetPos = target.position + new Vector3(PlayerController.instance.GetDirection().x,0,PlayerController.instance.GetDirection().y) * lateralOffset;
+        Vector3 targetPos = target.position + new Vector3(direction.x,0,direction.y) * lateralOffset;
         float xPos = Mathf.Clamp(targetPos.x,xMin,xMax);
         float yPos = targetPos.y + height + extraHeight;
         float zPos = Mathf.Clamp(target.position.z - depth - extraDepth,zMin,zMax);
         targetPos = new Vector3(xPos,yPos,zPos);
-        transform.position = new Vector3(Mathf.Lerp(transform.position.x,xPos,Time.deltaTime * lateralSpeed),Mathf.Lerp(transform.position.y,yPos,Time.deltaTime * lateralSpeed * 2),zPos);
+        transform.position = new Vector3(Mathf.Lerp(transform.position.x,xPos,Time.deltaTime * lateralSpeed),Mathf.Lerp(transform.position.y,yPos,Time.deltaTime * lateralSpeed * 2),Mathf.Lerp(transform.position.z,zPos,Time.deltaTime * lateralSpeed * 2));
     }
     private void HandleRotation()
     {
-        transform.rotation = Quaternion.Euler(Mathf.Lerp(transform.rotation.eulerAngles.x,angle-PlayerController.instance.GetDirection().y*verticalOffset,Time.deltaTime * verticalSpeed),0,0);
+        transform.rotation = Quaternion.Euler(Mathf.Lerp(transform.rotation.eulerAngles.x,angle-direction.y*verticalOffset,Time.deltaTime * verticalSpeed),0,0);
     }
 
     float ClampAngle(float angle, float from, float to)
@@ -86,10 +117,4 @@ public class CameraController : MonoBehaviour
     {
         return box.bounds.center.y + box.bounds.extents.y;
     }
-
 }
-
-
-
-
-

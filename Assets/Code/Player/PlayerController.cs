@@ -10,8 +10,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public CharacterController characterController;
 
     [Header("Movement")]
-    [SerializeField] float maxLinealSpeed = 7f;
-    [SerializeField] float acceleration;
+    public float maxLinealSpeed = 7f;
+    public float acceleration;
     [SerializeField] float rotationFractionPerFrame = 45f;
     float currentSpeed;
     Vector3 movement;
@@ -32,9 +32,11 @@ public class PlayerController : MonoBehaviour
     bool isJumping;
 
     [Header("Push")]
-    [SerializeField] float closeEnoughtDetection = 0.5f;
+    [SerializeField] float closeEnoughtDetection = 0.3f;
+    [SerializeField] float detectionHeight = 0.6f;
     [SerializeField] float pushForce = 40f;
     [SerializeField] float angleDot = 0.8f;
+    [SerializeField] float distanceBetween = 0.1f;
     [SerializeField] Transform pushStartDetectionPoint;
     PusheableObject currentObjectPushing;
     bool bookOpened;
@@ -47,11 +49,11 @@ public class PlayerController : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(instance);
         }
         else Destroy(this);
         SetUpJumpVariables();
         currentSpeed = maxLinealSpeed;
+        pushStartDetectionPoint.position = transform.position + new Vector3(0,detectionHeight,0) + transform.forward*closeEnoughtDetection;
     }
     private void OnEnable()
     {
@@ -112,7 +114,7 @@ public class PlayerController : MonoBehaviour
             CameraController.instance.ChangeFocus(transform);
             if (InputManager.GetAction("Move").GetEnabled())
             {
-                tempDirection = InputManager.GetAction("Move").context.ReadValue<Vector2>() * currentSpeed;
+                tempDirection = InputManager.GetAction("Move").context.ReadValue<Vector2>().normalized;
             }
             movement = Vector3.zero;
         }
@@ -203,7 +205,7 @@ public class PlayerController : MonoBehaviour
     void CheckPushAvailable()
     {
         PusheableObject pusheable;
-        if (CanInteract() && PusheableDetected(out pusheable))
+        if (CanInteract() && PusheableDetected(out pusheable, out RaycastHit hit))
         {
             WorldScreenUI.instance.SetIcon(IconType.Push, pusheable.uiPosition.position);
         }
@@ -217,14 +219,15 @@ public class PlayerController : MonoBehaviour
         if (!characterController.enabled) return false;
         return true;
     }
-    bool PusheableDetected(out PusheableObject pusheable)
+    bool PusheableDetected(out PusheableObject pusheable, out RaycastHit hit)
     {
         pusheable = null;
+        hit = new RaycastHit();
 
         if (isJumping || !onGround) return false;
 
         Ray ray = new Ray(pushStartDetectionPoint.position, transform.forward);
-        RaycastHit hit;
+
 
         if (Physics.Raycast(ray, out hit, closeEnoughtDetection, Physics.AllLayers, QueryTriggerInteraction.Ignore))
         {
@@ -240,11 +243,14 @@ public class PlayerController : MonoBehaviour
     void CheckPush()
     {
         PusheableObject pusheable;
-        if (PusheableDetected(out pusheable) && CanInteract())
+        RaycastHit hit;
+        if (PusheableDetected(out pusheable,out hit ) && CanInteract())
         {
             currentObjectPushing = pusheable;
             currentObjectPushing.MakePusheable();
             characterController.enabled = false;
+            transform.position = new Vector3(hit.point.x,transform.position.y,hit.point.z) + hit.normal*(characterController.radius + distanceBetween);
+            transform.forward = -hit.normal;
             transform.SetParent(currentObjectPushing.transform);
         }
     }

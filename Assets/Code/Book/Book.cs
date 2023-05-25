@@ -109,6 +109,7 @@ public class Book : MonoBehaviour
                 }
             }
         }
+        BookUI.instance.ShowWarning();
     }
     bool Overlapping(ShapeType _type, Vector3 desiredPosition,float largerExtent, Vector3 verticalExtent, Vector3 extents)
     {

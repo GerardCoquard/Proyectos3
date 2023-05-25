@@ -38,6 +38,8 @@ public class BookGhost : MonoBehaviour
         InputManager.GetAction("Push").action -= OnInteractInput;
 
         ClearSelected();
+
+        WorldScreenUI.instance.HideIcon(IconType.Book);
     }
     private void OnMovementInput(InputAction.CallbackContext context)
     {
@@ -57,6 +59,8 @@ public class BookGhost : MonoBehaviour
     }
     private void Update() {
         Move();
+        if(selectedShape != null) WorldScreenUI.instance.SetIcon(IconType.Book, selectedShape.shapeCollider.bounds.center);
+        else WorldScreenUI.instance.HideIcon(IconType.Book);
     }
     bool Move()
     {
@@ -75,7 +79,6 @@ public class BookGhost : MonoBehaviour
         ClearSelected();
         selectedShape = newShape;
         selectedShape.SetSelected();
-        WorldScreenUI.instance.SetIcon(IconType.Book,selectedShape.shapeCollider.bounds.center);
     }
     private void OnTriggerExit(Collider other) {
         if(other.gameObject.layer != LayerMask.NameToLayer("Outline")) return;
@@ -89,7 +92,6 @@ public class BookGhost : MonoBehaviour
         if(selectedShape==null) return;
         selectedShape.Unselect();
         selectedShape = null;
-        WorldScreenUI.instance.HideIcon(IconType.Book);
     }
     void SelectShape()
     {
