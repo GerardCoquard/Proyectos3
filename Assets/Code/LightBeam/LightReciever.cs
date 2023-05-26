@@ -10,7 +10,16 @@ public class LightReciever : MonoBehaviour
     public UnityEvent OnLightNotRecived;
     public bool lightGoesThrough;
     public RayColor currentColor = RayColor.Anyone;
+    public Material linkedBeamMaterial;
+    public ColorPropertySetter colorPropertySetter;
+    public float offIntensity;
+    public float onIntensity;
     Dictionary<LightBeam,LightBeamData> crossingBeams = new Dictionary<LightBeam, LightBeamData>();
+    private void Start() {
+        OnLightRecived.AddListener(() => colorPropertySetter.SetIntensity(linkedBeamMaterial,onIntensity));
+        OnLightNotRecived.AddListener(() => colorPropertySetter.SetIntensity(linkedBeamMaterial,offIntensity));
+        colorPropertySetter.SetIntensity(linkedBeamMaterial,offIntensity);
+    }
     public void DoAction(LightBeam beam)
     {
         if(beam.rayType != currentColor && currentColor != RayColor.Anyone) return;

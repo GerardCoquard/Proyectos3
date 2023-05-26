@@ -318,6 +318,10 @@ MonoBehaviour:
         m_CallState: 2
   lightGoesThrough: 0
   currentColor: 5
+  linkedBeamMaterial: {fileID: 0}
+  colorPropertySetter: {fileID: 2522674039348670204}
+  offIntensity: 0.8
+  onIntensity: 2
 --- !u!65 &6982437946277007199
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -440,6 +444,7 @@ GameObject:
   - component: {fileID: 215897715553690934}
   - component: {fileID: 1070333310822456712}
   - component: {fileID: 6123906084903645023}
+  - component: {fileID: 2522674039348670204}
   m_Layer: 0
   m_Name: CristalReceiver
   m_TagString: Untagged
@@ -512,3 +517,15 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2522674039348670204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8628144754234843037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b31de5d96a0fad7488a9da0e58b8d9fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

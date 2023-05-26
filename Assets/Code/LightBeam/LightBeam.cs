@@ -156,6 +156,18 @@ public class LightBeam
             }
         }
     }
+    public void ResetBeam()
+    {
+        if(currentLength == 0) return;
+        foreach (LightReciever receiver in lightRecieverList)
+        {
+            receiver.UndoAction(this);
+        }
+        currentLightRecivers.Clear();
+        lightRecieverList.Clear();
+        currentLength = 0;
+        lineRenderer.positionCount = 0;
+    }
 }
 public enum RayColor
 {

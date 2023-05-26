@@ -236,6 +236,9 @@ MonoBehaviour:
   maxBounces: 20
   rayColor: 5
   active: 1
+  colorPropertySetter: {fileID: 8745961244508962093}
+  offIntensity: 1
+  onIntensity: 2
 --- !u!1 &5139280564552460911
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,6 +282,7 @@ GameObject:
   - component: {fileID: 2278245676490387132}
   - component: {fileID: 8039402103998543535}
   - component: {fileID: 1394307448133003190}
+  - component: {fileID: 8745961244508962093}
   m_Layer: 0
   m_Name: Cristal
   m_TagString: Untagged
@@ -365,3 +369,15 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 2815966651356430348, guid: e23324f8bf6eda943b7f3a51ce14b911, type: 3}
+--- !u!114 &8745961244508962093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6945418394673053342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b31de5d96a0fad7488a9da0e58b8d9fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

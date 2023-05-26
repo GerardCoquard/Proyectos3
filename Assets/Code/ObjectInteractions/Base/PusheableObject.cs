@@ -13,6 +13,7 @@ public class PusheableObject : MonoBehaviour
     bool constrained;
     Vector3 constrainDirection;
     public Transform uiPosition;
+    public float weightMultiplier = 1f;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -45,7 +46,7 @@ public class PusheableObject : MonoBehaviour
             }
         }
 
-        rb.velocity = newDir * force * Time.fixedDeltaTime;
+        rb.velocity = newDir * force * weightMultiplier * Time.fixedDeltaTime;
     }
     public void SetConstraint(bool state, Vector3 ropeDirection)
     {
