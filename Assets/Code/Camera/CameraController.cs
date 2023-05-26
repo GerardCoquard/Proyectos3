@@ -98,7 +98,7 @@ public class CameraController : MonoBehaviour
         this.extraHeight = extraHeight;
         this.extraDepth = extraDepth;
         angle = 90 - Vector2.Angle(new Vector2(depth+extraDepth,height+extraHeight).normalized, new Vector2(0,height+extraHeight).normalized);
-        angle-=2;
+        angle-=4;
         xMax = box.bounds.center.x + box.bounds.extents.x;
         xMin = box.bounds.center.x - box.bounds.extents.x;
         zMax = box.bounds.center.z + box.bounds.extents.z;
