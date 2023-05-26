@@ -6,25 +6,37 @@ using System;
 public class CopyMovement : MonoBehaviour
 {
     [SerializeField] private Transform elementToCopy;
+    [SerializeField] private bool rotationInZ;
+    [SerializeField] private bool copyObjectRotation;
 
 
-    private void Start()
+    private void Awake()
     {
+        if(rotationInZ) transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, -transform.localScale.z);
+        else transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
         SetElementInMirrorPosition();
+
+
     }
 
     private void Update()
     {
         UpdatePosition();
+        if (copyObjectRotation) UpdateRotation();
     }
 
     private void SetElementInMirrorPosition()
     {
-        transform.rotation *= Quaternion.Euler(0, 0, 90f);
+        Quaternion reflectedRotation = Quaternion.Euler(elementToCopy.eulerAngles.x, -elementToCopy.eulerAngles.y, elementToCopy.eulerAngles.z);
 
+        transform.rotation = reflectedRotation;
     }
 
 
+    private void UpdateRotation()
+    {
+        SetElementInMirrorPosition();
+    }
     private void UpdatePosition()
     {
 

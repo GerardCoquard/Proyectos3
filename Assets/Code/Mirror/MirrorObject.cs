@@ -20,9 +20,9 @@ public class MirrorObject : MonoBehaviour
 
     private void SetColliderPosition()
     {
-        myCollider = GetComponentInChildren<Collider>();
+        myCollider = GetComponent<Collider>();
 
-        float distanceToReference = Mathf.Abs(MirrorPuzzleManager.instance.planeReference.position.z - myCollider.transform.position.z);
+        float distanceToReference = MirrorPuzzleManager.instance.planeReference.position.z - myCollider.transform.position.z;
         Vector3 newPosition = Vector3.zero;
 
         newPosition.x = myCollider.transform.position.x;
@@ -55,9 +55,9 @@ public class MirrorObject : MonoBehaviour
     {
         if (other.GetComponent<WorldObject>() != null)
         {
+                Debug.Log("IN");
             if (other.GetComponent<WorldObject>().id == id)
             {
-
                 worldObjects.Add(other.GetComponent<WorldObject>());
             }
         }
