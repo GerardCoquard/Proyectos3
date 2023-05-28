@@ -169,6 +169,7 @@ public class LightBeam
         lineRenderer.positionCount = 0;
     }
 }
+
 public enum RayColor
 {
     Red,

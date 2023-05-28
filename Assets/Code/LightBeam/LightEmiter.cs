@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
 
 public class LightEmiter : MonoBehaviour
 {
@@ -13,6 +16,7 @@ public class LightEmiter : MonoBehaviour
     public ColorPropertySetter colorPropertySetter;
     public float offIntensity;
     public float onIntensity;
+    public float fadeOutSpeed;
 
     private void Start()
     {
@@ -33,5 +37,6 @@ public class LightEmiter : MonoBehaviour
         active = state;
         if(colorPropertySetter!=null) colorPropertySetter.SetIntensity(material,active?onIntensity:offIntensity);
     }
+    
 
 }

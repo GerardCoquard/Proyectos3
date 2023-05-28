@@ -171,6 +171,7 @@ public class Book : MonoBehaviour
     {
         LayerMask _layer = Physics.AllLayers;
         _layer &= ~(1 << LayerMask.NameToLayer("Player"));
+        _layer &= ~(1 << LayerMask.NameToLayer("Character"));
         return !Physics.Raycast(player.position, pos - player.position,Vector3.Distance(player.position,pos),_layer,QueryTriggerInteraction.Ignore);
     }
     bool OnGround(Vector3 pos,Vector2 bounds)

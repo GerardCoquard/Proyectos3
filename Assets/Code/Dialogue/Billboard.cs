@@ -8,6 +8,6 @@ public class Billboard : MonoBehaviour
     {
         Vector3 camPos = Camera.main.transform.position;
         transform.LookAt(camPos);
-        transform.Rotate(new Vector3(90,0,180));
+        transform.Rotate(new Vector3(90,180,180));
     }
 }
