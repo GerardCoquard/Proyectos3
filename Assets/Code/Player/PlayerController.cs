@@ -43,6 +43,15 @@ public class PlayerController : MonoBehaviour
 
     [Header("Animation")]
     private Animator myAnimator;
+    
+    public delegate void BookActivated();
+    public delegate void PlayerActivated();
+    public delegate void ObjectPushed();
+    public delegate void StoppedPushing();
+    public event BookActivated OnBookActivated;
+    public event PlayerActivated OnPlayerActivated;
+    public event ObjectPushed OnObjectPushed;
+    public event StoppedPushing OnStoppedPushing;
 
     private void Awake()
     {
@@ -104,31 +113,29 @@ public class PlayerController : MonoBehaviour
         if (isJumping || !onGround) return;
         if (bookOpened)
         {
-            if (CanInteract()) return;
-            Book.instance.DeactivateBook();
+            if(CanInteract()) return; //?
             InputManager.GetAction("Move").action += OnMovementInput;
             InputManager.GetAction("Push").action += OnPushInput;
             InputManager.GetAction("Jump").action += OnJumpInput;
             bookOpened = false;
             characterController.enabled = true;
-            CameraController.instance.ChangeFocus(transform);
             if (InputManager.GetAction("Move").GetEnabled())
             {
                 tempDirection = InputManager.GetAction("Move").context.ReadValue<Vector2>().normalized;
             }
             movement = Vector3.zero;
+            OnPlayerActivated?.Invoke();
         }
         else
         {
-            Book.instance.ActivateBook();
             InputManager.GetAction("Move").action -= OnMovementInput;
             InputManager.GetAction("Push").action -= OnPushInput;
             InputManager.GetAction("Jump").action -= OnJumpInput;
             bookOpened = true;
             movement = Vector3.zero;
             characterController.enabled = false;
-            CameraController.instance.ChangeFocus(Book.instance.bookGhost.transform);
             StopPushing();
+            OnBookActivated?.Invoke();
         }
     }
     private void SetUpJumpVariables()
@@ -252,12 +259,13 @@ public class PlayerController : MonoBehaviour
             transform.position = new Vector3(hit.point.x,transform.position.y,hit.point.z) + hit.normal*(characterController.radius + distanceBetween);
             transform.forward = -hit.normal;
             transform.SetParent(currentObjectPushing.transform);
+            OnObjectPushed?.Invoke();
         }
     }
     void StopPushing()
     {
         if (currentObjectPushing == null) return;
-
+        OnStoppedPushing?.Invoke();
         transform.SetParent(null);
         currentObjectPushing.NotPusheable();
         currentObjectPushing = null;

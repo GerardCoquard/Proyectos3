@@ -9,13 +9,7 @@ public class Shape : MonoBehaviour
     public Collider shapeCollider;
     [NonSerialized] public ShapeType type;
     List<GameObject> childs = new List<GameObject>();
-
-    private void OnEnable() {
-        Book.OnBookStateChanged += SetOutline;
-    }
-    private void OnDisable() {
-        Book.OnBookStateChanged -= SetOutline;
-    }
+    public Renderer runeRenderer;
     private void Start() {
         layer = gameObject.layer;
         childs.Add(gameObject);
@@ -40,25 +34,9 @@ public class Shape : MonoBehaviour
         }
         Unselect();
     }
-    public void Shift() {
-        Book.instance.Shapehift(this,shapeCollider.bounds.extents);
-    }
-    public void SetOutline(bool state)
+    public void SetRune(Material mat)
     {
-        if(state)
-        {
-            foreach (GameObject child in childs)
-            {
-                child.layer = LayerMask.NameToLayer("Outline");
-            }
-        }
-        else
-        {
-            foreach (GameObject child in childs)
-            {
-                child.layer = layer;
-            }
-        }
+        runeRenderer.material = mat;
     }
     public void SetSelected()
     {

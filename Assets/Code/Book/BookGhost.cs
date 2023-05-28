@@ -72,7 +72,6 @@ public class BookGhost : MonoBehaviour
         return finalMovement != Vector3.zero;
     }
     private void OnTriggerEnter(Collider other) {
-        if(other.gameObject.layer != LayerMask.NameToLayer("Outline")) return;
         Shape newShape = other.GetComponent<Shape>();
         if(newShape== null) return;
         if(newShape==selectedShape) return;
@@ -81,7 +80,6 @@ public class BookGhost : MonoBehaviour
         selectedShape.SetSelected();
     }
     private void OnTriggerExit(Collider other) {
-        if(other.gameObject.layer != LayerMask.NameToLayer("Outline")) return;
         Shape newShape = other.GetComponent<Shape>();
         if(newShape== null) return;
         if(newShape!=selectedShape) return;
@@ -96,7 +94,6 @@ public class BookGhost : MonoBehaviour
     void SelectShape()
     {
         if(selectedShape==null) return;
-        selectedShape.Shift();
-        PlayerController.instance.SwapControl();
+        Book.instance.Shapehift(selectedShape,selectedShape.shapeCollider.bounds.extents);
     }
 }

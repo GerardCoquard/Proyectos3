@@ -23,9 +23,12 @@ public class Book : MonoBehaviour
     public Transform dialoguePosition;
     public Vector3 bookOffset;
     public VisualEffect particles;
-    public delegate void BookStateChanged(bool state);
-    public static event BookStateChanged OnBookStateChanged;
     GameObject shapeshiftedObject;
+    public Material defaultRuneMat;
+    public Material fixedRuneMat;
+    //
+    public float runeFadeSpeed;
+    private const byte k_MaxByteForOverexposedColor = 191;
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
         Gizmos.DrawLine(bookGhost.transform.position,bookGhost.transform.position+new Vector3(0,-groundDetectionDistance,0));
@@ -42,23 +45,35 @@ public class Book : MonoBehaviour
     }
     private void Start() {
         particles.Stop();
+        Color newColor = defaultRuneMat.GetColor("_BaseColor");
+        defaultRuneMat.SetColor("_BaseColor", new Color(newColor.r,newColor.g,newColor.b,0));
         player = PlayerController.instance.transform;
         bookGhost.SetActive(false);
+    }
+    private void OnEnable() {
+        PlayerController.instance.OnBookActivated += ActivateBook;
+        PlayerController.instance.OnPlayerActivated += DeactivateBook;
+    }
+    private void OnDisable() {
+        PlayerController.instance.OnBookActivated -= ActivateBook;
+        PlayerController.instance.OnPlayerActivated -= DeactivateBook;
     }
     private void Update() {
         if(shapeshiftedObject==null) transform.position = player.position + bookOffset;
     }
     public void ActivateBook()
     {
+        StopAllCoroutines();
+        StartCoroutine(ShowRunes());
         ResetBookGraphics();
         bookGhost.transform.position = bookGhostStartPosition.position;
         bookGhost.SetActive(true);
-        OnBookStateChanged?.Invoke(true);
     }
     public void DeactivateBook()
     {
+        StopAllCoroutines();
+        StartCoroutine(HideRunes());
         bookGhost.SetActive(false);
-        OnBookStateChanged?.Invoke(false);
     }
     public void ResetBookGraphics()
     {
@@ -72,14 +87,35 @@ public class Book : MonoBehaviour
         }
         bookGraphics.SetActive(true);
     }
+    IEnumerator ShowRunes()
+    {
+        while(defaultRuneMat.GetColor("_BaseColor").a < 1)
+        {
+            defaultRuneMat.SetColor("_BaseColor",defaultRuneMat.GetColor("_BaseColor") + new Color(0,0,0,runeFadeSpeed*Time.deltaTime));
+            yield return null;
+        }
+        Color newColor = defaultRuneMat.GetColor("_BaseColor");
+        defaultRuneMat.SetColor("_BaseColor", new Color(newColor.r,newColor.g,newColor.b,1));
+    }
+    IEnumerator HideRunes()
+    {
+        while(defaultRuneMat.GetColor("_BaseColor").a > 0)
+        {
+            defaultRuneMat.SetColor("_BaseColor",defaultRuneMat.GetColor("_BaseColor") - new Color(0,0,0,runeFadeSpeed*Time.deltaTime));
+            yield return null;
+        }
+        Color newColor = defaultRuneMat.GetColor("_BaseColor");
+        defaultRuneMat.SetColor("_BaseColor", new Color(newColor.r,newColor.g,newColor.b,0));
+    }
     void SpotFound(Vector3 pos, GameObject clone)
     {
         shapeshiftedObject = Instantiate(clone,pos, clone.transform.rotation);
         Shape shape = shapeshiftedObject.GetComponent<Shape>();
-        shape.SetOutline(false);
+        shape.SetRune(fixedRuneMat);
         Destroy(shape);
         particles.Play();
         bookGraphics.SetActive(false);
+        PlayerController.instance.SwapControl();
     }
     public void Shapehift(Shape shape, Vector3 extents)
     {
@@ -109,6 +145,7 @@ public class Book : MonoBehaviour
                 }
             }
         }
+        PlayerController.instance.SwapControl();
         BookUI.instance.ShowWarning();
     }
     bool Overlapping(ShapeType _type, Vector3 desiredPosition,float largerExtent, Vector3 verticalExtent, Vector3 extents)

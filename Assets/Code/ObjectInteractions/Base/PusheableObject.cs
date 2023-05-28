@@ -14,6 +14,7 @@ public class PusheableObject : MonoBehaviour
     Vector3 constrainDirection;
     public Transform uiPosition;
     public float weightMultiplier = 1f;
+    public GameObject particles;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -22,6 +23,18 @@ public class PusheableObject : MonoBehaviour
         rb.freezeRotation = true;
         rb.useGravity = false;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
+    }
+    private void OnEnable() {
+        PlayerController.instance.OnObjectPushed += HideParticles;
+        PlayerController.instance.OnStoppedPushing += ShowParticles;
+        PlayerController.instance.OnBookActivated += HideParticles;
+        PlayerController.instance.OnPlayerActivated += ShowParticles;
+    }
+    private void OnDisable() {
+        PlayerController.instance.OnObjectPushed -= HideParticles;
+        PlayerController.instance.OnStoppedPushing -= ShowParticles;
+        PlayerController.instance.OnBookActivated -= HideParticles;
+        PlayerController.instance.OnPlayerActivated -= ShowParticles;
     }
     public void MakePusheable()
     {
@@ -52,6 +65,14 @@ public class PusheableObject : MonoBehaviour
     {
         constrained = state;
         constrainDirection = new Vector3(ropeDirection.x,0,ropeDirection.z).normalized;
+    }
+    void ShowParticles()
+    {
+        particles.SetActive(true);
+    }
+    void HideParticles()
+    {
+        particles.SetActive(false);
     }
 }
 

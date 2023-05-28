@@ -47,9 +47,17 @@ public class CameraController : MonoBehaviour
     }
     private void OnEnable() {
         InputManager.GetAction("Move").action += OnMovementInput;
+        PlayerController.instance.OnBookActivated += () => ChangeFocus(Book.instance.bookGhost.transform);
+        PlayerController.instance.OnPlayerActivated += () => ChangeFocus(PlayerController.instance.transform);
+        PlayerController.instance.OnObjectPushed += () => ChangeFocus(PlayerController.instance.transform);//
+        PlayerController.instance.OnStoppedPushing += () => ChangeFocus(PlayerController.instance.transform); //
     }
     private void OnDisable() {
         InputManager.GetAction("Move").action -= OnMovementInput;
+        PlayerController.instance.OnBookActivated -= () => ChangeFocus(Book.instance.bookGhost.transform);
+        PlayerController.instance.OnPlayerActivated -= () => ChangeFocus(PlayerController.instance.transform);
+        PlayerController.instance.OnObjectPushed -= () => ChangeFocus(PlayerController.instance.transform);//
+        PlayerController.instance.OnStoppedPushing -= () => ChangeFocus(PlayerController.instance.transform);//
     }
     private void OnMovementInput(InputAction.CallbackContext context)
     {
