@@ -68,11 +68,11 @@ public class PusheableObject : MonoBehaviour
     }
     void ShowParticles()
     {
-        particles.SetActive(true);
+        particles.GetComponent<ParticleSystem>().Play();
     }
     void HideParticles()
     {
-        particles.SetActive(false);
+        particles.GetComponent<ParticleSystem>().Stop();
     }
 }
 
