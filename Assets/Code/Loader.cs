@@ -1,60 +1,52 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public static class Loader
+public class Loader : MonoBehaviour
 {
+    public static Loader instance;
+    [SerializeField] GameObject loadingScreen;
+    private float progress;
 
-    private static AsyncOperation asyncOperation;
-    private static Action onLoaderCallback;
-
-    private class LoadingMonoBehaviour : MonoBehaviour { };
-
-    public static void LoadScene(string scene)
+    private void Awake()
     {
-        onLoaderCallback = () =>
+        if (instance == null)
         {
-            GameObject loadingGameObject = new GameObject("Loading Game Object");
-            loadingGameObject.AddComponent<LoadingMonoBehaviour>().StartCoroutine(LoadSceneAsync(scene));
-        };
-
-        SceneManager.LoadScene("LoadingScene");
-
-    }
-
-    static IEnumerator LoadSceneAsync(string scene)
-    {
-        yield return null;
-        
-        asyncOperation = SceneManager.LoadSceneAsync(scene);
-
-
-        while (!asyncOperation.isDone)
-        { 
-            yield return null;
-        }
-    }
-    public static float GetLoadingProgress()
-    {
-        if (asyncOperation != null)
-        {
-            
-            return asyncOperation.progress;
+            instance = this;
         }
         else
         {
-            return 0f;
+            Destroy(instance);
         }
+        DontDestroyOnLoad(this);
     }
 
-    public static void LoaderCallback()
+    private void Update()
     {
-        if (onLoaderCallback != null)
+        if (Input.GetKeyDown(KeyCode.L)) { LoadScene("JAN_Scene"); }
+    }
+    public void LoadScene(string scene)
+    {
+        StartCoroutine(LoadSceneAsync(scene));
+    }
+
+    IEnumerator LoadSceneAsync(string scene)
+    {
+
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(scene);
+
+        loadingScreen.SetActive(true);
+
+        while (!asyncOperation.isDone)
         {
-            onLoaderCallback();
-            onLoaderCallback = null;
+            progress = Mathf.Clamp01(asyncOperation.progress / 0.9f);
+            yield return null;
         }
     }
+    public float GetLoadingProgress()
+    {
+        return progress;
+    }
+
+
 }

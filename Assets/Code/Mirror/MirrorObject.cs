@@ -55,7 +55,6 @@ public class MirrorObject : MonoBehaviour
     {
         if (other.GetComponent<WorldObject>() != null)
         {
-                Debug.Log("IN");
             if (other.GetComponent<WorldObject>().id == id)
             {
                 worldObjects.Add(other.GetComponent<WorldObject>());
