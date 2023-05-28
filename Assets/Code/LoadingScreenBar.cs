@@ -11,9 +11,6 @@ public class LoadingScreenBar : MonoBehaviour
     
     private void Update()
     {
-
-
-        barImage.fillAmount = Mathf.MoveTowards(barImage.fillAmount, Loader.GetLoadingProgress(), 0.2f * Time.deltaTime);
-
+        barImage.fillAmount = Mathf.MoveTowards(barImage.fillAmount, Loader.GetLoadingProgress(), 1f * Time.deltaTime);
     }
 }

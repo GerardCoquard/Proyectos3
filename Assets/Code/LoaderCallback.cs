@@ -3,13 +3,8 @@
 public class LoaderCallback : MonoBehaviour
 {
     bool isFirstUpdate = true;
-    private void Update()
+    private void Start()
     {
-        if (isFirstUpdate)
-        {
-            isFirstUpdate = false;
-            Loader.LoaderCallback();
-            
-        }
+        Loader.LoaderCallback();
     }
 }

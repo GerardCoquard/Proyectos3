@@ -27,13 +27,12 @@ public static class Loader
     static IEnumerator LoadSceneAsync(string scene)
     {
         yield return null;
-
+        
         asyncOperation = SceneManager.LoadSceneAsync(scene);
 
 
         while (!asyncOperation.isDone)
-        {
-            
+        { 
             yield return null;
         }
     }
@@ -41,6 +40,7 @@ public static class Loader
     {
         if (asyncOperation != null)
         {
+            
             return asyncOperation.progress;
         }
         else

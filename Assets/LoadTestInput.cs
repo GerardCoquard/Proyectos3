@@ -6,6 +6,6 @@ public class LoadTestInput : MonoBehaviour
 {
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L)) { Loader.LoadScene("JAN_Scene"); } 
+        if (Input.GetKeyDown(KeyCode.L)) { Loader.LoadScene("Lightning_Scene"); } 
     }
 }
