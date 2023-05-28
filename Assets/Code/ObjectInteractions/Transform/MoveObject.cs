@@ -9,6 +9,7 @@ public class MoveObject : MonoBehaviour
     Vector3 finalPos;
     float distanceBetweenPositions;
     bool locked;
+    public bool isUp;
 
     private void Start()
     {
@@ -21,6 +22,22 @@ public class MoveObject : MonoBehaviour
         if(locked) return;
         StopAllCoroutines();
         StartCoroutine(MoveCoroutine());
+    }
+
+    public void MoveUpAndDown()
+    {
+  
+        if (isUp)
+        {
+            ResetMove();
+            isUp = false;
+        }
+        else
+        {
+            Move();
+            isUp = true;
+        }
+
     }
     public void ResetMove()
     {
