@@ -8,12 +8,12 @@ public class PlayerController : MonoBehaviour
     public static PlayerController instance;
     [Header("References")]
     [SerializeField] public CharacterController characterController;
+    Animator myAnimator;
 
     [Header("Movement")]
     public float maxLinealSpeed = 7f;
     public float acceleration;
     [SerializeField] float rotationFractionPerFrame = 45f;
-    float currentSpeed;
     Vector3 movement;
     private Vector2 tempDirection;
     private Vector2 movementAcceleration;
@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     float gravity;
     float initialGravity;
     bool isJumping;
+    bool isPushing;
 
     [Header("Push")]
     [SerializeField] float closeEnoughtDetection = 0.3f;
@@ -40,9 +41,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform pushStartDetectionPoint;
     PusheableObject currentObjectPushing;
     bool bookOpened;
-
-    [Header("Animation")]
-    private Animator myAnimator;
     
     public delegate void BookActivated();
     public delegate void PlayerActivated();
@@ -61,8 +59,8 @@ public class PlayerController : MonoBehaviour
         }
         else Destroy(this);
         SetUpJumpVariables();
-        currentSpeed = maxLinealSpeed;
         pushStartDetectionPoint.position = transform.position + new Vector3(0,detectionHeight,0) + transform.forward*closeEnoughtDetection;
+        myAnimator = GetComponent<Animator>();
     }
     private void OnEnable()
     {
@@ -173,9 +171,10 @@ public class PlayerController : MonoBehaviour
         {
             HandleRotation();
             HandleAcceleration();
-            CollisionFlags collisionFlags = characterController.Move(movement * Time.deltaTime);
+            CollisionFlags collisionFlags = characterController.Move(movement * Time.deltaTime);           
             CheckCollision(collisionFlags);
         }
+        myAnimator.SetBool("isMoving", movement != Vector3.zero);
         CheckPushAvailable();
         SetGravity();
     }
@@ -206,6 +205,7 @@ public class PlayerController : MonoBehaviour
             movement.y = jumpForce * .5f;
             isJumping = true;
             onGround = false;
+            myAnimator.SetTrigger("Jump");
         }
 
     }
@@ -259,6 +259,8 @@ public class PlayerController : MonoBehaviour
             transform.position = new Vector3(hit.point.x,transform.position.y,hit.point.z) + hit.normal*(characterController.radius + distanceBetween);
             transform.forward = -hit.normal;
             transform.SetParent(currentObjectPushing.transform);
+            isPushing = true;
+            myAnimator.SetBool("isPushing", true);
             OnObjectPushed?.Invoke();
         }
     }
@@ -268,12 +270,17 @@ public class PlayerController : MonoBehaviour
         OnStoppedPushing?.Invoke();
         transform.SetParent(null);
         currentObjectPushing.NotPusheable();
+        isPushing = false;
+        myAnimator.SetBool("isPushing", false);
         currentObjectPushing = null;
         characterController.enabled = true;
     }
     private void Push()
     {
+
         currentObjectPushing.AddForceTowardsDirection(pushForce, tempDirection);
+        myAnimator.SetFloat("VelX", tempDirection.x);
+        myAnimator.SetFloat("VelZ", tempDirection.y);
     }
 
     private bool CanJump()
@@ -306,6 +313,7 @@ public class PlayerController : MonoBehaviour
 
         if ((collisionFlag & CollisionFlags.Below) != 0 && movement.y < 0.0f)
         {
+            if(isJumping) { myAnimator.SetTrigger("Landed"); }
             movement.y = 0.0f;
             gravity = initialGravity;
             isJumping = false;
@@ -322,5 +330,6 @@ public class PlayerController : MonoBehaviour
             return dir.magnitude > 0.01 ? dir : Vector2.zero;
         }
     }
+
 }
 
