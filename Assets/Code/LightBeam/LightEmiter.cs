@@ -17,16 +17,17 @@ public class LightEmiter : MonoBehaviour
     public float offIntensity;
     public float onIntensity;
     public float fadeOutSpeed;
+    public bool inverted;
 
     private void Start()
     {
-        beam = new LightBeam(transform.position, transform.forward, material, Physics.AllLayers,maxBounces,rayColor,width, transform,growthSpeed);
+        beam = new LightBeam(transform.position, inverted ? -transform.forward : transform.forward, material, Physics.AllLayers,maxBounces,rayColor,width, transform,growthSpeed);
         SetPower(active);
     }
 
     private void Update()
     {
-        if(active) beam.ExecuteRay(rayStartPos.position, rayStartPos.forward, beam.lineRenderer);
+        if(active) beam.ExecuteRay(rayStartPos.position, inverted ? -rayStartPos.forward : rayStartPos.forward, beam.lineRenderer);
         else
         {
             beam.ResetBeam();
