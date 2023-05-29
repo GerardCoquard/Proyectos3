@@ -128,13 +128,13 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            StopPushing();
             InputManager.GetAction("Move").action -= OnMovementInput;
             InputManager.GetAction("Push").action -= OnPushInput;
             InputManager.GetAction("Jump").action -= OnJumpInput;
             bookOpened = true;
             movement = Vector3.zero;
             characterController.enabled = false;
-            StopPushing();
             OnBookActivated?.Invoke();
         }
     }
