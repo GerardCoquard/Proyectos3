@@ -8,7 +8,8 @@ public class PlayerController : MonoBehaviour
     public static PlayerController instance;
     [Header("References")]
     [SerializeField] public CharacterController characterController;
-    Animator myAnimator;
+    [SerializeField] Animator myAnimator;
+    [SerializeField] Animator mirrorAnimator;
 
     [Header("Movement")]
     public float maxLinealSpeed = 7f;
@@ -41,7 +42,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform pushStartDetectionPoint;
     PusheableObject currentObjectPushing;
     bool bookOpened;
-    
+
     public delegate void BookActivated();
     public delegate void PlayerActivated();
     public delegate void ObjectPushed();
@@ -59,8 +60,7 @@ public class PlayerController : MonoBehaviour
         }
         else Destroy(this);
         SetUpJumpVariables();
-        pushStartDetectionPoint.position = transform.position + new Vector3(0,detectionHeight,0) + transform.forward*closeEnoughtDetection;
-        myAnimator = GetComponent<Animator>();
+        pushStartDetectionPoint.position = transform.position + new Vector3(0, detectionHeight, 0) + transform.forward * closeEnoughtDetection;
     }
     private void OnEnable()
     {
@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
         if (isJumping || !onGround) return;
         if (bookOpened)
         {
-            if(CanInteract()) return; //?
+            if (CanInteract()) return; //?
             InputManager.GetAction("Move").action += OnMovementInput;
             InputManager.GetAction("Push").action += OnPushInput;
             InputManager.GetAction("Jump").action += OnJumpInput;
@@ -171,10 +171,11 @@ public class PlayerController : MonoBehaviour
         {
             HandleRotation();
             HandleAcceleration();
-            CollisionFlags collisionFlags = characterController.Move(movement * Time.deltaTime);           
+            CollisionFlags collisionFlags = characterController.Move(movement * Time.deltaTime);
             CheckCollision(collisionFlags);
         }
-        myAnimator.SetBool("isMoving", movement != Vector3.zero);
+        myAnimator.SetBool("isMoving", tempDirection != Vector2.zero);
+        if (mirrorAnimator != null) mirrorAnimator.SetBool("isMoving", tempDirection != Vector2.zero);
         CheckPushAvailable();
         SetGravity();
     }
@@ -193,8 +194,8 @@ public class PlayerController : MonoBehaviour
             movementAcceleration = Vector2.ClampMagnitude(movementAcceleration, 1);
 
         }
-        
-        Vector2 currentSpeedVector = isJumping? maxLinealSpeed * movementAcceleration * linealSpeedAirMultiplier : maxLinealSpeed* movementAcceleration;
+
+        Vector2 currentSpeedVector = isJumping ? maxLinealSpeed * movementAcceleration * linealSpeedAirMultiplier : maxLinealSpeed * movementAcceleration;
         movement.x = currentSpeedVector.x;
         movement.z = currentSpeedVector.y;
     }
@@ -206,6 +207,8 @@ public class PlayerController : MonoBehaviour
             isJumping = true;
             onGround = false;
             myAnimator.SetTrigger("Jump");
+            if (mirrorAnimator != null) mirrorAnimator.SetTrigger("Jump");
+
         }
 
     }
@@ -251,16 +254,17 @@ public class PlayerController : MonoBehaviour
     {
         PusheableObject pusheable;
         RaycastHit hit;
-        if (PusheableDetected(out pusheable,out hit ) && CanInteract())
+        if (PusheableDetected(out pusheable, out hit) && CanInteract())
         {
             currentObjectPushing = pusheable;
             currentObjectPushing.MakePusheable();
             characterController.enabled = false;
-            transform.position = new Vector3(hit.point.x,transform.position.y,hit.point.z) + hit.normal*(characterController.radius + distanceBetween);
+            transform.position = new Vector3(hit.point.x, transform.position.y, hit.point.z) + hit.normal * (characterController.radius + distanceBetween);
             transform.forward = -hit.normal;
             transform.SetParent(currentObjectPushing.transform);
             isPushing = true;
             myAnimator.SetBool("isPushing", true);
+            if (mirrorAnimator != null) mirrorAnimator.SetBool("isPushing", true);
             OnObjectPushed?.Invoke();
         }
     }
@@ -272,6 +276,7 @@ public class PlayerController : MonoBehaviour
         currentObjectPushing.NotPusheable();
         isPushing = false;
         myAnimator.SetBool("isPushing", false);
+        if (mirrorAnimator != null) mirrorAnimator.SetBool("isPushing", false);
         currentObjectPushing = null;
         characterController.enabled = true;
     }
@@ -281,6 +286,12 @@ public class PlayerController : MonoBehaviour
         currentObjectPushing.AddForceTowardsDirection(pushForce, tempDirection);
         myAnimator.SetFloat("VelX", tempDirection.x);
         myAnimator.SetFloat("VelZ", tempDirection.y);
+        if (mirrorAnimator != null)
+        {
+
+            mirrorAnimator.SetFloat("VelX", tempDirection.x);
+            mirrorAnimator.SetFloat("VelZ", tempDirection.y);
+        }
     }
 
     private bool CanJump()
@@ -313,7 +324,7 @@ public class PlayerController : MonoBehaviour
 
         if ((collisionFlag & CollisionFlags.Below) != 0 && movement.y < 0.0f)
         {
-            if(isJumping) { myAnimator.SetTrigger("Landed"); }
+            if (isJumping) { myAnimator.SetTrigger("Landed"); mirrorAnimator.SetTrigger("Landed"); }
             movement.y = 0.0f;
             gravity = initialGravity;
             isJumping = false;
