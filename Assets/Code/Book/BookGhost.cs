@@ -65,7 +65,7 @@ public class BookGhost : MonoBehaviour
     bool Move()
     {
         int vertical = 0;
-        if(up) vertical++;
+        if(up && transform.position.y<CameraController.instance.MaxBookHeight()) vertical++;
         if(down) vertical--;
         Vector3 finalMovement = new Vector3(movement.x,vertical,movement.y).normalized;
         characterController.Move(finalMovement * Time.deltaTime * speed);
