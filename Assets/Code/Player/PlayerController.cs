@@ -173,6 +173,7 @@ public class PlayerController : MonoBehaviour
             HandleAcceleration();
             CollisionFlags collisionFlags = characterController.Move(movement * Time.deltaTime);
             CheckCollision(collisionFlags);
+            myAnimator.SetFloat("VelY", movement.y);
         }
         myAnimator.SetBool("isMoving", tempDirection != Vector2.zero);
         if (mirrorAnimator != null) mirrorAnimator.SetBool("isMoving", tempDirection != Vector2.zero);
@@ -180,7 +181,6 @@ public class PlayerController : MonoBehaviour
         SetGravity();
         //CheckIfFalling();
         myAnimator.SetBool("Grounded", onGround);
-        myAnimator.SetFloat("VelY", movement.y);
 
     }
 
@@ -229,7 +229,7 @@ public class PlayerController : MonoBehaviour
         PusheableObject pusheable;
         if (CanInteract() && PusheableDetected(out pusheable, out RaycastHit hit))
         {
-            WorldScreenUI.instance.SetIcon(IconType.Push, characterController.bounds.center+new Vector3(0,1,0));
+            WorldScreenUI.instance.SetIcon(IconType.Push, characterController.bounds.center + new Vector3(0, 1, 0));
         }
         else WorldScreenUI.instance.HideIcon(IconType.Push);
     }
@@ -351,7 +351,7 @@ public class PlayerController : MonoBehaviour
         if (isJumping || onGround)
         {
             gravity -= gravityIncreseValue * Time.deltaTime;
-            
+
         }
 
         float previousYVelocity = movement.y;
@@ -381,9 +381,9 @@ public class PlayerController : MonoBehaviour
             movement.y = 0.0f;
             gravity = initialGravity;
             isJumping = false;
-           
+
         }
-        
+
     }
     public Vector2 GetDirection()
     {
