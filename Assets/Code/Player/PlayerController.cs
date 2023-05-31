@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
     float gravity;
     float initialGravity;
     bool isJumping;
-    bool isPushing;
+    bool landed = true;
 
     [Header("Push")]
     [SerializeField] float closeEnoughtDetection = 0.3f;
@@ -178,13 +178,19 @@ public class PlayerController : MonoBehaviour
         if (mirrorAnimator != null) mirrorAnimator.SetBool("isMoving", tempDirection != Vector2.zero);
         CheckPushAvailable();
         SetGravity();
+        CheckIfFalling();
+        myAnimator.SetBool("Grounded", onGround);
+        myAnimator.SetFloat("VelY", movement.y);
 
-        if (isJumping && !onGround && movement.y < 0.1f)
-        {
-            myAnimator.SetTrigger("isFalling");
-        }
     }
 
+    private void CheckIfFalling()
+    {
+        if (movement.y < -0.5f)
+        {
+            onGround = false;
+        }
+    }
     private void HandleAcceleration()
     {
         if (tempDirection != Vector2.zero)
@@ -211,6 +217,7 @@ public class PlayerController : MonoBehaviour
             movement.y = jumpForce * .5f;
             isJumping = true;
             onGround = false;
+            landed = false;
             myAnimator.SetTrigger("Jump");
             if (mirrorAnimator != null) mirrorAnimator.SetTrigger("Jump");
 
@@ -267,7 +274,6 @@ public class PlayerController : MonoBehaviour
             transform.position = new Vector3(hit.point.x, transform.position.y, hit.point.z) + hit.normal * (characterController.radius + distanceBetween);
             transform.forward = -hit.normal;
             transform.SetParent(currentObjectPushing.transform);
-            isPushing = true;
             myAnimator.SetBool("isPushing", true);
             if (mirrorAnimator != null) mirrorAnimator.SetBool("isPushing", true);
             OnObjectPushed?.Invoke();
@@ -279,7 +285,6 @@ public class PlayerController : MonoBehaviour
         OnStoppedPushing?.Invoke();
         transform.SetParent(null);
         currentObjectPushing.NotPusheable();
-        isPushing = false;
         myAnimator.SetBool("isPushing", false);
         if (mirrorAnimator != null) mirrorAnimator.SetBool("isPushing", false);
         currentObjectPushing = null;
@@ -346,6 +351,7 @@ public class PlayerController : MonoBehaviour
         if (isJumping || onGround)
         {
             gravity -= gravityIncreseValue * Time.deltaTime;
+            
         }
 
         float previousYVelocity = movement.y;
@@ -354,6 +360,12 @@ public class PlayerController : MonoBehaviour
 
         movement.y = nextYVelocity;
 
+
+    }
+
+    public void SetLandAnimationDone(bool state)
+    {
+        landed = state;
     }
 
     void CheckCollision(CollisionFlags collisionFlag)
@@ -365,12 +377,13 @@ public class PlayerController : MonoBehaviour
 
         if ((collisionFlag & CollisionFlags.Below) != 0 && movement.y < 0.0f)
         {
-            if (isJumping) { myAnimator.SetTrigger("Landed"); mirrorAnimator.SetTrigger("Landed"); }
+            onGround = true;
             movement.y = 0.0f;
             gravity = initialGravity;
-            isJumping = false;
-            onGround = true;
+            if(landed) isJumping = false;
+           
         }
+        
     }
     public Vector2 GetDirection()
     {
