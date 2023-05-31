@@ -185,8 +185,6 @@ public class PlayerController : MonoBehaviour
         SetGravity();
         myAnimator.SetBool("Grounded", onGround);
 
-        Vector2 sum = new Vector2(0, 1) + new Vector2(0.71f, 0.71f);
-        Debug.Log(sum.normalized);
 
     }
 
@@ -313,41 +311,39 @@ public class PlayerController : MonoBehaviour
 
     private void HandlePushAnimation()
     {
-        /*Vector2 newDirection;
-        float radianAngle = transform.eulerAngles.y * Mathf.Deg2Rad;
 
-        if (tempDirection == new Vector2(0, 1))
+        float dotResult = Vector2.Dot(new Vector2(transform.forward.x, transform.forward.z), tempDirection);
+
+
+        if (dotResult > 0.7f)
         {
-            if (transform.localEulerAngles.y == 180) newDirection = new Vector2(Mathf.Sin(radianAngle), Mathf.Cos(radianAngle));
-            else newDirection = new Vector2(-Mathf.Sin(radianAngle), Mathf.Cos(radianAngle));
+            myAnimator.SetFloat("VelX", 0);
+            myAnimator.SetFloat("VelZ", 1);
+        }
+        else if (dotResult < -0.7f)
+        {
+            myAnimator.SetFloat("VelX", 0);
+            myAnimator.SetFloat("VelZ", -1);
+        }
+        else if (dotResult < 0)
+        {
+
+            myAnimator.SetFloat("VelX", 1);
+            myAnimator.SetFloat("VelZ", 0);
 
         }
-        else if (tempDirection == new Vector2(0, -1))
+        else if (dotResult > 0 && dotResult < 0.7f)
         {
-            if (transform.localEulerAngles.y == 180) newDirection = new Vector2(Mathf.Sin(radianAngle), -Mathf.Cos(radianAngle));
-            else newDirection = new Vector2(Mathf.Sin(radianAngle), Mathf.Cos(radianAngle));
 
-        }
-        else if (tempDirection == new Vector2(1, 0))
-        {
-            if (transform.localEulerAngles.y == 180) newDirection = new Vector2(-Mathf.Cos(radianAngle), Mathf.Sin(radianAngle));
-            else newDirection = new Vector2(Mathf.Cos(radianAngle), Mathf.Sin(radianAngle));
+            myAnimator.SetFloat("VelX", -1);
+            myAnimator.SetFloat("VelZ", 0);
 
-        }
-        else if (tempDirection == new Vector2(-1, 0))
-        {
-            newDirection = new Vector2(Mathf.Cos(radianAngle), -Mathf.Sin(radianAngle));
         }
         else
         {
-            newDirection = Vector2.zero;
-        }*/
-
-
-        myAnimator.SetFloat("VelX", tempDirection.x);
-        myAnimator.SetFloat("VelZ", tempDirection.y);
-
-
+            myAnimator.SetFloat("VelX", 0);
+            myAnimator.SetFloat("VelZ", 0);
+        }
     }
 
     private bool CanJump()
