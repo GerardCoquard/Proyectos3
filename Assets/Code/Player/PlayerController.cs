@@ -380,7 +380,7 @@ public class PlayerController : MonoBehaviour
             onGround = true;
             movement.y = 0.0f;
             gravity = initialGravity;
-            if(landed) isJumping = false;
+            isJumping = false;
            
         }
         
