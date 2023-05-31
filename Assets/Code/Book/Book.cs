@@ -39,7 +39,6 @@ public class Book : MonoBehaviour
         if(instance==null)
         {
             instance = this;
-            DontDestroyOnLoad(instance);
         }
         else Destroy(this);
     }
