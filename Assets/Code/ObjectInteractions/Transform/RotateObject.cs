@@ -7,6 +7,7 @@ public class RotateObject : MonoBehaviour
     Quaternion initialRotation;
     Quaternion finalRotation;
     public float timeToReach;
+    [SerializeField] float delay;
     public Vector3 _finalRotation;
     float angleBetweenRotations;
     bool locked;
@@ -31,6 +32,7 @@ public class RotateObject : MonoBehaviour
     }
     IEnumerator RotateCoroutine()
     {
+        yield return new WaitForSeconds(delay);
         float angleToRotation =  Quaternion.Angle(transform.localRotation, finalRotation);
         float time = angleToRotation / angleBetweenRotations * timeToReach;
         Quaternion _initRot = transform.localRotation;

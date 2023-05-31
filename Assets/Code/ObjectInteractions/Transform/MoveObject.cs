@@ -5,6 +5,7 @@ public class MoveObject : MonoBehaviour
 {
     [SerializeField] Transform finalPosition;
     [SerializeField] float timeToReach;
+    [SerializeField] float delay;
     Vector3 initPos;
     Vector3 finalPos;
     float distanceBetweenPositions;
@@ -30,6 +31,7 @@ public class MoveObject : MonoBehaviour
     }
     IEnumerator MoveCoroutine()
     {
+        yield return new WaitForSeconds(delay);
         float distanceToTarget = Vector3.Distance(transform.position, finalPos);
         float time = distanceToTarget / distanceBetweenPositions * timeToReach;
         Vector3 _initPos = transform.position;
