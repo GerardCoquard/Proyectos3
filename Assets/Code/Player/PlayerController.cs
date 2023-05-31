@@ -178,7 +178,7 @@ public class PlayerController : MonoBehaviour
         if (mirrorAnimator != null) mirrorAnimator.SetBool("isMoving", tempDirection != Vector2.zero);
         CheckPushAvailable();
         SetGravity();
-        CheckIfFalling();
+        //CheckIfFalling();
         myAnimator.SetBool("Grounded", onGround);
         myAnimator.SetFloat("VelY", movement.y);
 
