@@ -8,12 +8,13 @@ public class PlayerController : MonoBehaviour
     public static PlayerController instance;
     [Header("References")]
     [SerializeField] public CharacterController characterController;
+    [SerializeField] Animator myAnimator;
+    [SerializeField] Animator mirrorAnimator;
 
     [Header("Movement")]
     public float maxLinealSpeed = 7f;
     public float acceleration;
     [SerializeField] float rotationFractionPerFrame = 45f;
-    float currentSpeed;
     Vector3 movement;
     private Vector2 tempDirection;
     private Vector2 movementAcceleration;
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour
     float gravity;
     float initialGravity;
     bool isJumping;
+    bool isPushing;
 
     [Header("Push")]
     [SerializeField] float closeEnoughtDetection = 0.3f;
@@ -41,9 +43,6 @@ public class PlayerController : MonoBehaviour
     PusheableObject currentObjectPushing;
     bool bookOpened;
 
-    [Header("Animation")]
-    private Animator myAnimator;
-    
     public delegate void BookActivated();
     public delegate void PlayerActivated();
     public delegate void ObjectPushed();
@@ -61,8 +60,7 @@ public class PlayerController : MonoBehaviour
         }
         else Destroy(this);
         SetUpJumpVariables();
-        currentSpeed = maxLinealSpeed;
-        pushStartDetectionPoint.position = transform.position + new Vector3(0,detectionHeight,0) + transform.forward*closeEnoughtDetection;
+        pushStartDetectionPoint.position = transform.position + new Vector3(0, detectionHeight, 0) + transform.forward * closeEnoughtDetection;
     }
     private void OnEnable()
     {
@@ -113,7 +111,7 @@ public class PlayerController : MonoBehaviour
         if (isJumping || !onGround) return;
         if (bookOpened)
         {
-            if(CanInteract()) return; //?
+            if (CanInteract()) return; //?
             InputManager.GetAction("Move").action += OnMovementInput;
             InputManager.GetAction("Push").action += OnPushInput;
             InputManager.GetAction("Jump").action += OnJumpInput;
@@ -176,8 +174,15 @@ public class PlayerController : MonoBehaviour
             CollisionFlags collisionFlags = characterController.Move(movement * Time.deltaTime);
             CheckCollision(collisionFlags);
         }
+        myAnimator.SetBool("isMoving", tempDirection != Vector2.zero);
+        if (mirrorAnimator != null) mirrorAnimator.SetBool("isMoving", tempDirection != Vector2.zero);
         CheckPushAvailable();
         SetGravity();
+
+        if (isJumping && !onGround && movement.y < 0.1f)
+        {
+            myAnimator.SetTrigger("isFalling");
+        }
     }
 
     private void HandleAcceleration()
@@ -194,8 +199,8 @@ public class PlayerController : MonoBehaviour
             movementAcceleration = Vector2.ClampMagnitude(movementAcceleration, 1);
 
         }
-        
-        Vector2 currentSpeedVector = isJumping? maxLinealSpeed * movementAcceleration * linealSpeedAirMultiplier : maxLinealSpeed* movementAcceleration;
+
+        Vector2 currentSpeedVector = isJumping ? maxLinealSpeed * movementAcceleration * linealSpeedAirMultiplier : maxLinealSpeed * movementAcceleration;
         movement.x = currentSpeedVector.x;
         movement.z = currentSpeedVector.y;
     }
@@ -206,6 +211,9 @@ public class PlayerController : MonoBehaviour
             movement.y = jumpForce * .5f;
             isJumping = true;
             onGround = false;
+            myAnimator.SetTrigger("Jump");
+            if (mirrorAnimator != null) mirrorAnimator.SetTrigger("Jump");
+
         }
 
     }
@@ -251,14 +259,17 @@ public class PlayerController : MonoBehaviour
     {
         PusheableObject pusheable;
         RaycastHit hit;
-        if (PusheableDetected(out pusheable,out hit ) && CanInteract())
+        if (PusheableDetected(out pusheable, out hit) && CanInteract())
         {
             currentObjectPushing = pusheable;
             currentObjectPushing.MakePusheable();
             characterController.enabled = false;
-            transform.position = new Vector3(hit.point.x,transform.position.y,hit.point.z) + hit.normal*(characterController.radius + distanceBetween);
+            transform.position = new Vector3(hit.point.x, transform.position.y, hit.point.z) + hit.normal * (characterController.radius + distanceBetween);
             transform.forward = -hit.normal;
             transform.SetParent(currentObjectPushing.transform);
+            isPushing = true;
+            myAnimator.SetBool("isPushing", true);
+            if (mirrorAnimator != null) mirrorAnimator.SetBool("isPushing", true);
             OnObjectPushed?.Invoke();
         }
     }
@@ -268,12 +279,60 @@ public class PlayerController : MonoBehaviour
         OnStoppedPushing?.Invoke();
         transform.SetParent(null);
         currentObjectPushing.NotPusheable();
+        isPushing = false;
+        myAnimator.SetBool("isPushing", false);
+        if (mirrorAnimator != null) mirrorAnimator.SetBool("isPushing", false);
         currentObjectPushing = null;
         characterController.enabled = true;
     }
     private void Push()
     {
+
         currentObjectPushing.AddForceTowardsDirection(pushForce, tempDirection);
+        HandlePushAnimation();
+        if (mirrorAnimator != null)
+        {
+            mirrorAnimator.SetFloat("VelX", tempDirection.x);
+            mirrorAnimator.SetFloat("VelZ", tempDirection.y);
+        }
+    }
+
+    private void HandlePushAnimation()
+    {
+        Vector2 newDirection;
+        float radianAngle = transform.localEulerAngles.y * Mathf.Deg2Rad;
+
+        if (tempDirection == new Vector2(0, 1))
+        {
+            if (transform.localEulerAngles.y == 180) newDirection = new Vector2(Mathf.Sin(radianAngle), Mathf.Cos(radianAngle));
+            else newDirection = new Vector2(-Mathf.Sin(radianAngle), Mathf.Cos(radianAngle));
+
+        }
+        else if (tempDirection == new Vector2(0, -1))
+        {
+            if (transform.localEulerAngles.y == 180) newDirection = new Vector2(Mathf.Sin(radianAngle), -Mathf.Cos(radianAngle));
+            else newDirection = new Vector2(Mathf.Sin(radianAngle), Mathf.Cos(radianAngle));
+
+        }
+        else if (tempDirection == new Vector2(1, 0))
+        {
+            if (transform.localEulerAngles.y == 180) newDirection = new Vector2(-Mathf.Cos(radianAngle), Mathf.Sin(radianAngle));
+            else newDirection = new Vector2(Mathf.Cos(radianAngle), Mathf.Sin(radianAngle));
+
+        }
+        else if (tempDirection == new Vector2(-1, 0))
+        {
+            newDirection = new Vector2(Mathf.Cos(radianAngle), -Mathf.Sin(radianAngle));
+        }
+        else
+        {
+            newDirection = Vector2.zero;
+        }
+
+
+
+        myAnimator.SetFloat("VelX", Mathf.RoundToInt(newDirection.x));
+        myAnimator.SetFloat("VelZ", Mathf.RoundToInt(newDirection.y));
     }
 
     private bool CanJump()
@@ -306,6 +365,7 @@ public class PlayerController : MonoBehaviour
 
         if ((collisionFlag & CollisionFlags.Below) != 0 && movement.y < 0.0f)
         {
+            if (isJumping) { myAnimator.SetTrigger("Landed"); mirrorAnimator.SetTrigger("Landed"); }
             movement.y = 0.0f;
             gravity = initialGravity;
             isJumping = false;
@@ -322,5 +382,6 @@ public class PlayerController : MonoBehaviour
             return dir.magnitude > 0.01 ? dir : Vector2.zero;
         }
     }
+
 }
 
