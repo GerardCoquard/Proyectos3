@@ -59,7 +59,7 @@ public class BookGhost : MonoBehaviour
     }
     private void Update() {
         Move();
-        if(selectedShape != null) WorldScreenUI.instance.SetIcon(IconType.Book, selectedShape.shapeCollider.bounds.center);
+        if(selectedShape != null) WorldScreenUI.instance.SetIcon(IconType.Book, transform.position+new Vector3(0,0.6f,0));
         else WorldScreenUI.instance.HideIcon(IconType.Book);
     }
     bool Move()

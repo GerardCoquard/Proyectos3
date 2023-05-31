@@ -14,7 +14,7 @@ public class Interactable : MonoBehaviour
         
         if (PlayerController.instance.CanInteract() && playerIn)
         {
-            WorldScreenUI.instance.SetIcon(IconType.Dialogue, iconDisplayPos.position);
+            WorldScreenUI.instance.SetIcon(IconType.Dialogue, PlayerController.instance.transform.position+new Vector3(0,1,0));
         }
         else
         {
@@ -51,7 +51,6 @@ public class Interactable : MonoBehaviour
             playerIn=false;
         }
     }
-
 }
 
 

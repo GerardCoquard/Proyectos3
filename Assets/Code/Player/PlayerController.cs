@@ -222,7 +222,7 @@ public class PlayerController : MonoBehaviour
         PusheableObject pusheable;
         if (CanInteract() && PusheableDetected(out pusheable, out RaycastHit hit))
         {
-            WorldScreenUI.instance.SetIcon(IconType.Push, pusheable.uiPosition.position);
+            WorldScreenUI.instance.SetIcon(IconType.Push, characterController.bounds.center+new Vector3(0,1,0));
         }
         else WorldScreenUI.instance.HideIcon(IconType.Push);
     }
