@@ -99,6 +99,7 @@ public class DialogueDisplay : MonoBehaviour
     public void StartDialogue()
     {
         PlayerController.instance.characterController.enabled = false;
+        PlayerController.instance.myAnimator.SetBool("isMoving", false);
         dialogueRender.SetActive(true);
         dialogueText.text = "";
         currentNode = startNode;
