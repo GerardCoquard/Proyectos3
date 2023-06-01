@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 3121483042671598123}
   - component: {fileID: 5614559963790789842}
   - component: {fileID: 1740963553410891546}
+  - component: {fileID: 1972123257590815845}
   m_Layer: 0
   m_Name: Baul 2
   m_TagString: Untagged
@@ -252,6 +253,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1972123257590815845
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506998753262615789}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.025555968, y: 0.015593712, z: 0.017828707}
+  m_Center: {x: -0.1471797, y: -0.0619255, z: 0.003479368}
 --- !u!1 &1063416458214160506
 GameObject:
   m_ObjectHideFlags: 0
