@@ -509,7 +509,6 @@ GameObject:
   - component: {fileID: 231482352066150775}
   - component: {fileID: 7121444239782076867}
   - component: {fileID: 6784369104719363478}
-  - component: {fileID: 1978335385535107866}
   m_Layer: 0
   m_Name: Cerradura parte plana.001
   m_TagString: Untagged
@@ -582,19 +581,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1978335385535107866
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3168063960771962194}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.0014823452, y: 0.00024712825, z: 0.0025868895}
-  m_Center: {x: -0.100719795, y: -0.071061194, z: 0.0015347684}
 --- !u!1 &3281966737564085184
 GameObject:
   m_ObjectHideFlags: 0
@@ -1270,6 +1256,7 @@ GameObject:
   - component: {fileID: 861112536450887144}
   - component: {fileID: 590844982622805371}
   - component: {fileID: 350813418476087491}
+  - component: {fileID: 6093754827666385787}
   m_Layer: 0
   m_Name: Baul.001
   m_TagString: Untagged
@@ -1344,6 +1331,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6093754827666385787
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7558263168165697422}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.025745941, y: 0.015492018, z: 0.011924877}
+  m_Center: {x: -0.1006496, y: -0.063578285, z: -0.0002475718}
 --- !u!1 &7852662035310563126
 GameObject:
   m_ObjectHideFlags: 0
@@ -1369,7 +1369,7 @@ Transform:
   m_GameObject: {fileID: 7852662035310563126}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: 129.69, y: 0.004573524, z: -5.16}
-  m_LocalScale: {x: 35, y: 35, z: 35}
+  m_LocalScale: {x: 45, y: 45, z: 45}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 861112536450887144}
