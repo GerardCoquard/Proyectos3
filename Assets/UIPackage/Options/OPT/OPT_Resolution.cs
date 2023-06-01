@@ -72,7 +72,7 @@ public class OPT_Resolution : MonoBehaviour,IOption
 
         for (int i = 0; i < resolutions.Length; i++)
         {
-            string option = resolutions[i].width + " X " + resolutions[i].height + " @ " + resolutions[i].refreshRate + "HZ";
+            string option = resolutions[i].width + " X " + resolutions[i].height;
             options.Add(option);
 
             if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)

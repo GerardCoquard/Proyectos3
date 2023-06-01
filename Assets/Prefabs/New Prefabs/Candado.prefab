@@ -11,12 +11,13 @@ GameObject:
   - component: {fileID: 3801383216600475354}
   - component: {fileID: 247384001803020671}
   - component: {fileID: 2632940269737450933}
+  - component: {fileID: 8275901683190193268}
   m_Layer: 0
   m_Name: Candado
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3801383216600475354
 Transform:
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8275901683190193268
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4578728473101220960}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.51162636, y: 0.07117556, z: 0.62801903}
+  m_Center: {x: -0.000023841856, y: 0.03558752, z: -0.00033092493}

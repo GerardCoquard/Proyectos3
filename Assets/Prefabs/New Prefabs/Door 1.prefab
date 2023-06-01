@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 3099284174735618329}
   - component: {fileID: 8926085584681926963}
   - component: {fileID: 632598321778180810}
+  - component: {fileID: 6645110873761426643}
   m_Layer: 0
   m_Name: puerta derecha
   m_TagString: Untagged
@@ -116,6 +117,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6645110873761426643
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257988200385531796}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.020000003, y: 0.0013049629, z: 0.036644626}
+  m_Center: {x: -0.041835524, y: -0.00027944, z: 0.018205123}
 --- !u!1 &1314536081928267000
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,6 +428,7 @@ GameObject:
   - component: {fileID: 3236449222423066089}
   - component: {fileID: 4645977150392406987}
   - component: {fileID: 2855528150981429363}
+  - component: {fileID: 279663698889720104}
   m_Layer: 0
   m_Name: Puerta izquierda
   m_TagString: Untagged
@@ -488,6 +503,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &279663698889720104
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6810841533244111803}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.02, y: 0.0013049629, z: 0.036644626}
+  m_Center: {x: -0.02183553, y: -0.00027944, z: 0.018205123}
 --- !u!1 &7318902277359907275
 GameObject:
   m_ObjectHideFlags: 0

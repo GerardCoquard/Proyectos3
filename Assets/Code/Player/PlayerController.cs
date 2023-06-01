@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     public static PlayerController instance;
     [Header("References")]
     [SerializeField] public CharacterController characterController;
-    public PlayerAnimatorController animatorController;
+    private PlayerAnimatorController animatorController;
     [SerializeField] float pushAnimationDuration;
 
     [Header("Movement")]
@@ -65,6 +65,10 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public PlayerAnimatorController GetAnimator()
+    {
+        return animatorController;
+    }
     private void OnEnable()
     {
         InputManager.GetAction("Move").action += OnMovementInput;
