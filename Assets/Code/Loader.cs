@@ -19,7 +19,7 @@ public class Loader : MonoBehaviour
         {
             Destroy(instance);
         }
-        DontDestroyOnLoad(this);
+        //DontDestroyOnLoad(this);
     }
     private void OnEnable() {
         loadingScreen.SetActive(false);
