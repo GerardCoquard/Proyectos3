@@ -10,7 +10,6 @@ public class MirrorTriggerRoom : MonoBehaviour
         
         if(other.tag == "Player")
         {
-            Debug.Log("IN");
             mirroedPlayer.SetLocked(false);
         }
     }
@@ -19,7 +18,6 @@ public class MirrorTriggerRoom : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            Debug.Log("out");
             mirroedPlayer.SetLocked(true);
         }
     }

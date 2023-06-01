@@ -9,11 +9,12 @@ public class CopyMovement : MonoBehaviour
     [SerializeField] private bool rotationInZ;
     [SerializeField] private bool copyObjectRotation;
     private bool locked;
+    public bool isPlayer;
 
 
     private void Awake()
     {
-        if(rotationInZ) transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, -transform.localScale.z);
+        if (rotationInZ) transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, -transform.localScale.z);
         else transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
         SetElementInMirrorPosition();
         locked = true;
@@ -27,13 +28,11 @@ public class CopyMovement : MonoBehaviour
     }
     private void Update()
     {
-       
-        if (!locked)
-        {
-            UpdatePosition();
-            if (copyObjectRotation) UpdateRotation();
-        }
-       
+        if (isPlayer && locked) return;
+        UpdatePosition();
+        if (copyObjectRotation) UpdateRotation();
+
+
     }
 
     private void SetElementInMirrorPosition()
