@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 3887044573008339746}
   - component: {fileID: 164015662473252772}
   - component: {fileID: 4047368195096607783}
+  - component: {fileID: 8639151150147187726}
   m_Layer: 0
   m_Name: Pilar 3
   m_TagString: Untagged
@@ -118,6 +119,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8639151150147187726
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6149620679964004755}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.15996991, y: 1.0851347, z: 0.15997027}
+  m_Center: {x: 0.000001128763, y: 0.5425674, z: -0.000000771135}
 --- !u!1 &6606345476770411030
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,6 +143,7 @@ GameObject:
   - component: {fileID: 8055332285872839234}
   - component: {fileID: 6001099442230500709}
   - component: {fileID: 7938685520976235165}
+  - component: {fileID: 7496495947864068553}
   m_Layer: 0
   m_Name: Pilar 2
   m_TagString: Untagged
@@ -201,6 +216,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &7496495947864068553
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6606345476770411030}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.15996991, y: 1.0851347, z: 0.15997027}
+  m_Center: {x: 0.00000017508863, y: 0.5425674, z: 0.000001851469}
 --- !u!1 &7846813148674395079
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,6 +240,7 @@ GameObject:
   - component: {fileID: 2797006253925420045}
   - component: {fileID: 6121740701372098457}
   - component: {fileID: 5120336988103868324}
+  - component: {fileID: 4530407321738956816}
   m_Layer: 0
   m_Name: Pilar 1
   m_TagString: Untagged
@@ -284,6 +313,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4530407321738956816
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846813148674395079}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.15996991, y: 1.0851347, z: 0.15997033}
+  m_Center: {x: 0.00000017508863, y: 0.5425674, z: 0.00000092759717}
 --- !u!1 &8489161031887811233
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,6 +337,7 @@ GameObject:
   - component: {fileID: 3310706272769100764}
   - component: {fileID: 3467836232002080482}
   - component: {fileID: 3885931745943989489}
+  - component: {fileID: 4543420239901105388}
   m_Layer: 0
   m_Name: Barandilla
   m_TagString: Untagged
@@ -367,3 +410,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4543420239901105388
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8489161031887811233}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.25289014, y: 0.28938055, z: 1.4469825}
+  m_Center: {x: 0.0000005885958, y: 0.14468992, z: 0.0000026524065}
