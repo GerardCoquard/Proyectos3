@@ -24,11 +24,13 @@ public class MenuOptions : Menu
             if(tittleButtons[i].gameObject != firstButton)
             {
                 tittleButtons[i].sizeDelta = new Vector2(buttonsScreens[i].GetWidth(),buttonsScreens[i].GetHeight());
+                tittleButtons[i].GetComponentInChildren<Flyers>().transform.localScale = new Vector3(1,1,1);
                 tittleButtons[i].GetComponent<ButtonScreen>().screen.SetActive(false);
             }
             else
             {
                 tittleButtons[i].sizeDelta = new Vector2(buttonsScreens[i].GetWidth()*sizeMultiplier,buttonsScreens[i].GetHeight()*sizeMultiplier);
+                tittleButtons[i].GetComponentInChildren<Flyers>().transform.localScale = new Vector3(sizeMultiplier,sizeMultiplier,sizeMultiplier);
                 tittleButtons[i].GetComponent<ButtonScreen>().screen.SetActive(true);
             }
         }
@@ -42,11 +44,14 @@ public class MenuOptions : Menu
             {
                 StartCoroutine(Reduce(buttonsScreens[i]));
                 buttonsScreens[i].screen.SetActive(false);
+                tittleButtons[i].GetComponentInChildren<Flyers>().transform.localScale = new Vector3(1,1,1);
+                
             }
             else
             {
                 StartCoroutine(Grow(buttonsScreens[i]));
                 buttonsScreens[i].screen.SetActive(true);
+                tittleButtons[i].GetComponentInChildren<Flyers>().transform.localScale = new Vector3(sizeMultiplier,sizeMultiplier,sizeMultiplier);
             }
         }
     }
