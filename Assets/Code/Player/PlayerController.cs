@@ -385,6 +385,11 @@ public class PlayerController : MonoBehaviour
 
 
     }
+
+    public bool GetIsJumping()
+    {
+        return isJumping;
+    }
     public Vector2 GetDirection()
     {
         if (currentObjectPushing != null) return tempDirection;

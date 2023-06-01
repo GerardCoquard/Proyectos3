@@ -47,7 +47,7 @@ public class DialogueDisplay : MonoBehaviour
     private void Update()
     {
 
-        dialogueRender.transform.position = currentNode.emisor == SPEAKER.ME ? WorldScreenUI.instance.WorldPosToScreen(interactablePos.position) : WorldScreenUI.instance.WorldPosToScreen(Book.instance.dialoguePosition.position);
+        dialogueRender.transform.position = currentNode.emisor == SPEAKER.BOOK ? WorldScreenUI.instance.WorldPosToScreen(Book.instance.dialoguePosition.position) : WorldScreenUI.instance.WorldPosToScreen(interactablePos.position);
 
     }
     private void OnEnable()
@@ -98,7 +98,9 @@ public class DialogueDisplay : MonoBehaviour
 
     public void StartDialogue()
     {
-        PlayerController.instance.characterController.enabled = false;
+
+
+        StartCoroutine(WaitToLand());
         PlayerController.instance.GetAnimator().SetBool("isMoving", false);
         dialogueRender.SetActive(true);
         dialogueText.text = "";
@@ -107,7 +109,14 @@ public class DialogueDisplay : MonoBehaviour
         currentTypeSpeed = defaultTypeSpeed;
         StartCoroutine(ScaleCoroutine());
     }
-
+    IEnumerator WaitToLand()
+    {
+        while (PlayerController.instance.GetIsJumping())
+        {
+            yield return null; 
+        }
+        PlayerController.instance.characterController.enabled = false;
+    }
     public void SetStartNode(DialogueNode startNode)
     {
         this.startNode = startNode;
