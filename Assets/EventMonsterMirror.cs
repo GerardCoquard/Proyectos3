@@ -7,9 +7,13 @@ public class EventMonsterMirror : MonoBehaviour
     [SerializeField] LineRenderer lineRenderer;
     [SerializeField] Transform eyeTransform;
     public float delayToKill;
+    public float delayToDisapear;
 
     public UnityEvent eventToDo;
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L)) ThrowToMonster();
+    }
     private void Start()
     {
         lineRenderer.gameObject.SetActive(false);
@@ -25,8 +29,10 @@ public class EventMonsterMirror : MonoBehaviour
     IEnumerator EventMonster()
     {
         yield return new WaitForSeconds(delayToKill);
-        eyeTransform.gameObject.SetActive(false);
         eventToDo?.Invoke();
+        yield return new WaitForSeconds(delayToDisapear);
+        lineRenderer.gameObject.SetActive(false);
+        eyeTransform.gameObject.SetActive(false);
     }
 
 }
