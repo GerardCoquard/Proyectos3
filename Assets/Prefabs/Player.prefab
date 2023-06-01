@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 828900542119977032}
   - component: {fileID: 828900542119977033}
   - component: {fileID: 4132650408345235028}
+  - component: {fileID: 6464389687242261904}
   m_Layer: 12
   m_Name: Player
   m_TagString: CharacterController
@@ -67,8 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 828900542119977032}
-  myAnimator: {fileID: 3788996102834976502}
-  mirrorAnimator: {fileID: 3788996102834976502}
+  animatorController: {fileID: 0}
   pushAnimationDuration: 0.75
   maxLinealSpeed: 4
   acceleration: 10
@@ -98,6 +98,21 @@ CapsuleCollider:
   m_Height: 1.25
   m_Direction: 1
   m_Center: {x: 0, y: 0.625, z: 0}
+--- !u!114 &6464389687242261904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828900542119977034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72db56b8447458047a35fdbe8f098985, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerAnimators:
+  - {fileID: 3788996102834976502}
+  - {fileID: 3788996102834976502}
 --- !u!1 &828900542909014590
 GameObject:
   m_ObjectHideFlags: 0
