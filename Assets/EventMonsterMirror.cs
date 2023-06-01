@@ -10,7 +10,11 @@ public class EventMonsterMirror : MonoBehaviour
     public float delayToDisapear;
 
     public UnityEvent eventToDo;
-    
+
+    private void Update()
+    {
+        
+    }
     private void Start()
     {
         lineRenderer.gameObject.SetActive(false);
