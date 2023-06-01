@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3687354492062408509}
   - component: {fileID: 2303038931734864137}
   - component: {fileID: 4839840850268067167}
+  - component: {fileID: 603789004806025100}
   m_Layer: 0
   m_Name: Reposabrazos izquierdo
   m_TagString: Untagged
@@ -83,6 +84,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &603789004806025100
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473517303687990492}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2772205381194203887, guid: 0c2683eba9a9e4f419cfc3c0744b303f, type: 3}
 --- !u!1 &1774026071568447734
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,6 +275,7 @@ GameObject:
   - component: {fileID: 5101114573904907581}
   - component: {fileID: 103920776977172109}
   - component: {fileID: 7126258620821626134}
+  - component: {fileID: 226782107866547429}
   m_Layer: 0
   m_Name: Sillon principal
   m_TagString: Untagged
@@ -332,6 +348,65 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &226782107866547429
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2899112225784348256}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7508782284326219329, guid: 0c2683eba9a9e4f419cfc3c0744b303f, type: 3}
+--- !u!1 &3241770944581978948
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 438438356184201464}
+  - component: {fileID: 8234420212153917889}
+  m_Layer: 0
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &438438356184201464
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3241770944581978948}
+  m_LocalRotation: {x: -0, y: 0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.001121521, y: 0.128, z: 0.005045682}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6925002276799884436}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8234420212153917889
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3241770944581978948}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.16666621, z: 0.9491292}
+  m_Center: {x: 0, y: -0.0013475865, z: -0.025435388}
 --- !u!1 &4028090056395201806
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,6 +584,7 @@ GameObject:
   - component: {fileID: 4660190465875860951}
   - component: {fileID: 5013139646866942153}
   - component: {fileID: 7094310618713960926}
+  - component: {fileID: 6829801653014495446}
   m_Layer: 0
   m_Name: Cojin grande
   m_TagString: Untagged
@@ -581,6 +657,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6829801653014495446
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7160041024136760534}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8615541043243992043, guid: 0c2683eba9a9e4f419cfc3c0744b303f, type: 3}
 --- !u!1 &7733063525045499438
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,6 +707,7 @@ Transform:
   - {fileID: 5787125756539919274}
   - {fileID: 3687354492062408509}
   - {fileID: 5101114573904907581}
+  - {fileID: 438438356184201464}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -631,6 +722,7 @@ GameObject:
   - component: {fileID: 5787125756539919274}
   - component: {fileID: 85621984214815482}
   - component: {fileID: 5314240642938071713}
+  - component: {fileID: 3104882511320607514}
   m_Layer: 0
   m_Name: Reposabrazos derecho
   m_TagString: Untagged
@@ -703,3 +795,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3104882511320607514
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8452447613134250031}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6028774085071501904, guid: 0c2683eba9a9e4f419cfc3c0744b303f, type: 3}
