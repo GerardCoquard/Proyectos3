@@ -9,6 +9,7 @@ public class MainMenu : Menu
     {
         Loader.instance.LoadScene(sceneName);
         InputManager.ChangeActionMap("Player");
+        Time.timeScale = 1;
     }
     public void Exit()
     {

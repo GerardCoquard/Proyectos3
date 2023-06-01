@@ -22,6 +22,7 @@ static class InputManager
     public static Devices device { get; private set; }
     static string path; //Path of the InputManager prefab
     static bool cleanListeners = true;
+    static string currentActionMap;
     static InputManager()
     {
         //Constructor called only one time when a static method of this class is called
@@ -37,6 +38,7 @@ static class InputManager
         sceneInput = CreateInputOnScene();
         MonoBehaviour.DontDestroyOnLoad(sceneInput);
         playerInput = sceneInput.GetComponent<PlayerInput>();
+        currentActionMap = playerInput.defaultActionMap;
         if(playerInput.currentControlScheme == "Gamepad") device = Devices.Gamepad;
         else device = Devices.Keyboard;
         eventSystem = sceneInput.GetComponent<EventSystem>();
@@ -132,7 +134,11 @@ static class InputManager
     public static void ChangeActionMap(string _actionMapName)
     {
         //Change PlayerInput Action Map to one named _actionMapName
-        if(playerInput!=null) playerInput.SwitchCurrentActionMap(_actionMapName);
+        if(playerInput!=null)
+        {
+            playerInput.SwitchCurrentActionMap(_actionMapName);
+            currentActionMap = _actionMapName;
+        }
     }
     static ActionContainer GetEvent(string _actionName)
     {
@@ -150,7 +156,7 @@ static class InputManager
 
     public static string GetCurrentActionMap()
     {
-        return playerInput.currentActionMap.ToString();
+        return currentActionMap;
     }
     public static void Init(){}
 }

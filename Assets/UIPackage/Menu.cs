@@ -28,6 +28,7 @@ public class Menu : MonoBehaviour
         InputManager.ChangeActionMap("UI");
     }
     public virtual void OnDisable() {
+        if(previousActionMap!="") InputManager.ChangeActionMap(previousActionMap);
         UnsubscribeOnBack();
         UnlockCursor();
     }
@@ -50,12 +51,11 @@ public class Menu : MonoBehaviour
         if(OptionsManager.cursorLock) Cursor.lockState = CursorLockMode.Confined;
         else Cursor.lockState = CursorLockMode.None;
     }
-    void Close(InputAction.CallbackContext context)
+    public void Close(InputAction.CallbackContext context)
     {
         if(context.ReadValueAsButton())
         {
             gameObject.SetActive(false);
-            if(previousActionMap!="") InputManager.ChangeActionMap(previousActionMap);
         }
     }
     public void SubscribeOnBack()
@@ -80,6 +80,15 @@ public class Menu : MonoBehaviour
     {
         previousActionMap = InputManager.GetCurrentActionMap();
         gameObject.SetActive(true);
+    }
+    public void SubscribeOnBackDelayed()
+    {
+        StartCoroutine(Delay());
+    }
+    IEnumerator Delay()
+    {
+        yield return new WaitForEndOfFrame();
+        SubscribeOnBack();
     }
 
 }

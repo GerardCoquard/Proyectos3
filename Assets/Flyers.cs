@@ -18,6 +18,7 @@ public class Flyers : MonoBehaviour
     }
     public void SetFlyers(bool state)
     {
+        if(!gameObject.activeInHierarchy) return;
         if(flyers.Count <= 0) flyers = new List<Image>(GetComponentsInChildren<Image>());
         StopAllCoroutines();
         if(state) StartCoroutine(FadeIn());

@@ -45,11 +45,17 @@ public static class UIUtilities
         var listOfSelectables = Selectable.allSelectablesArray;
         if(listOfSelectables.Length > 0)
         {
-            Selectable targetButton = listOfSelectables[0];
+            Selectable targetButton = null;
+            foreach (Selectable item in listOfSelectables)
+            {
+                if(item.interactable) targetButton = item;
+            }
             RectTransform targetRectTrans = targetButton.GetComponent<RectTransform>();
 
             foreach (Selectable selectableUI in listOfSelectables)
             {
+                if(!selectableUI.interactable) continue;
+                
                 RectTransform rectTrans = selectableUI.GetComponent<RectTransform>();
                 if(rectTrans.position.y < targetRectTrans.position.y)
                 {
