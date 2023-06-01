@@ -15,7 +15,7 @@ public class DialogueNode : ScriptableObject
 
 public enum SPEAKER
 {
-    ME,
+    OTHER,
     BOOK
 }
 
