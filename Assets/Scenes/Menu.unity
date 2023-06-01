@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed7848bbb17c27343a01d45ca7b98bc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reference: Button_Options
+  reference: Options
 --- !u!114 &118485162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,8 +457,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -819, y: 176.5617}
-  m_SizeDelta: {x: 20.457, y: 14.559}
+  m_AnchoredPosition: {x: -751.88116, y: 176.5617}
+  m_SizeDelta: {x: 36.168, y: 14.559}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &318045349
 MonoBehaviour:
@@ -552,7 +552,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Play
+  m_text: New Game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 46d35c7039d81f44fbba04e609fd4026, type: 2}
   m_sharedMaterial: {fileID: 1503297842020031374, guid: 46d35c7039d81f44fbba04e609fd4026, type: 2}
@@ -579,7 +579,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12.9
+  m_fontSize: 8.25
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -633,7 +633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed7848bbb17c27343a01d45ca7b98bc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reference: Button_Play
+  reference: NewGame
 --- !u!222 &408711465
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1084,7 +1084,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed7848bbb17c27343a01d45ca7b98bc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reference: Button_Controls
+  reference: Controls
 --- !u!114 &958650797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1233,7 +1233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed7848bbb17c27343a01d45ca7b98bc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reference: Button_Exit
+  reference: Exit
 --- !u!114 &1047625955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3081,6 +3081,14 @@ PrefabInstance:
     - target: {fileID: 7181150338970484495, guid: 2e495cd621f46a544b8f171baf26838a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7181150339318092803, guid: 2e495cd621f46a544b8f171baf26838a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 21.42335
+      objectReference: {fileID: 0}
+    - target: {fileID: 7181150339482566988, guid: 2e495cd621f46a544b8f171baf26838a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -21.620697
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e495cd621f46a544b8f171baf26838a, type: 3}
