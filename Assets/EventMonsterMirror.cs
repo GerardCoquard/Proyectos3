@@ -10,10 +10,7 @@ public class EventMonsterMirror : MonoBehaviour
     public float delayToDisapear;
 
     public UnityEvent eventToDo;
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L)) ThrowToMonster();
-    }
+    
     private void Start()
     {
         lineRenderer.gameObject.SetActive(false);
