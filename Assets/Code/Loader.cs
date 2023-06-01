@@ -21,10 +21,8 @@ public class Loader : MonoBehaviour
         }
         DontDestroyOnLoad(this);
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L)) { LoadScene("JAN_Scene"); }
+    private void OnEnable() {
+        loadingScreen.SetActive(false);
     }
     public void LoadScene(string scene)
     {
@@ -38,14 +36,14 @@ public class Loader : MonoBehaviour
         yield return null;
 
         asyncOperation = SceneManager.LoadSceneAsync(scene);
-        asyncOperation.allowSceneActivation = false;
-
 
         while (!asyncOperation.isDone)
         {
             progress = Mathf.Clamp01(asyncOperation.progress / 0.9f);
             yield return null;
         }
+
+        asyncOperation.allowSceneActivation = true;
     }
 
     public AsyncOperation GetAsyncOperation()

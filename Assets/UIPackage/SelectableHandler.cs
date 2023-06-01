@@ -13,6 +13,7 @@ public class SelectableHandler : MonoBehaviour,ISelectHandler,IPointerEnterHandl
     public string highlightSoundName = "ButtonHighlightSound";
     public string clickSoundName = "ButtonClickSound";
     public bool unselectOnClick = false;
+    public bool dontUseFlyers;
     public UnityEvent onEnable;
     public UnityEvent onClick;
     public UnityEvent<bool> onClickBool;
@@ -22,6 +23,7 @@ public class SelectableHandler : MonoBehaviour,ISelectHandler,IPointerEnterHandl
     public UnityEvent onUnhighlight;
     public UnityEvent onBeginDrag;
     [NonSerialized] public bool interactable = true;
+    Flyers flyer;
     private void Awake() {
         switch(GetComponent<Selectable>())
         {
@@ -40,6 +42,7 @@ public class SelectableHandler : MonoBehaviour,ISelectHandler,IPointerEnterHandl
             default:
             break;
         }
+        flyer = GetComponentInChildren<Flyers>();
     }
     private void OnEnable() {
         onEnable?.Invoke();
@@ -86,11 +89,13 @@ public class SelectableHandler : MonoBehaviour,ISelectHandler,IPointerEnterHandl
     void Hihghlight()
     {
         AudioManager.Play(highlightSoundName);
+        if(flyer!=null && !dontUseFlyers) flyer.SetFlyers(true);
         if(InputManager.device == Devices.Gamepad) onHighlightGamepad?.Invoke();
         onHighlight?.Invoke();
     }
-    void Unhighlight()
+    public void Unhighlight()
     {
+        if(flyer!=null && !dontUseFlyers) flyer.SetFlyers(false);
         onUnhighlight?.Invoke();
     }
     void Click()

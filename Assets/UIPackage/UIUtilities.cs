@@ -27,10 +27,13 @@ public static class UIUtilities
         switch (newDevice)
         {
             case Devices.Keyboard:
+            if(EventSystem.current.currentSelectedGameObject!=null)EventSystem.current.currentSelectedGameObject.GetComponent<SelectableHandler>().Unhighlight();
             EventSystem.current.SetSelectedGameObject(null);
             break;
 
             case Devices.Gamepad:
+            if(EventSystem.current.currentSelectedGameObject!=null)EventSystem.current.currentSelectedGameObject.GetComponent<SelectableHandler>().Unhighlight();
+            EventSystem.current.SetSelectedGameObject(null);
             Selectable selectable = GetTopLeftSelectable();
             selectable?.Select();
             selectable?.OnSelect(null);
