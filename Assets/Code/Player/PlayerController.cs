@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public CharacterController characterController;
     private PlayerAnimatorController animatorController;
     [SerializeField] float pushAnimationDuration;
+    public Transform cameraFocus;
 
     [Header("Movement")]
     public float maxLinealSpeed = 7f;

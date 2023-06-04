@@ -18,6 +18,8 @@ public class CameraController : MonoBehaviour
     public float lateralSpeed;
     public float verticalOffset;
     public float verticalSpeed;
+    [Range(0f,1f)]
+    public float pusheableOffsetWeight;
     float angle;
     float extraDepth;
     float extraHeight;
@@ -25,11 +27,11 @@ public class CameraController : MonoBehaviour
     float xMax;
     float zMin;
     float zMax;
-    Vector2 movement;
     Vector2 tempDirection;
     Vector2 movementAcceleration;
     Vector2 direction;
     bool cinematic;
+    PusheableObject pusheable;
 
     private void Awake()
     {
@@ -45,22 +47,18 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         transform.rotation = Quaternion.Euler(angle,0,0);
-        ChangeFocus(PlayerController.instance.transform);
+        ChangeFocus(PlayerController.instance.cameraFocus);
         firstRoom.ChangeRoom();
     }
     private void OnEnable() {
         InputManager.GetAction("Move").action += OnMovementInput;
         PlayerController.instance.OnBookActivated += () => ChangeFocus(Book.instance.bookGhost.transform);
-        PlayerController.instance.OnPlayerActivated += () => ChangeFocus(PlayerController.instance.transform);
-        PlayerController.instance.OnObjectPushed += () => ChangeFocus(PlayerController.instance.transform);//
-        PlayerController.instance.OnStoppedPushing += () => ChangeFocus(PlayerController.instance.transform); //
+        PlayerController.instance.OnPlayerActivated += () => ChangeFocus(PlayerController.instance.cameraFocus);
     }
     private void OnDisable() {
         InputManager.GetAction("Move").action -= OnMovementInput;
         PlayerController.instance.OnBookActivated -= () => ChangeFocus(Book.instance.bookGhost.transform);
-        PlayerController.instance.OnPlayerActivated -= () => ChangeFocus(PlayerController.instance.transform);
-        PlayerController.instance.OnObjectPushed -= () => ChangeFocus(PlayerController.instance.transform);//
-        PlayerController.instance.OnStoppedPushing -= () => ChangeFocus(PlayerController.instance.transform);//
+        PlayerController.instance.OnPlayerActivated -= () => ChangeFocus(PlayerController.instance.cameraFocus);
     }
     private void OnMovementInput(InputAction.CallbackContext context)
     {
@@ -76,21 +74,24 @@ public class CameraController : MonoBehaviour
     }
     void HandleDirection()
     {
-        if (tempDirection != Vector2.zero)
-        {
-            movementAcceleration += tempDirection * PlayerController.instance.acceleration * Time.deltaTime;
-            movementAcceleration = Vector2.ClampMagnitude(movementAcceleration, tempDirection.magnitude);
-        }
+        if(cinematic) direction = Vector2.zero;
         else
         {
-            movementAcceleration -= movementAcceleration * PlayerController.instance.acceleration * Time.deltaTime;
-            movementAcceleration = Vector2.ClampMagnitude(movementAcceleration, 1);
-        }
-        
-        movement = PlayerController.instance.maxLinealSpeed* movementAcceleration;
-        direction = movement.normalized * movement.magnitude / PlayerController.instance.maxLinealSpeed;
+            if (tempDirection != Vector2.zero)
+            {
+                movementAcceleration += tempDirection * PlayerController.instance.acceleration * Time.deltaTime;
+            }
+            else
+            {
+                movementAcceleration -= movementAcceleration * PlayerController.instance.acceleration * Time.deltaTime;
+            }
+            movementAcceleration.Normalize();
+            direction = PlayerController.instance.maxLinealSpeed * movementAcceleration;
 
-        if(cinematic) direction = Vector2.zero;
+            if(pusheable==null) return;
+            
+            ///////////////////////////
+        }
     }
     private void HandlePosition()
     {
@@ -121,6 +122,7 @@ public class CameraController : MonoBehaviour
     {
         if(!cinematic) this.target = target;
         lastTarget = target;
+        pusheable = target.GetComponent<PusheableObject>();
     }
     public float MaxBookHeight()
     {
