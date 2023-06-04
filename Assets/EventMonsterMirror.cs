@@ -8,15 +8,12 @@ public class EventMonsterMirror : MonoBehaviour
     [SerializeField] Transform eyeTransform;
     public float delayToKill;
     public float delayToDisapear;
-
+    private bool isFinish;
     public UnityEvent eventToDo;
 
-    private void Update()
-    {
-        
-    }
     private void Start()
     {
+        isFinish = false;
         lineRenderer.gameObject.SetActive(false);
     }
     public void ThrowToMonster()
