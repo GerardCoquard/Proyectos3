@@ -197,7 +197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5968713152291631363}
-  - component: {fileID: 5968713152291631362}
+  - component: {fileID: 8774675352335436943}
   - component: {fileID: 5968713152291631361}
   m_Layer: 0
   m_Name: PressurePlate
@@ -222,7 +222,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 179.89, z: 0}
---- !u!114 &5968713152291631362
+--- !u!114 &8774675352335436943
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -231,39 +231,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 5968713152291631360}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c29b19d72e2e0394a9b52ecf01a4ddbf, type: 3}
+  m_Script: {fileID: 11500000, guid: 2dc866088ca111546ae51dffd8f511b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numberLinked: 0
   OnPressed:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: RotateObject, Assembly-CSharp
-        m_MethodName: Rotate
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnUnpressed:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: RotateObject, Assembly-CSharp
-        m_MethodName: ResetRotation
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!65 &5968713152291631361
 BoxCollider:
   m_ObjectHideFlags: 0

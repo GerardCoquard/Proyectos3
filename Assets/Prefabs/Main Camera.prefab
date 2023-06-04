@@ -135,10 +135,11 @@ MonoBehaviour:
   firstRoom: {fileID: 0}
   height: 5
   depth: 5.5
-  lateralOffset: 3
-  lateralSpeed: 2.5
-  verticalOffset: 10
-  verticalSpeed: 2
+  angleOffset: 4
+  lateralOffset: 2
+  lateralSpeed: 3
+  verticalOffset: 5
+  verticalSpeed: 3
 --- !u!114 &4699852882333975315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,4 +152,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b6d32caf3d87b54181a1214596a6325, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magnitude: 0.3
+  magnitude: 0.2

@@ -76,7 +76,7 @@ public class RotatingPlatform : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "CharacterController") return;
-
+        
         PusheableObject pusheableObject = other.GetComponentInParent<PusheableObject>();
         if (pushObjects.Contains(pusheableObject))
         {

@@ -9,9 +9,11 @@ public class CameraController : MonoBehaviour
     public static CameraController instance { get; private set; }
     BoxCollider box;
     Transform target;
+    Transform lastTarget;
     public RoomTrigger firstRoom;
     public float height;
     public float depth;
+    public float angleOffset;
     public float lateralOffset;
     public float lateralSpeed;
     public float verticalOffset;
@@ -27,6 +29,7 @@ public class CameraController : MonoBehaviour
     Vector2 tempDirection;
     Vector2 movementAcceleration;
     Vector2 direction;
+    bool cinematic;
 
     private void Awake()
     {
@@ -86,6 +89,8 @@ public class CameraController : MonoBehaviour
         
         movement = PlayerController.instance.maxLinealSpeed* movementAcceleration;
         direction = movement.normalized * movement.magnitude / PlayerController.instance.maxLinealSpeed;
+
+        if(cinematic) direction = Vector2.zero;
     }
     private void HandlePosition()
     {
@@ -106,7 +111,7 @@ public class CameraController : MonoBehaviour
         this.extraHeight = extraHeight;
         this.extraDepth = extraDepth;
         angle = 90 - Vector2.Angle(new Vector2(depth+extraDepth,height+extraHeight).normalized, new Vector2(0,height+extraHeight).normalized);
-        angle-=4;
+        angle-=angleOffset;
         xMax = box.bounds.center.x + box.bounds.extents.x;
         xMin = box.bounds.center.x - box.bounds.extents.x;
         zMax = box.bounds.center.z + box.bounds.extents.z;
@@ -114,10 +119,23 @@ public class CameraController : MonoBehaviour
     }
     public void ChangeFocus(Transform target)
     {
-        this.target = target;
+        if(!cinematic) this.target = target;
+        lastTarget = target;
     }
     public float MaxBookHeight()
     {
         return box.bounds.center.y + box.bounds.extents.y;
+    }
+    public void Cinematic(Transform target, float time)
+    {
+        this.target = target;
+        cinematic = true;
+        StartCoroutine(CinematicTime(time));
+    }
+    IEnumerator CinematicTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        cinematic = false;
+        ChangeFocus(lastTarget);
     }
 }

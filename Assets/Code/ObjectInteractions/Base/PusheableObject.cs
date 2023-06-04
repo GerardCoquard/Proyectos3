@@ -15,6 +15,7 @@ public class PusheableObject : MonoBehaviour
     public Transform uiPosition;
     public float weightMultiplier = 1f;
     public GameObject particles;
+    public Transform focus;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -75,6 +76,10 @@ public class PusheableObject : MonoBehaviour
     {
         if (!particles) return;
         particles.SetActive(false);
+    }
+    public void ChangeFocus(Transform newFocus)
+    {
+        focus = newFocus;
     }
 }
 

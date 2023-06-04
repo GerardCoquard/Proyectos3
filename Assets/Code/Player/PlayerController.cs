@@ -41,7 +41,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float distanceBetween = 0.1f;
     [SerializeField] Transform pushStartDetectionPoint;
     PusheableObject currentObjectPushing;
-    bool bookOpened;
+    [NonSerialized]
+    public bool bookOpened;
 
     public delegate void BookActivated();
     public delegate void PlayerActivated();
