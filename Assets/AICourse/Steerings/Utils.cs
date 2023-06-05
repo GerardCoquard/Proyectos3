@@ -15,7 +15,7 @@ namespace Steerings
 			float cos = Mathf.Cos (alpha);
 			float sin = Mathf.Sin (alpha);
 
-			return new Vector3 (cos, sin, 0);
+			return new Vector3 (sin, 0, cos);
 		}
 
 		public static float VectorToOrientation (Vector3 vector) {

@@ -12,7 +12,7 @@ namespace Steerings
         public static Vector3 GetLinearAcceleration(SteeringContext me)
         {
             Vector3 avoidAcc = ObstacleAvoidance.GetLinearAcceleration(me);
-
+            if(!avoidAcc.Equals(Vector3.zero)) Debug.Log("AVOIDING!");
             if (avoidAcc.Equals(Vector3.zero))
                 return Wander.GetLinearAcceleration(me);
             else

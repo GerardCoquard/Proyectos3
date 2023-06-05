@@ -5008,7 +5008,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2334759947162953724}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.282, y: 0.51, z: 0.223}
+  m_LocalPosition: {x: 0.13, y: 0.51, z: -0.05}
   m_LocalScale: {x: 0.3143286, y: 0.3143286, z: 0.3143286}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9969,6 +9969,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2334759947695977060}
+  - component: {fileID: 2379869393693767771}
   m_Layer: 0
   m_Name: BookGraphics
   m_TagString: Untagged
@@ -9992,6 +9993,30 @@ Transform:
   m_Father: {fileID: 2334759947789851355}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2379869393693767771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2334759947695977061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a7ea0e8b09630944953c6af250d753a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
+  acceleration: 30
+  seekWeight: 0.25
+  wanderRate: 30
+  attractor: {fileID: 0}
+  wanderRadius: 5
+  wanderOffset: 20
+  raycastDistance: 0.7
+  sphereRadius: 0.4
+  innerRadius: 1
+  outRangeMultiplier: 5
+  fade: 8
 --- !u!1 &2334759947789851356
 GameObject:
   m_ObjectHideFlags: 0

@@ -60,7 +60,7 @@ public class Book : MonoBehaviour
         PlayerController.instance.OnPlayerActivated -= DeactivateBook;
     }
     private void Update() {
-        if(shapeshiftedObject==null) transform.position = player.position + bookOffset;
+        //if(shapeshiftedObject==null) transform.position = player.position + bookOffset;
     }
     public void ActivateBook()
     {
