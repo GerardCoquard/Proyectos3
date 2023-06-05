@@ -275,11 +275,11 @@ public class PlayerController : MonoBehaviour
             canPush = false;
             animatorController.SetBool("CanPush", canPush);
             currentObjectPushing = pusheable;
+            transform.SetParent(currentObjectPushing.transform);
             currentObjectPushing.MakePusheable();
             characterController.enabled = false;
             transform.position = new Vector3(hit.point.x, transform.position.y, hit.point.z) + hit.normal * (characterController.radius + distanceBetween);
             transform.forward = -hit.normal;
-            transform.SetParent(currentObjectPushing.transform);
             StartCoroutine(DelayStartPushing());
             animatorController.SetBool("isPushing", true);
            

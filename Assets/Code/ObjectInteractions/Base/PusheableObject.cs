@@ -40,11 +40,13 @@ public class PusheableObject : MonoBehaviour
     public void MakePusheable()
     {
         rb.isKinematic = false;
+        CameraController.instance.ChangeFocus(PlayerController.instance.cameraFocus);
         OnSelected?.Invoke();
     }
     public void NotPusheable()
     {
         rb.isKinematic = true;
+        CameraController.instance.ChangeFocus(PlayerController.instance.cameraFocus);
         OnUnselected?.Invoke();
     }
     public void AddForceTowardsDirection(float force, Vector2 direction)

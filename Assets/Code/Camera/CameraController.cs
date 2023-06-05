@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
 {
 
     public static CameraController instance { get; private set; }
+    Camera cam;
     BoxCollider box;
     Transform target;
     Transform lastTarget;
@@ -18,8 +19,6 @@ public class CameraController : MonoBehaviour
     public float lateralSpeed;
     public float verticalOffset;
     public float verticalSpeed;
-    [Range(0f,1f)]
-    public float pusheableOffsetWeight;
     float angle;
     float extraDepth;
     float extraHeight;
@@ -28,7 +27,6 @@ public class CameraController : MonoBehaviour
     float zMin;
     float zMax;
     Vector2 tempDirection;
-    Vector2 movementAcceleration;
     Vector2 direction;
     bool cinematic;
     PusheableObject pusheable;
@@ -46,6 +44,7 @@ public class CameraController : MonoBehaviour
     }
     private void Start()
     {
+        cam = GetComponent<Camera>();
         transform.rotation = Quaternion.Euler(angle,0,0);
         ChangeFocus(PlayerController.instance.cameraFocus);
         firstRoom.ChangeRoom();
@@ -77,20 +76,29 @@ public class CameraController : MonoBehaviour
         if(cinematic) direction = Vector2.zero;
         else
         {
-            if (tempDirection != Vector2.zero)
+            if(pusheable!=null)
             {
-                movementAcceleration += tempDirection * PlayerController.instance.acceleration * Time.deltaTime;
+                if(pusheable.focus!=null)
+                {
+                    Vector2 pushDirection = cam.WorldToScreenPoint(pusheable.focus.position) - cam.WorldToScreenPoint(PlayerController.instance.cameraFocus.position);
+                    pushDirection = Vector2.ClampMagnitude(pushDirection,lateralOffset);
+                    pushDirection = Vector2.ClampMagnitude(pushDirection,pushDirection.magnitude/lateralOffset);
+
+                    direction += pushDirection * PlayerController.instance.acceleration * Time.deltaTime;
+                }
+                else
+                {
+                    if (tempDirection != Vector2.zero) direction += tempDirection * PlayerController.instance.acceleration * Time.deltaTime;
+                    else direction -= direction * PlayerController.instance.acceleration * Time.deltaTime;
+                }
             }
             else
             {
-                movementAcceleration -= movementAcceleration * PlayerController.instance.acceleration * Time.deltaTime;
+                if (tempDirection != Vector2.zero) direction += tempDirection * PlayerController.instance.acceleration * Time.deltaTime;
+                else direction -= direction * PlayerController.instance.acceleration * Time.deltaTime;
             }
-            movementAcceleration.Normalize();
-            direction = PlayerController.instance.maxLinealSpeed * movementAcceleration;
 
-            if(pusheable==null) return;
-            
-            ///////////////////////////
+            direction = Vector2.ClampMagnitude(direction, 1);
         }
     }
     private void HandlePosition()
@@ -122,7 +130,7 @@ public class CameraController : MonoBehaviour
     {
         if(!cinematic) this.target = target;
         lastTarget = target;
-        pusheable = target.GetComponent<PusheableObject>();
+        pusheable = target.GetComponentInParent<PusheableObject>();
     }
     public float MaxBookHeight()
     {
