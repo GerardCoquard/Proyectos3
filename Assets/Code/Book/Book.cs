@@ -28,6 +28,8 @@ public class Book : MonoBehaviour
     public Material fixedRuneMat;
     //
     public float runeFadeSpeed;
+    [Header("Wander Around")]
+
     private const byte k_MaxByteForOverexposedColor = 191;
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
