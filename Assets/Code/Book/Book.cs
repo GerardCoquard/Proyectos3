@@ -26,11 +26,9 @@ public class Book : MonoBehaviour
     GameObject shapeshiftedObject;
     public Material defaultRuneMat;
     public Material fixedRuneMat;
-    //
     public float runeFadeSpeed;
-    [Header("Wander Around")]
-
     private const byte k_MaxByteForOverexposedColor = 191;
+
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
         Gizmos.DrawLine(bookGhost.transform.position,bookGhost.transform.position+new Vector3(0,-groundDetectionDistance,0));
@@ -59,9 +57,6 @@ public class Book : MonoBehaviour
         PlayerController.instance.OnBookActivated -= ActivateBook;
         PlayerController.instance.OnPlayerActivated -= DeactivateBook;
     }
-    private void Update() {
-        //if(shapeshiftedObject==null) transform.position = player.position + bookOffset;
-    }
     public void ActivateBook()
     {
         StopAllCoroutines();
@@ -84,7 +79,6 @@ public class Book : MonoBehaviour
             shapeshiftedObject = null;
             bookGraphics.transform.position = player.position + new Vector3(1f,2f,0f);
             particles.Play();
-
         }
         bookGraphics.SetActive(true);
     }

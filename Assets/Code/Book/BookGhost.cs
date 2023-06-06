@@ -7,6 +7,8 @@ public class BookGhost : MonoBehaviour
 {
     public float speed;
     public float shapeDetectionRadius;
+    public float tiltAngle;
+    public float tiltSpeed;
     Vector2 movement;
     bool up;
     bool down;
@@ -62,14 +64,20 @@ public class BookGhost : MonoBehaviour
         if(selectedShape != null) WorldScreenUI.instance.SetIcon(IconType.Book, transform.position+new Vector3(0,0.6f,0));
         else WorldScreenUI.instance.HideIcon(IconType.Book);
     }
-    bool Move()
+    void Move()
     {
         int vertical = 0;
         if(up && transform.position.y<CameraController.instance.MaxBookHeight()) vertical++;
         if(down) vertical--;
         Vector3 finalMovement = new Vector3(movement.x,vertical,movement.y).normalized;
+        
         characterController.Move(finalMovement * Time.deltaTime * speed);
-        return finalMovement != Vector3.zero;
+    }
+    public static Quaternion TiltRotationTowardsVelocity(Quaternion cleanRotation, Vector3 referenceUp, Vector3 vel, float velMagFor45Degree)
+    {
+        Vector3 rotAxis = Vector3.Cross( referenceUp, vel );
+        float tiltAngle = Mathf.Atan( vel.magnitude /velMagFor45Degree) *Mathf.Rad2Deg;
+        return Quaternion.AngleAxis( tiltAngle, rotAxis ) * cleanRotation;
     }
     private void OnTriggerEnter(Collider other) {
         Shape newShape = other.GetComponent<Shape>();
