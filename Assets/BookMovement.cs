@@ -16,10 +16,13 @@ public class BookMovement : MonoBehaviour
     public float sphereRadius;
     public float innerRadius;
     public float outRangeMultiplier;
+    public float angleIterations;
+    public LayerMask whatIsObstacles;
     public float fade;
     float currentSpeed;
     float currentAcceleration;
     float currentWeight;
+    float inRangeAcceleration;
     Vector3 velocity;
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
@@ -29,6 +32,7 @@ public class BookMovement : MonoBehaviour
     }
     private void Start() {
         attractor = GameObject.FindGameObjectWithTag("BookAttractor").transform;
+        inRangeAcceleration = acceleration;
     }
     void Update()
     {
@@ -42,14 +46,15 @@ public class BookMovement : MonoBehaviour
             currentSpeed-=fade*Time.deltaTime;
             currentSpeed = Mathf.Clamp(currentSpeed,speed,speed*outRangeMultiplier);
             currentWeight = seekWeight;
+            acceleration = inRangeAcceleration;
         }
         else
         {
             currentSpeed+=fade*Time.deltaTime;
             currentSpeed = Mathf.Clamp(currentSpeed,speed,speed*outRangeMultiplier);
             currentWeight = 1;
+            acceleration = 30;
         }
-        Debug.Log(currentSpeed);
         Vector3 currentAcceleration = GetLinearAcceleration();
         Vector3 velIncrement = currentAcceleration * Time.deltaTime;
         velocity += velIncrement;
@@ -59,7 +64,7 @@ public class BookMovement : MonoBehaviour
     }
     public Vector3 GetLinearAcceleration()
     {
-        return GetWanderAroundAcceleration();
+        if(Vector2.Distance(transform.position,attractor.position) >= innerRadius*3) return GetWanderAroundAcceleration();
         Vector3 avoidAcc = GetAvoidanceAcceleration();
         if(!avoidAcc.Equals(Vector3.zero)) Debug.Log("AVOIDING!");
         if (avoidAcc.Equals(Vector3.zero))
@@ -69,13 +74,30 @@ public class BookMovement : MonoBehaviour
     }
     Vector3 GetAvoidanceAcceleration()
     {
-        RaycastHit hit;
-        if (Physics.SphereCast(transform.position, sphereRadius, velocity, out hit, raycastDistance))
+        Vector3 hitPoint = Vector3.zero;
+        for (int angI = 0; angI < angleIterations; angI++)
         {
-            Vector3 direction = hit.point - transform.position;
-            return direction.normalized * acceleration;
+            float angle = angI*360/angleIterations;
+            if(Hit(OrientationToVector(angle),out RaycastHit hit))
+            {
+                if(hitPoint==Vector3.zero)
+                {
+                    hitPoint = hit.point;
+                    continue;
+                }
+                if(Vector2.Distance(transform.position,hit.point) < Vector2.Distance(transform.position,hitPoint)) hitPoint = hit.point;
+            }
         }
-        else return Vector3.zero;
+        if(hitPoint==Vector3.zero) return hitPoint;
+        else
+        {
+            hitPoint = transform.position - hitPoint;
+            return hitPoint.normalized*acceleration;
+        }
+    }
+    bool Hit(Vector3 dir,out RaycastHit hit)
+    {
+        return Physics.Raycast(transform.position,dir,out hit,raycastDistance,whatIsObstacles, QueryTriggerInteraction.Ignore);
     }
     Vector3 GetWanderAroundAcceleration()
     {

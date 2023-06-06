@@ -78,11 +78,11 @@ public class Book : MonoBehaviour
     }
     public void ResetBookGraphics()
     {
-        transform.position = player.position + bookOffset;
         if(shapeshiftedObject!=null)
         {
             Destroy(shapeshiftedObject.gameObject);
             shapeshiftedObject = null;
+            bookGraphics.transform.position = player.position + new Vector3(1f,2f,0f);
             particles.Play();
 
         }

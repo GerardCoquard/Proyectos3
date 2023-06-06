@@ -5015,7 +5015,7 @@ Transform:
   - {fileID: 2334759946727483047}
   - {fileID: 2334759947039262807}
   m_Father: {fileID: 2334759947789851355}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &2334759947162953721
 ParticleSystem:
@@ -9990,6 +9990,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4090049116408585962}
+  - {fileID: 2334759948106048180}
   m_Father: {fileID: 2334759947789851355}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10005,17 +10006,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a7ea0e8b09630944953c6af250d753a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  acceleration: 30
-  seekWeight: 0.25
+  speed: 0.7
+  acceleration: 15
+  seekWeight: 0.3
   wanderRate: 30
-  attractor: {fileID: 0}
   wanderRadius: 5
   wanderOffset: 20
   raycastDistance: 0.7
   sphereRadius: 0.4
   innerRadius: 1
-  outRangeMultiplier: 5
+  outRangeMultiplier: 7
+  angleIterations: 10
+  whatIsObstacles:
+    serializedVersion: 2
+    m_Bits: 137
   fade: 8
 --- !u!1 &2334759947789851356
 GameObject:
@@ -10048,7 +10052,6 @@ Transform:
   m_Children:
   - {fileID: 2334759947695977060}
   - {fileID: 2334759947678566457}
-  - {fileID: 2334759948106048180}
   - {fileID: 2334759947162953723}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -10079,7 +10082,7 @@ MonoBehaviour:
   particles: {fileID: 2334759947678566407}
   defaultRuneMat: {fileID: 2100000, guid: dcc25a4dec1bbe84d94f8e0f4ee3af8f, type: 2}
   fixedRuneMat: {fileID: 2100000, guid: d60c797004fa45f46ac6b038396d0cce, type: 2}
-  runeFadeSpeed: 2
+  runeFadeSpeed: 5
 --- !u!1 &2334759948106048181
 GameObject:
   m_ObjectHideFlags: 0
@@ -10108,8 +10111,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2334759947789851355}
-  m_RootOrder: 2
+  m_Father: {fileID: 2334759947695977060}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3713524299020059728
 GameObject:
