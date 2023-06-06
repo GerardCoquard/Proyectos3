@@ -19,6 +19,7 @@ public class BookMovement : MonoBehaviour
     public float angleIterations;
     public LayerMask whatIsObstacles;
     public float fade;
+    public float lateralOffset;
     float currentSpeed;
     float currentAcceleration;
     float currentWeight;
@@ -40,7 +41,7 @@ public class BookMovement : MonoBehaviour
     }
     public void Move()
     {
-        bool inRange = Vector3.Distance(transform.position,attractor.position) <= innerRadius;
+        bool inRange = Vector3.Distance(transform.position,attractor.position+new Vector3(lateralOffset,0,0)) <= innerRadius;
         if(inRange)
         {
             currentSpeed-=fade*Time.deltaTime;
@@ -64,9 +65,8 @@ public class BookMovement : MonoBehaviour
     }
     public Vector3 GetLinearAcceleration()
     {
-        if(Vector2.Distance(transform.position,attractor.position) >= innerRadius*3) return GetWanderAroundAcceleration();
+        if(Vector2.Distance(transform.position,attractor.position+new Vector3(lateralOffset,0,0)) >= innerRadius*3) return GetWanderAroundAcceleration();
         Vector3 avoidAcc = GetAvoidanceAcceleration();
-        if(!avoidAcc.Equals(Vector3.zero)) Debug.Log("AVOIDING!");
         if (avoidAcc.Equals(Vector3.zero))
             return GetWanderAroundAcceleration();
         else
@@ -101,7 +101,7 @@ public class BookMovement : MonoBehaviour
     }
     Vector3 GetWanderAroundAcceleration()
     {
-        Vector3 seekAcc = attractor.position - transform.position;
+        Vector3 seekAcc = attractor.position+new Vector3(lateralOffset,0,0) - transform.position;
         seekAcc = seekAcc.normalized * acceleration;
         Vector3 wanderAcc = GetWanderLinearAcceleration();
 
