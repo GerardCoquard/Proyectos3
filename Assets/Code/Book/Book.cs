@@ -36,6 +36,7 @@ public class Book : MonoBehaviour
         Gizmos.DrawLine(bookGhost.transform.position,bookGhost.transform.position+new Vector3(-playerWidth,0,0));
     }
     private void Awake() {
+        Load();
         if(instance==null)
         {
             instance = this;
@@ -185,5 +186,10 @@ public class Book : MonoBehaviour
         float sin = Mathf.Sin (angle);
 
         return new Vector3 (sin, 0, cos);
+    }
+
+    private void Load()
+    {
+        transform.position = DataManager.Load<Vector3>("bookPosition");
     }
 }

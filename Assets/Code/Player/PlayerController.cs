@@ -54,8 +54,11 @@ public class PlayerController : MonoBehaviour
     public event ObjectPushed OnObjectPushed;
     public event StoppedPushing OnStoppedPushing;
 
+    private Vector3 myPosition;
+
     private void Awake()
     {
+        LoadData();
         if (instance == null)
         {
             instance = this;
@@ -348,7 +351,7 @@ public class PlayerController : MonoBehaviour
            
 
         }
-        if (!isJumping || onGround)
+        if (Mathf.Approximately(gravity,0f))
         {
             gravity = Mathf.RoundToInt(gravity);
         }
@@ -401,6 +404,11 @@ public class PlayerController : MonoBehaviour
             dir = dir.normalized * dir.magnitude / maxLinealSpeed;
             return dir.magnitude > 0.01 ? dir : Vector2.zero;
         }
+    }
+
+    private void LoadData()
+    {
+        transform.position = DataManager.Load<Vector3>("playerPosition");
     }
 
 }

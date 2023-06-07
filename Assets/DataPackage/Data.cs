@@ -22,6 +22,11 @@ public class Data : DynamicData
     public int defaultResolution;
     //LOCALIZATION
     public int language;
+    //PLAYER
+    public Vector3 playerPosition;
+    public Vector3 bookPosition;
+    //CAMERA
+    public Vector3 cameraPosition;
 
     public Data()
     {
@@ -42,6 +47,8 @@ public class Data : DynamicData
         defaultResolution = defaultOptions.resolution;
         //LOCALIZATION
         language = 0;
+        
+
     }
 }
 

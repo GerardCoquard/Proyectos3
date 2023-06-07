@@ -33,6 +33,7 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {
+        Load();
         if (instance == null)
         {
             instance = this;
@@ -147,5 +148,10 @@ public class CameraController : MonoBehaviour
         yield return new WaitForSeconds(time);
         cinematic = false;
         ChangeFocus(lastTarget);
+    }
+
+    private void Load()
+    {
+        transform.position = DataManager.Load<Vector3>("cameraPosition");
     }
 }

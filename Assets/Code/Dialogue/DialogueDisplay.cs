@@ -17,7 +17,7 @@ public class DialogueDisplay : MonoBehaviour
     [SerializeField] float fastTypeSpeed;
     private float currentTypeSpeed;
     [SerializeField] string dialogueID;
-    private bool isTextFinished;
+    public bool isTextFinished;
     private bool onAnimation;
 
     Vector3 initialScale;
