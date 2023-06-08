@@ -48,7 +48,7 @@ public class DialogueDisplay : MonoBehaviour
     {
 
         dialogueRender.transform.position = currentNode.emisor == SPEAKER.BOOK ? WorldScreenUI.instance.WorldPosToScreen(Book.instance.dialoguePosition.position) : WorldScreenUI.instance.WorldPosToScreen(interactablePos.position);
-
+        
     }
     private void OnEnable()
     {
@@ -60,6 +60,30 @@ public class DialogueDisplay : MonoBehaviour
     {
         InputManager.GetAction("Push").action -= Interact;
         InputManager.GetAction("ExitDialogue").action -= End;
+    }
+
+    private void GraphicUpdate()
+    {
+        if(currentNode.emisor == SPEAKER.BOOK)
+        {
+            if(finalScale.x < 0f)
+            {
+                finalScale = new Vector3(-finalScale.x, finalScale.y, finalScale.z);
+                dialogueText.transform.localScale = new Vector3(-dialogueText.transform.localScale.x, dialogueText.transform.localScale.y, dialogueText.transform.localScale.z);
+            }
+           
+            
+        }
+        else
+        {
+            
+            if (finalScale.x > 0f)
+            {
+                finalScale = new Vector3(-finalScale.x, finalScale.y, finalScale.z);
+                dialogueText.transform.localScale = new Vector3(-dialogueText.transform.localScale.x, dialogueText.transform.localScale.y, dialogueText.transform.localScale.z);
+            }
+            
+        }
     }
 
     private void Interact(InputAction.CallbackContext context)
@@ -129,6 +153,7 @@ public class DialogueDisplay : MonoBehaviour
 
     IEnumerator ScaleCoroutine()
     {
+        GraphicUpdate();
         isTextFinished = false;
         onAnimation = true;
         float distanceToScale = Vector3.Distance(dialogueRender.transform.localScale, finalScale * 1.5f);
@@ -146,6 +171,7 @@ public class DialogueDisplay : MonoBehaviour
 
     IEnumerator ScaleBack()
     {
+        
         
         float distanceToScale = Vector3.Distance(dialogueRender.transform.localScale, finalScale);
         float time = distanceToScale / distanceBetweenScales * timeToReachScale;
