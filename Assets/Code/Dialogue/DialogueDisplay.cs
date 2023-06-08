@@ -9,6 +9,10 @@ using UnityEngine.Events;
 public class DialogueDisplay : MonoBehaviour
 {
     [SerializeField] public GameObject dialogueRender;
+    [SerializeField] public GameObject uiRenderer;
+    [SerializeField] RectTransform textBox;
+    [SerializeField] float uiMargins;
+    private Vector3 initialUiPosition;
     [SerializeField] TextMeshProUGUI dialogueText;
     private DialogueNode startNode;
     private Transform interactablePos;
@@ -43,12 +47,13 @@ public class DialogueDisplay : MonoBehaviour
         initialScale = dialogueRender.transform.localScale;
         finalScale = initialScale * finalScaleMultiplier;
         distanceBetweenScales = Vector3.Distance(initialScale, finalScale);
+        initialUiPosition = uiRenderer.transform.localPosition;
     }
     private void Update()
     {
 
         dialogueRender.transform.position = currentNode.emisor == SPEAKER.BOOK ? WorldScreenUI.instance.WorldPosToScreen(Book.instance.dialoguePosition.position) : WorldScreenUI.instance.WorldPosToScreen(interactablePos.position);
-        
+        UiPosition();
     }
     private void OnEnable()
     {
@@ -197,8 +202,14 @@ public class DialogueDisplay : MonoBehaviour
             yield return new WaitForSeconds(currentTypeSpeed);
         }
         isTextFinished = true;
+        
     }
 
+    private void UiPosition()
+    {
+        float dialogueBoxHeight = textBox.rect.height;
+        uiRenderer.transform.localPosition = new Vector3(initialUiPosition.x, initialUiPosition.y - dialogueBoxHeight, initialUiPosition.z);
+    }
     private void NextSentence()
     {
         if (currentNode.TargetNode != null)
