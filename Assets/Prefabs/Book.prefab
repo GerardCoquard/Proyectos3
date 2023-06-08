@@ -269,6 +269,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   shapeDetectionRadius: 2
+  tiltAngle: 0
+  tiltSpeed: 0
 --- !u!135 &2334759947162953670
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5289,7 +5291,7 @@ MonoBehaviour:
   bookGraphics: {fileID: 2334759947695977061}
   bookGhost: {fileID: 2334759947162953724}
   bookGhostStartPosition: {fileID: 2334759948106048180}
-  dialoguePosition: {fileID: 2334759947789851355}
+  dialoguePosition: {fileID: 2334759947695977060}
   bookOffset: {x: 0, y: 2, z: 0}
   particles: {fileID: 2334759947678566407}
   defaultRuneMat: {fileID: 2100000, guid: dcc25a4dec1bbe84d94f8e0f4ee3af8f, type: 2}
