@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5642007056285163266}
   - component: {fileID: 8783061692739276967}
   - component: {fileID: 6775458221550216301}
+  - component: {fileID: 2669351767868574832}
   m_Layer: 0
   m_Name: 'Base libreria separador '
   m_TagString: Untagged
@@ -83,3 +84,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &2669351767868574832
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4974154504601568696}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -1064554322790506231, guid: 570a63aa6b7c3e346bd6fd762ee89ae7, type: 3}
