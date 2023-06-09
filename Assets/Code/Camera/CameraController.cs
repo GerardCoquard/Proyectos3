@@ -49,6 +49,11 @@ public class CameraController : MonoBehaviour
         transform.rotation = Quaternion.Euler(angle,0,0);
         ChangeFocus(PlayerController.instance.cameraFocus);
         firstRoom.ChangeRoom();
+        Vector3 targetPos = target.position + new Vector3(direction.x,0,direction.y) * lateralOffset;
+        float xPos = Mathf.Clamp(targetPos.x,xMin,xMax);
+        float yPos = targetPos.y + height + extraHeight;
+        float zPos = Mathf.Clamp(target.position.z - depth - extraDepth,zMin,zMax);
+        targetPos = new Vector3(xPos,yPos,zPos);
     }
     private void OnEnable() {
         InputManager.GetAction("Move").action += OnMovementInput;
