@@ -33,7 +33,7 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {
-        Load();
+        //Load();
         if (instance == null)
         {
             instance = this;

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class BookMovement : MonoBehaviour
 {
-    public float speed;
-    public float acceleration;
+    public float maxSpeed;
+    public float minSpeed;
+    public float maxAcceleration;
+    public float minAcceleration;
     public float seekWeight;
     public float wanderRate;
     Transform attractor;
@@ -13,27 +15,27 @@ public class BookMovement : MonoBehaviour
     public float wanderRadius;
     public float wanderOffset;
     public float raycastDistance;
-    public float sphereRadius;
     public float innerRadius;
-    public float outRangeMultiplier;
     public float angleIterations;
     public LayerMask whatIsObstacles;
-    public float fade;
+    public float fadeSpeedVelocity;
+    public float fadeAccelerationVelocity;
     public float lateralOffset;
     float currentSpeed;
-    float currentAcceleration;
+    float _currentAcceleration;
     float currentWeight;
-    float inRangeAcceleration;
     Vector3 velocity;
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position,sphereRadius);
         Gizmos.DrawWireSphere(transform.position,innerRadius);
         Gizmos.DrawLine(transform.position,transform.position+Vector3.forward*raycastDistance);
     }
     private void Start() {
         attractor = GameObject.FindGameObjectWithTag("BookAttractor").transform;
-        inRangeAcceleration = acceleration;
+        transform.position = attractor.position + new Vector3(lateralOffset,0,0);
+        currentSpeed = minSpeed;
+        _currentAcceleration = minAcceleration;
+        currentWeight = seekWeight;
     }
     void Update()
     {
@@ -44,17 +46,19 @@ public class BookMovement : MonoBehaviour
         bool inRange = Vector3.Distance(transform.position,attractor.position+new Vector3(lateralOffset,0,0)) <= innerRadius;
         if(inRange)
         {
-            currentSpeed-=fade*Time.deltaTime;
-            currentSpeed = Mathf.Clamp(currentSpeed,speed,speed*outRangeMultiplier);
+            currentSpeed-=fadeSpeedVelocity*Time.deltaTime;
+            currentSpeed = Mathf.Clamp(currentSpeed,minSpeed,maxSpeed);
             currentWeight = seekWeight;
-            acceleration = inRangeAcceleration;
+            _currentAcceleration-=fadeAccelerationVelocity*Time.deltaTime;
+            _currentAcceleration = Mathf.Clamp(_currentAcceleration,minAcceleration,maxAcceleration);
         }
         else
         {
-            currentSpeed+=fade*Time.deltaTime;
-            currentSpeed = Mathf.Clamp(currentSpeed,speed,speed*outRangeMultiplier);
+            currentSpeed+=fadeSpeedVelocity*Time.deltaTime;
+            currentSpeed = Mathf.Clamp(currentSpeed,minSpeed,maxSpeed);
             currentWeight = 1;
-            acceleration = 30;
+            _currentAcceleration+=fadeAccelerationVelocity*Time.deltaTime;
+            _currentAcceleration = Mathf.Clamp(_currentAcceleration,minAcceleration,maxAcceleration);
         }
         Vector3 currentAcceleration = GetLinearAcceleration();
         Vector3 velIncrement = currentAcceleration * Time.deltaTime;
@@ -92,7 +96,7 @@ public class BookMovement : MonoBehaviour
         else
         {
             hitPoint = transform.position - hitPoint;
-            return hitPoint.normalized*acceleration;
+            return hitPoint.normalized*_currentAcceleration;
         }
     }
     bool Hit(Vector3 dir,out RaycastHit hit)
@@ -102,7 +106,7 @@ public class BookMovement : MonoBehaviour
     Vector3 GetWanderAroundAcceleration()
     {
         Vector3 seekAcc = attractor.position+new Vector3(lateralOffset,0,0) - transform.position;
-        seekAcc = seekAcc.normalized * acceleration;
+        seekAcc = seekAcc.normalized * _currentAcceleration;
         Vector3 wanderAcc = GetWanderLinearAcceleration();
 
         return seekAcc*currentWeight + wanderAcc*(1-currentWeight);
@@ -120,7 +124,7 @@ public class BookMovement : MonoBehaviour
             surrogatePos += transform.position+ OrientationToVector(transform.eulerAngles.y) * wanderOffset;
 
         Vector3 finalDir = surrogatePos - transform.position;
-        return finalDir.normalized * acceleration;
+        return finalDir.normalized * _currentAcceleration;
     }
     public static Vector3 OrientationToVector (float alpha) {
         alpha = alpha * Mathf.Deg2Rad;

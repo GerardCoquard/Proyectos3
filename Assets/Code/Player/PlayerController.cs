@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        LoadData();
+        
         if (instance == null)
         {
             instance = this;
@@ -69,7 +69,10 @@ public class PlayerController : MonoBehaviour
         animatorController = GetComponent<PlayerAnimatorController>();
 
     }
-
+    private void Start()
+    {
+        //LoadData();
+    }
     public PlayerAnimatorController GetAnimator()
     {
         return animatorController;
@@ -408,7 +411,7 @@ public class PlayerController : MonoBehaviour
 
     private void LoadData()
     {
-        transform.position = GameSaveManager.instance.GetSpawnPoint().position;
+        //transform.position = GameSaveManager.instance.GetSpawnPoint().position;
     }
 
 }

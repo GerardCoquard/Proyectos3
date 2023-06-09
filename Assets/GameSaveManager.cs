@@ -16,12 +16,12 @@ public class GameSaveManager : MonoBehaviour
     public void SetCurrentRoom(int id)
     {
         currentRoom = id;
-        Save();
+        //Save();
     }
 
     private void Awake()
     {
-        Load();
+        //Load();
         if(instance == null)
         {
             instance = this;
@@ -31,6 +31,8 @@ public class GameSaveManager : MonoBehaviour
             Destroy(this);
         }
     }
+
+   
 
     private void Load()
     {

@@ -35,7 +35,7 @@ public class RoomTrigger : MonoBehaviour
 
     private void Save()
     {
-        GameSaveManager.instance.SetCurrentRoom(roomID);
+        //GameSaveManager.instance.SetCurrentRoom(roomID);
     }
 }
 
