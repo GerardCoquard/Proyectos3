@@ -16,7 +16,6 @@ public class RoomTrigger : MonoBehaviour
     }
     public void ChangeRoom()
     {
-        trigger.enabled = false;
         CameraController.instance.ChangeRoom(cameraBox, extraHeight, extraDepth);
         onRoomChanged?.Invoke();
     }
