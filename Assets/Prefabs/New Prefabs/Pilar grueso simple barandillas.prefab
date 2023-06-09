@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 496383630354413971}
   - component: {fileID: 3552313013448537654}
   - component: {fileID: 1632746817941144316}
+  - component: {fileID: 172866046511577795}
   m_Layer: 0
   m_Name: Pilar grueso simple barandillas
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &172866046511577795
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 984127660959965993}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.371136, y: 1.5317924, z: 0.40145165}
+  m_Center: {x: 0, y: 0.7658961, z: 0.02659665}
