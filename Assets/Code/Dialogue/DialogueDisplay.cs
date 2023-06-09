@@ -11,7 +11,6 @@ public class DialogueDisplay : MonoBehaviour
     [SerializeField] public GameObject dialogueRender;
     [SerializeField] public GameObject uiRenderer;
     [SerializeField] RectTransform textBox;
-    [SerializeField] float uiMargins;
     private Vector3 initialUiPosition;
     [SerializeField] TextMeshProUGUI dialogueText;
     private DialogueNode startNode;
@@ -47,7 +46,7 @@ public class DialogueDisplay : MonoBehaviour
         initialScale = dialogueRender.transform.localScale;
         finalScale = initialScale * finalScaleMultiplier;
         distanceBetweenScales = Vector3.Distance(initialScale, finalScale);
-        initialUiPosition = uiRenderer.transform.localPosition;
+        initialUiPosition = new Vector3(uiRenderer.transform.localPosition.x, 0, uiRenderer.transform.localPosition.z);
     }
     private void Update()
     {
@@ -69,7 +68,7 @@ public class DialogueDisplay : MonoBehaviour
 
     private void GraphicUpdate()
     {
-        if(currentNode.emisor == SPEAKER.BOOK)
+        if (currentNode.emisor == SPEAKER.BOOK)
         {
             if(finalScale.x < 0f)
             {
@@ -207,6 +206,10 @@ public class DialogueDisplay : MonoBehaviour
 
     private void UiPosition()
     {
+        if ((dialogueRender.transform.localScale.x < 0f && uiRenderer.transform.localScale.x > 0f) || (dialogueRender.transform.localScale.x > 0f && uiRenderer.transform.localScale.x < 0f))
+        {
+            uiRenderer.transform.localScale = new Vector3(-uiRenderer.transform.localScale.x, uiRenderer.transform.localScale.y, uiRenderer.transform.localScale.z);
+        }
         float dialogueBoxHeight = textBox.rect.height;
         uiRenderer.transform.localPosition = new Vector3(initialUiPosition.x, initialUiPosition.y - dialogueBoxHeight, initialUiPosition.z);
     }

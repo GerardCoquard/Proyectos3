@@ -1002,6 +1002,7 @@ GameObject:
   - component: {fileID: 7402984431102369646}
   - component: {fileID: 6364375202631547369}
   - component: {fileID: 7057139435918814289}
+  - component: {fileID: 194124939165853606}
   m_Layer: 5
   m_Name: InteractE
   m_TagString: Untagged
@@ -1026,7 +1027,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 95.89993, y: -35.9}
+  m_AnchoredPosition: {x: 95.89993, y: -13.900002}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6364375202631547369
@@ -1067,6 +1068,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &194124939165853606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2209409884480909082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1abc7cb1fac65f3488e99c0e22a81091, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
 --- !u!1 &2229518194805600245
 GameObject:
   m_ObjectHideFlags: 0
@@ -3201,7 +3215,6 @@ MonoBehaviour:
   dialogueRender: {fileID: 1213617404}
   uiRenderer: {fileID: 2209409884480909082}
   textBox: {fileID: 1956392945}
-  uiMargins: 0
   dialogueText: {fileID: 669767320}
   defaultTypeSpeed: 0.025
   fastTypeSpeed: 0.005
