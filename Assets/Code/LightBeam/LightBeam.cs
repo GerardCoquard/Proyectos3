@@ -41,7 +41,7 @@ public class LightBeam
         lineRenderer.material = material;
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
-        lineRenderer.textureMode = LineTextureMode.RepeatPerSegment;
+        lineRenderer.textureMode = LineTextureMode.Tile;
         lightGameObject.transform.SetParent(parent);
         currentLength = 0;
         lineRenderer.positionCount = 0;
@@ -68,7 +68,7 @@ public class LightBeam
         lineRenderer.material = beam.material;
         lineRenderer.startColor = Color.white;
         lineRenderer.endColor = Color.white;
-        lineRenderer.textureMode = LineTextureMode.RepeatPerSegment;
+        lineRenderer.textureMode = LineTextureMode.Tile;
         lightGameObject.transform.SetParent(beam.parent);
         lineRenderer.positionCount = 0;
         currentLength = 0;

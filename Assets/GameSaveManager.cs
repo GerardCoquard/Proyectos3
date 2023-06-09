@@ -12,16 +12,20 @@ public class GameSaveManager : MonoBehaviour
     {
         return roomTriggers[currentRoom].spawnPoint;
     }
+    public RoomTrigger GetCurrentRoom()
+    {
+         return roomTriggers[currentRoom];
+    }
 
     public void SetCurrentRoom(int id)
     {
         currentRoom = id;
-        //Save();
+        Save();
     }
 
     private void Awake()
     {
-        //Load();
+        Load();
         if(instance == null)
         {
             instance = this;

@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
-        //LoadData();
+        LoadData();
     }
     public PlayerAnimatorController GetAnimator()
     {
@@ -411,7 +411,7 @@ public class PlayerController : MonoBehaviour
 
     private void LoadData()
     {
-        //transform.position = GameSaveManager.instance.GetSpawnPoint().position;
+        transform.position = GameSaveManager.instance.GetSpawnPoint().position;
     }
 
 }

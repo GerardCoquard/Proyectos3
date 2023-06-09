@@ -33,7 +33,6 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {
-        //Load();
         if (instance == null)
         {
             instance = this;
@@ -45,6 +44,7 @@ public class CameraController : MonoBehaviour
     }
     private void Start()
     {
+        Load();
         cam = GetComponent<Camera>();
         transform.rotation = Quaternion.Euler(angle,0,0);
         ChangeFocus(PlayerController.instance.cameraFocus);
@@ -53,7 +53,8 @@ public class CameraController : MonoBehaviour
         float xPos = Mathf.Clamp(targetPos.x,xMin,xMax);
         float yPos = targetPos.y + height + extraHeight;
         float zPos = Mathf.Clamp(target.position.z - depth - extraDepth,zMin,zMax);
-        targetPos = new Vector3(xPos,yPos,zPos);
+        transform.position = new Vector3(xPos,yPos,zPos);
+        Debug.Log(new Vector3(xPos, yPos, zPos));
     }
     private void OnEnable() {
         InputManager.GetAction("Move").action += OnMovementInput;
@@ -157,6 +158,7 @@ public class CameraController : MonoBehaviour
 
     private void Load()
     {
-        transform.position = DataManager.Load<Vector3>("cameraPosition");
+        firstRoom = GameSaveManager.instance.GetCurrentRoom();
     }
+
 }
