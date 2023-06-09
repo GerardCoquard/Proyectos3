@@ -46,6 +46,7 @@ public class Data : DynamicData
         defaultResolution = defaultOptions.resolution;
         //LOCALIZATION
         language = 0;
+        roomID = 0;
         
 
     }
