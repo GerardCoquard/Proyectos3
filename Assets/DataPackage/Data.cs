@@ -25,8 +25,7 @@ public class Data : DynamicData
     //PLAYER
     public Vector3 playerPosition;
     public Vector3 bookPosition;
-    //CAMERA
-    public Vector3 cameraPosition;
+    public int roomID;
 
     public Data()
     {

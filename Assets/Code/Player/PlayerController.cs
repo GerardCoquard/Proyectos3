@@ -408,7 +408,7 @@ public class PlayerController : MonoBehaviour
 
     private void LoadData()
     {
-        transform.position = DataManager.Load<Vector3>("playerPosition");
+        transform.position = GameSaveManager.instance.GetSpawnPoint().position;
     }
 
 }

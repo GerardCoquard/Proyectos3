@@ -1,9 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SaveTrigger : MonoBehaviour
 {
+    [SerializeField] Transform spawnPointThisRoom;
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")
@@ -14,7 +14,8 @@ public class SaveTrigger : MonoBehaviour
 
     private void Save()
     {
-        DataManager.Save("playerPosition", PlayerController.instance.transform.position);
-        DataManager.Save("cameraPosition", CameraController.instance.transform.position);
+        DataManager.Save("playerPosition", spawnPointThisRoom.position);
+        
     }
 }
+    

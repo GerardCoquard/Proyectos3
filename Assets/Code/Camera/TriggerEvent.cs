@@ -53,4 +53,14 @@ public class TriggerEvent : MonoBehaviour
            
         }
     }
+
+    public void DoMyEvent()
+    {
+        if (eventToDoWithTime != null)
+        {
+            StartCoroutine(EventTimer());
+        }
+        activated = true;
+        eventToDo?.Invoke();
+    }
 }
