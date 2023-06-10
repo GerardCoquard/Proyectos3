@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        
+
         if (instance == null)
         {
             instance = this;
@@ -231,7 +231,7 @@ public class PlayerController : MonoBehaviour
             isJumping = true;
             onGround = false;
             animatorController.SetTrigger("Jump");
-          
+
         }
     }
     void CheckPushAvailable()
@@ -288,7 +288,7 @@ public class PlayerController : MonoBehaviour
             transform.forward = -hit.normal;
             StartCoroutine(DelayStartPushing());
             animatorController.SetBool("isPushing", true);
-           
+
             OnObjectPushed?.Invoke();
         }
     }
@@ -307,7 +307,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!canPush) return;
         currentObjectPushing.AddForceTowardsDirection(pushForce, tempDirection);
-        if (tempDirection != Vector2.zero) 
+        if (tempDirection != Vector2.zero)
         {
             HandlePushAnimation();
         }
@@ -316,7 +316,7 @@ public class PlayerController : MonoBehaviour
             animatorController.SetFloat("VelX", 0);
             animatorController.SetFloat("VelZ", 0);
         }
-       
+
     }
 
     private void HandlePushAnimation()
@@ -335,10 +335,10 @@ public class PlayerController : MonoBehaviour
         animatorController.SetFloat("VelX", inputRotation.x);
         animatorController.SetFloat("VelZ", inputRotation.z);
 
-       
+
     }
 
-   
+
 
     private bool CanJump()
     {
@@ -347,14 +347,14 @@ public class PlayerController : MonoBehaviour
 
     void SetGravity()
     {
-        
+
         if (isJumping || !onGround)
         {
             gravity -= gravityIncreseValue * Time.deltaTime;
-           
+
 
         }
-        if (onGround)
+        if (gravity >= -0.1f && gravity <= 0f)
         {
             gravity = Mathf.RoundToInt(gravity);
         }
