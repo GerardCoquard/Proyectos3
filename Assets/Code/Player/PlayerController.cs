@@ -354,7 +354,7 @@ public class PlayerController : MonoBehaviour
            
 
         }
-        if (Mathf.Approximately(gravity,0f))
+        if (onGround)
         {
             gravity = Mathf.RoundToInt(gravity);
         }
