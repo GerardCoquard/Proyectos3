@@ -5221,21 +5221,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 5
   minSpeed: 0.5
-  maxAcceleration: 30
+  maxAcceleration: 40
   minAcceleration: 5
   seekWeight: 0.2
   wanderRate: 30
   wanderRadius: 5
   wanderOffset: 20
   raycastDistance: 0.7
-  innerRadius: 1
+  innerRadius: 1.5
   angleIterations: 10
   whatIsObstacles:
     serializedVersion: 2
     m_Bits: 137
   fadeSpeedVelocity: 8
-  fadeAccelerationVelocity: 35
-  lateralOffset: 1
+  fadeAccelerationVelocity: 50
+  lateralOffset: 0.6
 --- !u!1 &2334759947789851356
 GameObject:
   m_ObjectHideFlags: 0
