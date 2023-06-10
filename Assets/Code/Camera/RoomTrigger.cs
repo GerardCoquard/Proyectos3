@@ -29,6 +29,7 @@ public class RoomTrigger : MonoBehaviour
     }
     public void ChangeRoom()
     {
+       
         CameraController.instance.ChangeRoom(cameraBox, extraHeight, extraDepth);
         onRoomChanged?.Invoke();
     }
@@ -36,7 +37,8 @@ public class RoomTrigger : MonoBehaviour
     private void Save()
     {
         GameSaveManager.instance.SetCurrentRoom(roomID);
-        Debug.Log("IN");
+        GameSaveManager.instance.EnableLevels();
+        GameSaveManager.instance.UnenableLevels();
     }
 }
 

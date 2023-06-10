@@ -9,6 +9,18 @@ public class GameSaveManager : MonoBehaviour
     public List<RoomTrigger> roomTriggers;
 
     public List<GameObject> levels;
+    private void Awake()
+    {
+        Load();
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
     public Transform GetSpawnPoint()
     {
         return roomTriggers[currentRoom].spawnPoint;
@@ -26,19 +38,21 @@ public class GameSaveManager : MonoBehaviour
 
     public void EnableLevels()
     {
+       
         if (levels == null) return;
         if (currentRoom + 1 < levels.Count) levels[currentRoom + 1].SetActive(true);
         if (currentRoom - 1 >= 0) levels[currentRoom - 1].SetActive(true);
     }
 
-    private void UnenableLevels()
+    public void UnenableLevels()
     {
+        Debug.Log("IN");
         int levelForward = currentRoom + 2;
         int levelBackward = currentRoom - 2;
         if (levels == null) return;
-        if(levelForward <= roomTriggers.Count)
+        if(levelForward <= levels.Count)
         {
-            for (int i = levelForward; i < roomTriggers.Count; i++)
+            for (int i = levelForward; i < levels.Count; i++)
             {
                 levels[i].SetActive(false);
             }
@@ -46,7 +60,7 @@ public class GameSaveManager : MonoBehaviour
 
         if(levelBackward >= 0)
         {
-            for (int i = levelBackward; i > 0; i--)
+            for (int i = levelBackward; i >= 0; i--)
             {
                 levels[i].SetActive(false);
             }
@@ -54,18 +68,6 @@ public class GameSaveManager : MonoBehaviour
 
     }
 
-    private void Awake()
-    {
-        Load();
-        if(instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-    }
 
    
 
