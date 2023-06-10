@@ -21,8 +21,12 @@ public class BookMovement : MonoBehaviour
     public float fadeSpeedVelocity;
     public float fadeAccelerationVelocity;
     public float lateralOffset;
+    public float maxTilt;
+    public float minTilt;
+    public float fadeTiltSpeed;
     float currentSpeed;
     float _currentAcceleration;
+    float currentTilt;
     float currentWeight;
     Vector3 velocity;
     private void OnDrawGizmos() {
@@ -36,6 +40,7 @@ public class BookMovement : MonoBehaviour
         currentSpeed = minSpeed;
         _currentAcceleration = minAcceleration;
         currentWeight = seekWeight;
+        currentTilt = minTilt;
     }
     void Update()
     {
@@ -51,6 +56,8 @@ public class BookMovement : MonoBehaviour
             currentWeight = seekWeight;
             _currentAcceleration-=fadeAccelerationVelocity*Time.deltaTime;
             _currentAcceleration = Mathf.Clamp(_currentAcceleration,minAcceleration,maxAcceleration);
+            currentTilt-=fadeTiltSpeed*Time.deltaTime;
+            currentTilt = Mathf.Clamp(currentTilt,minTilt,maxTilt);
         }
         else
         {
@@ -59,6 +66,8 @@ public class BookMovement : MonoBehaviour
             currentWeight = 1;
             _currentAcceleration+=fadeAccelerationVelocity*Time.deltaTime;
             _currentAcceleration = Mathf.Clamp(_currentAcceleration,minAcceleration,maxAcceleration);
+            currentTilt+=fadeTiltSpeed*Time.deltaTime;
+            currentTilt = Mathf.Clamp(currentTilt,minTilt,maxTilt);
         }
         Vector3 currentAcceleration = GetLinearAcceleration();
         Vector3 velIncrement = currentAcceleration * Time.deltaTime;
@@ -66,6 +75,7 @@ public class BookMovement : MonoBehaviour
         velocity = Vector3.ClampMagnitude(velocity,currentSpeed);
         transform.position += velocity * Time.deltaTime;
         transform.position = new Vector3(transform.position.x,attractor.position.y, transform.position.z);
+        transform.rotation = TiltRotationTowardsVelocity(Quaternion.Euler(transform.forward),Vector3.up,velocity,currentTilt);
     }
     public Vector3 GetLinearAcceleration()
     {
@@ -137,4 +147,11 @@ public class BookMovement : MonoBehaviour
     public static  float binomial () {
         return Random.value - Random.value;
     }
+    public Quaternion TiltRotationTowardsVelocity( Quaternion cleanRotation, Vector3 referenceUp, Vector3 vel, float velMagFor45Degree )
+    {
+        Vector3 rotAxis = Vector3.Cross( referenceUp, vel );
+        float tiltAngle = Mathf.Atan( vel.magnitude /velMagFor45Degree) * Mathf.Rad2Deg;
+        return Quaternion.AngleAxis( tiltAngle, rotAxis ) *cleanRotation;
+    }
 }
+
