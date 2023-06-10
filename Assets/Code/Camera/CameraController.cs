@@ -19,6 +19,11 @@ public class CameraController : MonoBehaviour
     public float lateralSpeed;
     public float verticalOffset;
     public float verticalSpeed;
+    public float changeFocusMultiplier;
+    public float catchUpSpeed;
+    public float cinematicMultiplier;
+    float currentLateralSpeed;
+    float currentVerticalSpeed;
     float angle;
     float extraDepth;
     float extraHeight;
@@ -44,6 +49,8 @@ public class CameraController : MonoBehaviour
     }
     private void Start()
     {
+        currentLateralSpeed = lateralSpeed;
+        currentVerticalSpeed = verticalSpeed;
         Load();
         cam = GetComponent<Camera>();
         transform.rotation = Quaternion.Euler(angle,0,0);
@@ -74,9 +81,24 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        SetSpeed();
         HandleDirection();
         HandlePosition();
         HandleRotation();
+    }
+    void SetSpeed()
+    {
+        Debug.Log(currentLateralSpeed);
+        if(cinematic) return;
+
+        if(currentLateralSpeed<lateralSpeed)
+        {
+            currentLateralSpeed = Mathf.Clamp(currentLateralSpeed+=catchUpSpeed*Time.deltaTime,0,lateralSpeed);
+        }
+        if(currentVerticalSpeed<verticalOffset)
+        {
+            currentVerticalSpeed = Mathf.Clamp(currentVerticalSpeed+=catchUpSpeed*Time.deltaTime,0,verticalSpeed);
+        }
     }
     void HandleDirection()
     {
@@ -115,11 +137,11 @@ public class CameraController : MonoBehaviour
         float yPos = targetPos.y + height + extraHeight;
         float zPos = Mathf.Clamp(target.position.z - depth - extraDepth,zMin,zMax);
         targetPos = new Vector3(xPos,yPos,zPos);
-        transform.position = new Vector3(Mathf.Lerp(transform.position.x,xPos,Time.deltaTime * lateralSpeed),Mathf.Lerp(transform.position.y,yPos,Time.deltaTime * lateralSpeed * 2),Mathf.Lerp(transform.position.z,zPos,Time.deltaTime * lateralSpeed * 2));
+        transform.position = new Vector3(Mathf.Lerp(transform.position.x,xPos,Time.deltaTime * currentLateralSpeed),Mathf.Lerp(transform.position.y,yPos,Time.deltaTime * currentLateralSpeed * 2),Mathf.Lerp(transform.position.z,zPos,Time.deltaTime * lateralSpeed * 2));
     }
     private void HandleRotation()
     {
-        transform.rotation = Quaternion.Euler(Mathf.Lerp(transform.rotation.eulerAngles.x,angle-direction.y*verticalOffset,Time.deltaTime * verticalSpeed),0,0);
+        transform.rotation = Quaternion.Euler(Mathf.Lerp(transform.rotation.eulerAngles.x,angle-direction.y*verticalOffset,Time.deltaTime * currentVerticalSpeed),0,0);
     }
     public void ChangeRoom(BoxCollider box, float extraHeight, float extraDepth)
     {
@@ -132,6 +154,8 @@ public class CameraController : MonoBehaviour
         xMin = box.bounds.center.x - box.bounds.extents.x;
         zMax = box.bounds.center.z + box.bounds.extents.z;
         zMin = box.bounds.center.z - box.bounds.extents.z;
+        currentLateralSpeed = lateralSpeed*changeFocusMultiplier;
+        currentVerticalSpeed = verticalSpeed*changeFocusMultiplier;
     }
     public void ChangeFocus(Transform target)
     {
@@ -151,8 +175,12 @@ public class CameraController : MonoBehaviour
     }
     IEnumerator CinematicTime(float time)
     {
+        lateralSpeed*=cinematicMultiplier;
+        verticalSpeed*=cinematicMultiplier;
         yield return new WaitForSeconds(time);
         cinematic = false;
+        lateralSpeed/=cinematicMultiplier;
+        verticalSpeed/=cinematicMultiplier;
         ChangeFocus(lastTarget);
     }
 
