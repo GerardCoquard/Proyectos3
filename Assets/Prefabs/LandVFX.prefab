@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4633895852349473746}
   - component: {fileID: 4633534744236506584}
   - component: {fileID: 2639568013233224791}
+  - component: {fileID: 674402332}
   m_Layer: 6
   m_Name: LandVFX
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4794848097598969778}
-  m_LocalRotation: {x: 0.7071075, y: -0, z: -0, w: -0.7071061}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: -0.7071068}
   m_LocalPosition: {x: -11.79, y: 12.55, z: 18.55}
   m_LocalScale: {x: 0.76929, y: 0.76929, z: 0.76929}
   m_ConstrainProportionsScale: 0
@@ -42,7 +43,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4794848097598969778}
   serializedVersion: 8
-  lengthInSec: 0.2
+  lengthInSec: 0.1
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 1
@@ -117,8 +118,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1
-      minScalar: 0.7
+      scalar: 0.5
+      minScalar: 0.2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -188,7 +189,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 0.019607844}
+      maxColor: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 0.007843138}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4608,3 +4609,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Seconds: 1
+--- !u!114 &674402332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4794848097598969778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13282da6e75c9224f82d4430b8959756, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Seconds: 0

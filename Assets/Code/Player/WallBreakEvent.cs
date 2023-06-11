@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using UnityEngine.Events;
+using UnityEngine.VFX;
 
 public class WallBreakEvent : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class WallBreakEvent : MonoBehaviour
     public List<GameObject> monsterHead;
     public ParticleSystem particles;
     public Transform explosionTransform;
+
 
     public float forceApplied = 5f;
     public float timeForPieces = 5f;

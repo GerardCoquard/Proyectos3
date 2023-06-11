@@ -10,6 +10,6 @@ public class PlayerParticlesController : MonoBehaviour
     public void PlayLandParticles()
     {
         Debug.Log("IN");
-        Instantiate(landParticles, footTransform.position, Quaternion.identity);
+        Instantiate(landParticles, footTransform.position,landParticles.transform.rotation);
     }
 }
