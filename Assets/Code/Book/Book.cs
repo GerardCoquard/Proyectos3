@@ -19,7 +19,6 @@ public class Book : MonoBehaviour
     [Header("Book Params")]
     public GameObject bookGraphics;
     public GameObject bookGhost;
-    public Transform bookGhostStartPosition;
     public Transform dialoguePosition;
     public Vector3 bookOffset;
     public VisualEffect particles;
@@ -63,7 +62,6 @@ public class Book : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(ShowRunes());
         ResetBookGraphics();
-        bookGhost.transform.position = bookGhostStartPosition.position;
         bookGhost.SetActive(true);
     }
     public void DeactivateBook()

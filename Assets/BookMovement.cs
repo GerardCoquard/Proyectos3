@@ -24,6 +24,11 @@ public class BookMovement : MonoBehaviour
     public float maxTilt;
     public float minTilt;
     public float fadeTiltSpeed;
+    public float maxRotationSpeed;
+    public float minRotationSpeed;
+    public float fadeRotationSpeed;
+    public Transform holder;
+    float currentRotationSpeed;
     float currentSpeed;
     float _currentAcceleration;
     float currentTilt;
@@ -41,10 +46,18 @@ public class BookMovement : MonoBehaviour
         _currentAcceleration = minAcceleration;
         currentWeight = seekWeight;
         currentTilt = minTilt;
+        currentRotationSpeed = minRotationSpeed;
     }
     void Update()
     {
-        Move();
+        if(Book.instance.bookGhost.activeInHierarchy) Stop();
+        else Move();
+    }
+    void Stop()
+    {
+        transform.localRotation = TiltRotationTowardsVelocity(Quaternion.Euler(transform.forward),Vector3.up,Vector3.zero,maxTilt);
+        Vector3 rot = new Vector3(0,0,0);
+        holder.localRotation = Quaternion.Lerp(holder.localRotation,Quaternion.identity,maxRotationSpeed*Time.deltaTime);
     }
     public void Move()
     {
@@ -58,6 +71,8 @@ public class BookMovement : MonoBehaviour
             _currentAcceleration = Mathf.Clamp(_currentAcceleration,minAcceleration,maxAcceleration);
             currentTilt-=fadeTiltSpeed*Time.deltaTime;
             currentTilt = Mathf.Clamp(currentTilt,minTilt,maxTilt);
+            currentRotationSpeed-=fadeRotationSpeed*Time.deltaTime;
+            currentRotationSpeed = Mathf.Clamp(currentRotationSpeed,minRotationSpeed,maxRotationSpeed);
         }
         else
         {
@@ -68,6 +83,8 @@ public class BookMovement : MonoBehaviour
             _currentAcceleration = Mathf.Clamp(_currentAcceleration,minAcceleration,maxAcceleration);
             currentTilt+=fadeTiltSpeed*Time.deltaTime;
             currentTilt = Mathf.Clamp(currentTilt,minTilt,maxTilt);
+            currentRotationSpeed+=fadeRotationSpeed*Time.deltaTime;
+            currentRotationSpeed = Mathf.Clamp(currentRotationSpeed,minRotationSpeed,maxRotationSpeed);
         }
         Vector3 currentAcceleration = GetLinearAcceleration();
         Vector3 velIncrement = currentAcceleration * Time.deltaTime;
@@ -75,7 +92,12 @@ public class BookMovement : MonoBehaviour
         velocity = Vector3.ClampMagnitude(velocity,currentSpeed);
         transform.position += velocity * Time.deltaTime;
         transform.position = new Vector3(transform.position.x,attractor.position.y, transform.position.z);
-        transform.rotation = TiltRotationTowardsVelocity(Quaternion.Euler(transform.forward),Vector3.up,velocity,currentTilt);
+
+        transform.localRotation = TiltRotationTowardsVelocity(Quaternion.Euler(transform.forward),Vector3.up,velocity,currentTilt);
+        float angle = Vector3.Angle(Vector3.forward,new Vector3(velocity.x,0,velocity.z));
+        angle*=Mathf.Sign(velocity.x);
+        Vector3 rot = new Vector3(0,angle,0);
+        holder.localRotation = Quaternion.Lerp(holder.localRotation,Quaternion.Euler(rot),currentRotationSpeed*Time.deltaTime);
     }
     public Vector3 GetLinearAcceleration()
     {

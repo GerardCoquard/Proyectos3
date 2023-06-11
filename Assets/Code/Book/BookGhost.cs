@@ -7,13 +7,13 @@ public class BookGhost : MonoBehaviour
 {
     public float speed;
     public float shapeDetectionRadius;
-    public float tiltAngle;
-    public float tiltSpeed;
+    public Animator anim;
     Vector2 movement;
     bool up;
     bool down;
     CharacterController characterController;
     Shape selectedShape;
+    bool delay;
     private void Start() {
         characterController = GetComponent<CharacterController>();
     }
@@ -22,10 +22,14 @@ public class BookGhost : MonoBehaviour
         Gizmos.DrawLine(transform.position,transform.position+new Vector3(0,0,-shapeDetectionRadius));
     }
     private void OnEnable() {
+        StopAllCoroutines();
+        StartCoroutine(Delay());
         InputManager.GetAction("Move").action += OnMovementInput;
         InputManager.GetAction("Jump").action += OnUpInput;
         InputManager.GetAction("Down").action += OnDownInput;
         InputManager.GetAction("Push").action += OnInteractInput;
+        anim.SetTrigger("Appear");
+        transform.localPosition = Vector3.zero;
         movement = Vector2.zero;
         up = false;
         down = false;
@@ -38,7 +42,7 @@ public class BookGhost : MonoBehaviour
         InputManager.GetAction("Jump").action -= OnUpInput;
         InputManager.GetAction("Down").action -= OnDownInput;
         InputManager.GetAction("Push").action -= OnInteractInput;
-
+        transform.localPosition = Vector3.zero;
         ClearSelected();
 
         WorldScreenUI.instance.HideIcon(IconType.Book);
@@ -60,6 +64,7 @@ public class BookGhost : MonoBehaviour
         if(context.started) SelectShape();
     }
     private void Update() {
+        if(!delay) return;
         Move();
         if(selectedShape != null) WorldScreenUI.instance.SetIcon(IconType.Book, transform.position+new Vector3(0,0.6f,0));
         else WorldScreenUI.instance.HideIcon(IconType.Book);
@@ -103,5 +108,11 @@ public class BookGhost : MonoBehaviour
     {
         if(selectedShape==null) return;
         Book.instance.Shapehift(selectedShape,selectedShape.shapeCollider.bounds.extents);
+    }
+    IEnumerator Delay()
+    {
+        delay = false;
+        yield return new WaitForSeconds(0.25f);
+        delay = true;
     }
 }
