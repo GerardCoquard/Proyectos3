@@ -61,7 +61,6 @@ public class CameraController : MonoBehaviour
         float yPos = targetPos.y + height + extraHeight;
         float zPos = Mathf.Clamp(target.position.z - depth - extraDepth,zMin,zMax);
         transform.position = new Vector3(xPos,yPos,zPos);
-        Debug.Log(new Vector3(xPos, yPos, zPos));
     }
     private void OnEnable() {
         InputManager.GetAction("Move").action += OnMovementInput;

@@ -387,7 +387,6 @@ public class PlayerController : MonoBehaviour
         if ((collisionFlag & CollisionFlags.Below) == 0 && movement.y < -0.5f)
         {
             onGround = false;
-            Debug.Log("NOT GROUNDED");
         }
 
 
