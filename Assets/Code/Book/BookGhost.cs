@@ -8,6 +8,10 @@ public class BookGhost : MonoBehaviour
     public float speed;
     public float shapeDetectionRadius;
     public Animator anim;
+    public Transform holder;
+    public float rotationSpeed;
+    public float tiltSpeed;
+    public float tiltCatchUp;
     Vector2 movement;
     bool up;
     bool down;
@@ -43,6 +47,8 @@ public class BookGhost : MonoBehaviour
         InputManager.GetAction("Down").action -= OnDownInput;
         InputManager.GetAction("Push").action -= OnInteractInput;
         transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+        holder.localRotation = Quaternion.identity;
         ClearSelected();
 
         WorldScreenUI.instance.HideIcon(IconType.Book);
@@ -77,6 +83,15 @@ public class BookGhost : MonoBehaviour
         Vector3 finalMovement = new Vector3(movement.x,vertical,movement.y).normalized;
         
         characterController.Move(finalMovement * Time.deltaTime * speed);
+
+        transform.localRotation = Quaternion.Lerp(transform.localRotation,TiltRotationTowardsVelocity(Quaternion.Euler(transform.forward),Vector3.up,finalMovement,tiltSpeed),tiltCatchUp*Time.deltaTime);
+        if(finalMovement.x != 0 || finalMovement.z != 0)
+        {
+            float angle = Vector3.Angle(Vector3.forward,new Vector3(finalMovement.x,0,finalMovement.z));
+            angle*=Mathf.Sign(finalMovement.x);
+            Vector3 rot = new Vector3(0,angle,0);
+            holder.localRotation = Quaternion.Lerp(holder.localRotation,Quaternion.Euler(rot),rotationSpeed*Time.deltaTime);
+        }
     }
     public static Quaternion TiltRotationTowardsVelocity(Quaternion cleanRotation, Vector3 referenceUp, Vector3 vel, float velMagFor45Degree)
     {
