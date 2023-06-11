@@ -88,7 +88,6 @@ public class CameraController : MonoBehaviour
     }
     void SetSpeed()
     {
-        Debug.Log(currentLateralSpeed);
         if(cinematic) return;
 
         if(currentLateralSpeed<lateralSpeed)

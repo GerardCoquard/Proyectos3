@@ -38,15 +38,16 @@ public class GameSaveManager : MonoBehaviour
 
     public void EnableLevels()
     {
-       
+        int level = currentRoom;
         if (levels == null) return;
-        if (currentRoom + 1 < levels.Count) levels[currentRoom + 1].SetActive(true);
-        if (currentRoom - 1 >= 0) levels[currentRoom - 1].SetActive(true);
+        if (level + 1 < levels.Count) levels[level + 1].SetActive(true);
+        if (level - 1 >= 0) levels[level - 1].SetActive(true);
+        
     }
 
     public void UnenableLevels()
     {
-        Debug.Log("IN");
+        
         int levelForward = currentRoom + 2;
         int levelBackward = currentRoom - 2;
         if (levels == null) return;
