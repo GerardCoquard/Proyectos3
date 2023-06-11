@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerAnimatorController : MonoBehaviour
 {
     public List<Animator> playerAnimators = new List<Animator>();
-
+    
     public void SetFloat(string name, float value)
     {
 
@@ -29,5 +29,7 @@ public class PlayerAnimatorController : MonoBehaviour
             animator.SetTrigger(name);
         }
     }
+
+    
 
 }

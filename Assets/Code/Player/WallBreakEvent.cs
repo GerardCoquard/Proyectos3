@@ -10,19 +10,27 @@ public class WallBreakEvent : MonoBehaviour
     public List<GameObject> woodPlatesBroken;
     public List<GameObject> monsterHead;
     public ParticleSystem particles;
+    public Transform explosionTransform;
 
     public float forceApplied = 5f;
     public float timeForPieces = 5f;
-
+    public float radiusExplosion;
     public UnityEvent externalEvent;
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            DoEvent();
+        }
+    }
     private void ApplyForces()
     {
         if (woodPlatesBroken == null) return;
         foreach (GameObject piece in woodPlatesBroken)
         {
             Rigidbody pieceRb = piece.GetComponent<Rigidbody>();
-            pieceRb.AddExplosionForce(forceApplied,piece.transform.position, 1f); //No idea how explosion forces works.
+            pieceRb.AddExplosionForce(forceApplied,explosionTransform.position, radiusExplosion); //No idea how explosion forces works.
         }
     }
 
