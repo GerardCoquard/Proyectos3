@@ -46,7 +46,7 @@ public class InterfacesManager : MonoBehaviour
     {
         if (!ContainsAction(actionName)) return;
         if (state) InputManager.GetAction(actionName).action += ((GameObject) => Open(GetInterface(actionName).interfaceObject));
-        else InputManager.GetAction(actionName).action -= ((GameObject) => Open(GetInterface(actionName).interfaceObject)); Debug.Log("disable");
+        else InputManager.GetAction(actionName).action -= ((GameObject) => Open(GetInterface(actionName).interfaceObject));
        
     }
     bool ContainsAction(string actionName)
