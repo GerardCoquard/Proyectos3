@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7817468902811648614}
   - component: {fileID: 6616598300668677571}
   - component: {fileID: 8950365845769402633}
+  - component: {fileID: 4591167911995484636}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!135 &4591167911995484636
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7437389261976901852}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.0000005
+  m_Center: {x: -0.0000001192093, y: -5.3290705e-15, z: -0.00000005960466}

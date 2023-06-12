@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 810872001830707737}
   - component: {fileID: 4390746163484224956}
   - component: {fileID: 1948905348520876406}
+  - component: {fileID: 397485266708716472}
   m_Layer: 0
   m_Name: PlanetTierraNight
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!135 &397485266708716472
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3126351823222947}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.0000005
+  m_Center: {x: -0.00000011920932, y: 0, z: -0.00000005960466}
