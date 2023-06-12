@@ -47,7 +47,6 @@ public class GameSaveManager : MonoBehaviour
 
     public void UnenableLevels()
     {
-        
         int levelForward = currentRoom + 2;
         int levelBackward = currentRoom - 2;
         if (levels == null) return;
@@ -66,12 +65,7 @@ public class GameSaveManager : MonoBehaviour
                 levels[i].SetActive(false);
             }
         }
-
     }
-
-
-   
-
     private void Load()
     {
         currentRoom = DataManager.Load<int>("roomID");

@@ -35,7 +35,7 @@ public class RoomTrigger : MonoBehaviour
     }
     public void ChangeRoom()
     {
-        if (saveTrigger && !triggered) Save();
+        if(saveTrigger && !triggered) Save();
         DoEvents();
         CameraController.instance.ChangeRoom(cameraBox, extraHeight, extraDepth);
         onRoomChanged?.Invoke();
