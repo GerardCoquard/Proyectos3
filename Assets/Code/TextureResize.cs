@@ -9,15 +9,17 @@ public class TextureResize : MonoBehaviour
     Material mat;
     void Update () 
     {
-
-        if (transform.hasChanged && Application.isEditor && !Application.isPlaying) 
-        {
-            GetComponent<Renderer>().material.mainTextureScale = new Vector2 (transform.localScale.x / scaleFactor , transform.localScale.z / scaleFactor);
-            transform.hasChanged = false;
-        } 
+        ScaleTexture();
     }
     private void OnValidate() {
-        GetComponent<Renderer>().material.mainTextureScale = new Vector2 (transform.localScale.x / scaleFactor , transform.localScale.z / scaleFactor);
-        transform.hasChanged = false;
+        ScaleTexture();
+    }
+    void ScaleTexture()
+    {
+        if (transform.hasChanged && Application.isEditor && !Application.isPlaying) 
+        {
+            GetComponent<Renderer>().sharedMaterial.mainTextureScale = new Vector2 (transform.localScale.x / scaleFactor , transform.localScale.z / scaleFactor);
+            transform.hasChanged = false;
+        }
     }
 }
