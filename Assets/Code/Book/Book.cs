@@ -20,13 +20,13 @@ public class Book : MonoBehaviour
     public GameObject bookGraphics;
     public GameObject bookGhost;
     public Transform dialoguePosition;
-    public Vector3 bookOffset;
     public VisualEffect particles;
     GameObject shapeshiftedObject;
     public Material defaultRuneMat;
     public Material fixedRuneMat;
     public float runeFadeSpeed;
-    private const byte k_MaxByteForOverexposedColor = 191;
+    public Transform attractor;
+    public BookMovement bookMovement;
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
@@ -35,7 +35,6 @@ public class Book : MonoBehaviour
         Gizmos.DrawLine(bookGhost.transform.position,bookGhost.transform.position+new Vector3(-playerWidth,0,0));
     }
     private void Awake() {
-        Load();
         if(instance==null)
         {
             instance = this;
@@ -48,6 +47,7 @@ public class Book : MonoBehaviour
         defaultRuneMat.SetColor("_BaseColor", new Color(newColor.r,newColor.g,newColor.b,0));
         player = PlayerController.instance.transform;
         bookGhost.SetActive(false);
+        attractor = attractor = GameObject.FindGameObjectWithTag("BookAttractor").transform;
     }
     private void OnEnable() {
         PlayerController.instance.OnBookActivated += ActivateBook;
@@ -76,7 +76,7 @@ public class Book : MonoBehaviour
         {
             Destroy(shapeshiftedObject.gameObject);
             shapeshiftedObject = null;
-            bookGraphics.transform.position = player.position + new Vector3(1f,2f,0f);
+            particles.transform.position = bookGraphics.transform.position;
             particles.Play();
         }
         bookGraphics.SetActive(true);
@@ -107,6 +107,7 @@ public class Book : MonoBehaviour
         Shape shape = shapeshiftedObject.GetComponent<Shape>();
         shape.SetRune(fixedRuneMat);
         Destroy(shape);
+        particles.transform.position = bookGraphics.transform.position;
         particles.Play();
         bookGraphics.SetActive(false);
         PlayerController.instance.SwapControl();
@@ -184,10 +185,5 @@ public class Book : MonoBehaviour
         float sin = Mathf.Sin (angle);
 
         return new Vector3 (sin, 0, cos);
-    }
-
-    private void Load()
-    {
-        transform.position = DataManager.Load<Vector3>("bookPosition");
     }
 }
