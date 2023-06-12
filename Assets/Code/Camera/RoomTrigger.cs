@@ -15,9 +15,7 @@ public class RoomTrigger : MonoBehaviour
     public void RoomOnTriggerEnter(Collider other)
     {
         if (other.tag == "CharacterController") return;
-        if (other.tag == "Player") ChangeRoom();
-        if (spawnPoint != null) Save();
-        DoEvents();
+        if (other.tag == "Player" || other.tag == "Book") ChangeRoom();
     }
 
     private void DoEvents()
@@ -29,7 +27,8 @@ public class RoomTrigger : MonoBehaviour
     }
     public void ChangeRoom()
     {
-       
+        if (spawnPoint != null) Save();
+        DoEvents();
         CameraController.instance.ChangeRoom(cameraBox, extraHeight, extraDepth);
         onRoomChanged?.Invoke();
     }
