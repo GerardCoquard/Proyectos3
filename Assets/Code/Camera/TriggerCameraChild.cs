@@ -11,11 +11,6 @@ public class TriggerCameraChild : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "CharacterController") return;
-        if (other.tag == "Player")
-        {
-
-            room.RoomOnTriggerEnter(other);
-        }
+        room.RoomOnTriggerEnter(other);
     }
 }

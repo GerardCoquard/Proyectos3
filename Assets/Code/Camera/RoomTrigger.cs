@@ -14,8 +14,14 @@ public class RoomTrigger : MonoBehaviour
     public int roomID;
     public void RoomOnTriggerEnter(Collider other)
     {
-        if (other.tag == "CharacterController") return;
-        if (other.tag == "Player" || other.tag == "Book") ChangeRoom();
+        if (other.tag == "Player") ChangeRoom();
+        if(other.tag == "CharacterController")
+        {
+            if(other.GetComponent<BookGhost>()!=null)
+            {
+                CameraController.instance.ChangeRoom(cameraBox, extraHeight, extraDepth);
+            }
+        }
     }
 
     private void DoEvents()
@@ -35,6 +41,7 @@ public class RoomTrigger : MonoBehaviour
 
     private void Save()
     {
+        Book.instance.ResetBookGraphics();
         GameSaveManager.instance.SetCurrentRoom(roomID);
         GameSaveManager.instance.EnableLevels();
         GameSaveManager.instance.UnenableLevels();
