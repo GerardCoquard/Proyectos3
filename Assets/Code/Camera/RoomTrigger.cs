@@ -12,6 +12,8 @@ public class RoomTrigger : MonoBehaviour
     public float extraDepth;
     public Transform spawnPoint;
     public int roomID;
+    public bool saveTrigger;
+    bool triggered;
     public void RoomOnTriggerEnter(Collider other)
     {
         if (other.tag == "Player") ChangeRoom();
@@ -33,7 +35,7 @@ public class RoomTrigger : MonoBehaviour
     }
     public void ChangeRoom()
     {
-        if (spawnPoint != null) Save();
+        if (saveTrigger && !triggered) Save();
         DoEvents();
         CameraController.instance.ChangeRoom(cameraBox, extraHeight, extraDepth);
         onRoomChanged?.Invoke();
@@ -41,10 +43,12 @@ public class RoomTrigger : MonoBehaviour
 
     private void Save()
     {
+        triggered = true;
         Book.instance.ResetBookGraphics();
         GameSaveManager.instance.SetCurrentRoom(roomID);
         GameSaveManager.instance.EnableLevels();
         GameSaveManager.instance.UnenableLevels();
+        UIRoomNames.instance.ShowText(roomID);
     }
 }
 
