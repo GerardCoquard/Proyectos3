@@ -20,11 +20,11 @@ public class LightReciever : MonoBehaviour
         OnLightNotRecived.AddListener(() => colorPropertySetter.SetIntensity(linkedBeamMaterial,offIntensity));
         colorPropertySetter.SetIntensity(linkedBeamMaterial,offIntensity);
     }
-    public void DoAction(LightBeam beam)
+    public void DoAction(LightBeam beam, ParticleSystem hitParticles)
     {
         if(beam.rayType != currentColor && currentColor != RayColor.Anyone) return;
         if(crossingBeams.Count == 0) OnLightRecived?.Invoke();
-        if(lightGoesThrough) StartCoroutine(AddBeam(beam));
+        if(lightGoesThrough) StartCoroutine(AddBeam(beam, hitParticles));
         else crossingBeams.Add(beam,new LightBeamData(null,Vector3.zero,Vector3.zero));
     }
     public void UpdatePoint(LightBeam beam,Vector3 _pos,Vector3 _dir)
@@ -73,10 +73,10 @@ public class LightReciever : MonoBehaviour
         Destroy(beamToDestroy);
         if(crossingBeams.Count == 0) OnLightNotRecived?.Invoke();
     }
-    IEnumerator AddBeam(LightBeam beam)
+    IEnumerator AddBeam(LightBeam beam, ParticleSystem hitParticles)
     {
         yield return new WaitForEndOfFrame();
-        LightBeam extraLightBeam =  new LightBeam(beam);
+        LightBeam extraLightBeam =  new LightBeam(beam, hitParticles);
         LightBeamData extraData = new LightBeamData(extraLightBeam,Vector3.zero,Vector3.zero);
         crossingBeams.Add(beam,extraData);
     }

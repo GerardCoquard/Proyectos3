@@ -12,6 +12,19 @@ public class InterfacesManager : MonoBehaviour
         public Menu interfaceObject;
     }
     public _interface[] _interfaces;
+    public static InterfacesManager instance;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
     private void OnEnable() {
         foreach (_interface _interface in _interfaces)
         {
@@ -27,5 +40,31 @@ public class InterfacesManager : MonoBehaviour
     void Open(Menu interfaceToOpen)
     {
         interfaceToOpen.OpenMenu();
+    }
+
+    public void SetAction(string actionName, bool state)
+    {
+        if (!ContainsAction(actionName)) return;
+        if (state) InputManager.GetAction(actionName).action += ((GameObject) => Open(GetInterface(actionName).interfaceObject));
+        else InputManager.GetAction(actionName).action -= ((GameObject) => Open(GetInterface(actionName).interfaceObject)); Debug.Log("disable");
+       
+    }
+    bool ContainsAction(string actionName)
+    {
+        foreach (_interface _interface in _interfaces)
+        {
+           
+            if (actionName == _interface.actionName) return true;
+        }
+        return false;
+    }
+
+    _interface GetInterface(string actionName)
+    {
+        foreach (_interface _interface in _interfaces)
+        {
+            if (actionName == _interface.actionName) return _interface;
+        }
+        return new _interface();
     }
 }

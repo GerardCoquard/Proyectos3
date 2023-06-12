@@ -17,10 +17,11 @@ public class LightBeam
     public float width;
     public Transform parent;
     public float currentLength;
+    public ParticleSystem hitParticles;
     public float growthSpeed;
     float currentGrowth;
 
-    public LightBeam(Vector3 pos, Vector3 dir, Material material, LayerMask layerMask, int maxBounces, RayColor _rayType, float width, Transform parent, float growth)
+    public LightBeam(Vector3 pos, Vector3 dir, Material material, LayerMask layerMask, int maxBounces, RayColor _rayType, float width, Transform parent, float growth, ParticleSystem hitParticles)
     {
         lineRenderer = new LineRenderer();
         lightGameObject = new GameObject();
@@ -34,6 +35,7 @@ public class LightBeam
         this.width = width;
         this.parent = parent;
         this.growthSpeed = growth;
+        this.hitParticles = hitParticles;
 
         lineRenderer = lightGameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
         lineRenderer.startWidth = width;
@@ -48,7 +50,7 @@ public class LightBeam
 
         CastLight(position, direction, lineRenderer);
     }
-    public LightBeam(LightBeam beam)
+    public LightBeam(LightBeam beam, ParticleSystem hitParticles)
     {
         this.lineRenderer = new LineRenderer();
         this.lightGameObject = new GameObject();
@@ -61,6 +63,7 @@ public class LightBeam
         this.rayType = beam.rayType;
         this.width = beam.width;
         this.growthSpeed = beam.growthSpeed;
+        this.hitParticles = hitParticles;
 
         lineRenderer = lightGameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
         lineRenderer.startWidth = width;
@@ -83,6 +86,14 @@ public class LightBeam
         CastLight(pos, dir, renderer);
         UpdateLightBeam();
         CheckRecievers();
+        if(lineRenderer.positionCount >= 2)
+        {
+            /*Debug.Log("Line: " + lineRenderer.GetPosition(lineRenderer.positionCount - 1));
+            GameObject particleObj = new GameObject("hitParticles");
+            particleObj.AddComponent(hitParticles);
+            particleObj.transform.position = lineRenderer.GetPosition(lineRenderer.positionCount - 1);
+            hitParticles.Play();*/
+        }
     }
     public void CastLight(Vector3 pos, Vector3 dir, LineRenderer renderer)
     {
@@ -148,7 +159,7 @@ public class LightBeam
                 LightReciever reciver = hitInfo.collider.GetComponent<LightReciever>();
                 if (!lightRecieverList.Contains(reciver))
                 {
-                    reciver.DoAction(this);
+                    reciver.DoAction(this, hitParticles);
                     lightRecieverList.Add(reciver);
                 }
                 currentLightRecivers.Add(reciver);

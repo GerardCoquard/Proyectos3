@@ -6,6 +6,8 @@ public class MoveObject : MonoBehaviour
     [SerializeField] Transform finalPosition;
     [SerializeField] float timeToReach;
     [SerializeField] float delay;
+    [SerializeField] ParticleSystem onMoveParticles;
+    [SerializeField] float timeForParticles;
     Vector3 initPos;
     Vector3 finalPos;
     float distanceBetweenPositions;
@@ -22,12 +24,24 @@ public class MoveObject : MonoBehaviour
         if(locked) return;
         StopAllCoroutines();
         StartCoroutine(MoveCoroutine());
+        if(onMoveParticles != null) StartCoroutine(PlayParticlesWhileMoving());
     }
     public void ResetMove()
     {
         if(locked) return;
         StopAllCoroutines();
         StartCoroutine(ResetObjectCoroutine());
+    }
+
+    IEnumerator PlayParticlesWhileMoving()
+    {
+        float timer = 0f;
+        while(timer <= timeForParticles)
+        {
+            timer += Time.deltaTime;
+            if (!onMoveParticles.isPlaying) onMoveParticles.Play();
+            yield return null;
+        }
     }
     IEnumerator MoveCoroutine()
     {

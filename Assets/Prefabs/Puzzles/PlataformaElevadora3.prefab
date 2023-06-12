@@ -114,7 +114,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   finalPosition: {fileID: 0}
   timeToReach: 1
-  isUp: 0
+  delay: 0
+  onMoveParticles: {fileID: 0}
+  timeForParticles: 0
 --- !u!114 &695905899
 MonoBehaviour:
   m_ObjectHideFlags: 0

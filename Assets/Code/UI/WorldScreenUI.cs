@@ -21,10 +21,11 @@ public class WorldScreenUI : MonoBehaviour
         dialogueDisplay = GetComponent<DialogueDisplay>();
         dialogueDisplay.enabled = false;
     }
-    public void SetDialogue(DialogueNode startNode, Transform interactablePosition)
+    public void SetDialogue(DialogueNode startNode, Transform interactablePosition, DialogueEventHandler handler)
     {
         Book.instance.ResetBookGraphics();
         dialogueDisplay.SetStartNode(startNode);
+        if(handler != null) dialogueDisplay.SetEventHandler(handler);
         dialogueDisplay.SetInteractablePos(interactablePosition);
         dialogueDisplay.enabled = true;
         dialogueDisplay.StartDialogue();

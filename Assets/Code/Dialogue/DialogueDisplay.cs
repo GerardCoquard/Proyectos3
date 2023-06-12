@@ -22,6 +22,7 @@ public class DialogueDisplay : MonoBehaviour
     [SerializeField] string dialogueID;
     public bool isTextFinished;
     private bool onAnimation;
+    private DialogueEventHandler currentEventHandler;
 
     Vector3 initialScale;
     Vector3 finalScale;
@@ -47,6 +48,7 @@ public class DialogueDisplay : MonoBehaviour
         finalScale = initialScale * finalScaleMultiplier;
         distanceBetweenScales = Vector3.Distance(initialScale, finalScale);
         initialUiPosition = new Vector3(uiRenderer.transform.localPosition.x, 0, uiRenderer.transform.localPosition.z);
+       
     }
     private void Update()
     {
@@ -127,7 +129,8 @@ public class DialogueDisplay : MonoBehaviour
     public void StartDialogue()
     {
 
-
+        InterfacesManager.instance.SetAction("Pause",false);
+        currentEventHandler.DisableInteractParticles();
         StartCoroutine(WaitToLand());
         PlayerController.instance.GetAnimator().SetBool("isMoving", false);
         dialogueRender.SetActive(true);
@@ -150,6 +153,10 @@ public class DialogueDisplay : MonoBehaviour
         this.startNode = startNode;
     }
 
+    public void SetEventHandler(DialogueEventHandler handler)
+    {
+        this.currentEventHandler = handler;
+    }
     public void SetInteractablePos(Transform pos)
     {
         interactablePos = pos;
@@ -229,8 +236,10 @@ public class DialogueDisplay : MonoBehaviour
     }
     private void EndDialogue()
     {
+        InterfacesManager.instance.SetAction("Pause", true);
         PlayerController.instance.characterController.enabled = true;
         onEndEvent?.Invoke();
+        currentEventHandler?.DoEndAnimation();
         dialogueRender.gameObject.SetActive(false);
         this.enabled = false;
     }

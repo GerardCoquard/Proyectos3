@@ -27,7 +27,7 @@ public class Interactable : MonoBehaviour
         if (context.performed && PlayerController.instance.CanInteract())
         {
             DialogueDisplay.instance.onEndEvent = OnEnd;
-            WorldScreenUI.instance.SetDialogue(startNode, textDisplayPos);
+            WorldScreenUI.instance.SetDialogue(startNode, textDisplayPos, null);
         }
     }
     private void OnTriggerEnter(Collider other)

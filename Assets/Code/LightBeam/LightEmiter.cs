@@ -18,10 +18,11 @@ public class LightEmiter : MonoBehaviour
     public float onIntensity;
     public float fadeOutSpeed;
     public bool inverted;
+    public ParticleSystem hitParticles;
 
     private void Start()
     {
-        beam = new LightBeam(transform.position, inverted ? -transform.forward : transform.forward, material, Physics.AllLayers,maxBounces,rayColor,width, transform,growthSpeed);
+        beam = new LightBeam(transform.position, inverted ? -transform.forward : transform.forward, material, Physics.AllLayers,maxBounces,rayColor,width, transform,growthSpeed, hitParticles);
         SetPower(active);
     }
 
