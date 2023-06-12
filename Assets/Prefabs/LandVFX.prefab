@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4792068639015752672}
   - component: {fileID: 4633895852349473746}
   - component: {fileID: 4633534744236506584}
-  - component: {fileID: 2639568013233224791}
   - component: {fileID: 674402332}
   m_Layer: 6
   m_Name: LandVFX
@@ -4596,19 +4595,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &2639568013233224791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4794848097598969778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13282da6e75c9224f82d4430b8959756, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Seconds: 1
 --- !u!114 &674402332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4621,4 +4607,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13282da6e75c9224f82d4430b8959756, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Seconds: 0
+  m_Seconds: 1
