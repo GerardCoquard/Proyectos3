@@ -16,13 +16,13 @@ public class RoomTrigger : MonoBehaviour
     bool triggered;
     public void RoomOnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player") ChangeRoom();
         if(other.tag == "CharacterController")
         {
             if(other.GetComponent<BookGhost>()!=null)
             {
                 CameraController.instance.ChangeRoom(cameraBox, extraHeight, extraDepth);
             }
+            else ChangeRoom();
         }
     }
 
