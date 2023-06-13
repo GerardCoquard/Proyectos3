@@ -408,7 +408,6 @@ public class PlayerController : MonoBehaviour
     {
         InputManager.ActionEnabled("Move",state);
         InputManager.ActionEnabled("ChangeMode",state);
-        InputManager.ActionEnabled("Push",state);
         InputManager.ActionEnabled("Jump",state);
         movement = Vector3.zero;
         tempDirection = Vector2.zero;
