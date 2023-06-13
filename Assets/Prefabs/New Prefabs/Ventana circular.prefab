@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7924974548744700801}
   - component: {fileID: 6509093204262882340}
   - component: {fileID: 9056746004781431022}
+  - component: {fileID: 1382622213111498469}
   m_Layer: 0
   m_Name: Ventana circular
   m_TagString: Untagged
@@ -83,3 +84,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1382622213111498469
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7399690102999406907}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7058769212411334070, guid: 12b8b77fa5edb5848bd6adb3cddd891b, type: 3}
