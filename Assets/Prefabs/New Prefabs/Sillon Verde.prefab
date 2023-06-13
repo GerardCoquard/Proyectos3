@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3687354492062408509}
   - component: {fileID: 2303038931734864137}
   - component: {fileID: 4839840850268067167}
-  - component: {fileID: 603789004806025100}
+  - component: {fileID: 6526970731707467848}
   m_Layer: 0
   m_Name: Reposabrazos izquierdo
   m_TagString: Untagged
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &603789004806025100
-MeshCollider:
+--- !u!65 &6526970731707467848
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,10 +94,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 2772205381194203887, guid: 0c2683eba9a9e4f419cfc3c0744b303f, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 1.1616944, y: 1.4248664, z: 0.7002727}
+  m_Center: {x: 0.00003194809, y: 0.06051447, z: -0.19633166}
 --- !u!1 &1774026071568447734
 GameObject:
   m_ObjectHideFlags: 0
@@ -584,7 +583,7 @@ GameObject:
   - component: {fileID: 4660190465875860951}
   - component: {fileID: 5013139646866942153}
   - component: {fileID: 7094310618713960926}
-  - component: {fileID: 6829801653014495446}
+  - component: {fileID: 578406813301472841}
   m_Layer: 0
   m_Name: Cojin grande
   m_TagString: Untagged
@@ -657,8 +656,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6829801653014495446
-MeshCollider:
+--- !u!65 &578406813301472841
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -667,10 +666,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -8615541043243992043, guid: 0c2683eba9a9e4f419cfc3c0744b303f, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.7792392, y: 0.31582448, z: 0.90388274}
+  m_Center: {x: -0.00000081956387, y: -0.16035895, z: 0.033995777}
 --- !u!1 &7733063525045499438
 GameObject:
   m_ObjectHideFlags: 0
@@ -722,7 +720,7 @@ GameObject:
   - component: {fileID: 5787125756539919274}
   - component: {fileID: 85621984214815482}
   - component: {fileID: 5314240642938071713}
-  - component: {fileID: 3104882511320607514}
+  - component: {fileID: 8114653193678934823}
   m_Layer: 0
   m_Name: Reposabrazos derecho
   m_TagString: Untagged
@@ -795,8 +793,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3104882511320607514
-MeshCollider:
+--- !u!65 &8114653193678934823
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -805,7 +803,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 6028774085071501904, guid: 0c2683eba9a9e4f419cfc3c0744b303f, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 1.1616944, y: 1.4248664, z: 0.7002727}
+  m_Center: {x: 0.00003194809, y: 0.06051447, z: -0.19633166}

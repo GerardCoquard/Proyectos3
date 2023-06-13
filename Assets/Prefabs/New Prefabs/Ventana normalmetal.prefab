@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1357501532315728810}
   - component: {fileID: 2700202537305584655}
   - component: {fileID: 188584588701188293}
+  - component: {fileID: 1562613526907988750}
   m_Layer: 0
   m_Name: Ventana normalmetal
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1562613526907988750
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1845632380556697872}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.9894257, y: 0.0925516, z: 5.335791}
+  m_Center: {x: 0, y: -0.004056146, z: -2.6678956}

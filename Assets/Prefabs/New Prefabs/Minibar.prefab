@@ -358,7 +358,7 @@ GameObject:
   - component: {fileID: 520166290051680661}
   - component: {fileID: 4475632411255159720}
   - component: {fileID: 6235561208245882184}
-  - component: {fileID: 2144042398061507667}
+  - component: {fileID: 2925628268433648033}
   m_Layer: 0
   m_Name: Madera inferior
   m_TagString: Untagged
@@ -431,8 +431,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2144042398061507667
-MeshCollider:
+--- !u!65 &2925628268433648033
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -441,10 +441,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -7427777322550628680, guid: dbb7e27f0eab63b49883e7137ff6d205, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 1.9696151, y: 12.018014, z: 2.05627}
+  m_Center: {x: 0.003274795, y: 6.009007, z: 0.010163981}
 --- !u!1 &2415532892579935577
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,6 +776,7 @@ GameObject:
   - component: {fileID: 7136215131116378376}
   - component: {fileID: 2339810823610114882}
   - component: {fileID: 5951832786749484831}
+  - component: {fileID: 8932580764440879849}
   m_Layer: 0
   m_Name: Globo superior
   m_TagString: Untagged
@@ -849,6 +849,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8932580764440879849
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4922083902931769510}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1785704449537029335, guid: dbb7e27f0eab63b49883e7137ff6d205, type: 3}
 --- !u!1 &6103758057868337480
 GameObject:
   m_ObjectHideFlags: 0

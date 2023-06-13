@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2580272583492625955}
   - component: {fileID: 1468494171597629830}
   - component: {fileID: 3712607538300984652}
+  - component: {fileID: -8648691535029503985}
   m_Layer: 0
   m_Name: Gorro3
   m_TagString: Untagged
@@ -83,3 +84,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &-8648691535029503985
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2919784544983956633}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -6857689473578963052, guid: ef39334aa740996418e86c1e9cbd1ccd, type: 3}

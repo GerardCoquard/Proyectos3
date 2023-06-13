@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5383964040785411480}
   - component: {fileID: 7647223629276533843}
   - component: {fileID: 3654120999706489091}
+  - component: {fileID: 710067275543525647}
   m_Layer: 0
   m_Name: Exterior 1 lp
   m_TagString: Untagged
@@ -83,6 +84,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &710067275543525647
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963254844815862779}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7951961621479378303, guid: 6cd08c85b39aca34ba55fe9df900aa25, type: 3}
 --- !u!1 &3508143550821434738
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,6 +109,7 @@ GameObject:
   - component: {fileID: 8440726125878561022}
   - component: {fileID: 59317278593046589}
   - component: {fileID: 5297598226086487666}
+  - component: {fileID: 822399513292734430}
   m_Layer: 0
   m_Name: Exterior 2 lp
   m_TagString: Untagged
@@ -166,6 +182,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &822399513292734430
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3508143550821434738}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8976479600409695325, guid: 6cd08c85b39aca34ba55fe9df900aa25, type: 3}
 --- !u!1 &6466737632627526055
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,6 +207,7 @@ GameObject:
   - component: {fileID: 4021067780531060522}
   - component: {fileID: 3349256053292659195}
   - component: {fileID: 8997274982985774707}
+  - component: {fileID: 6520331530661006565}
   m_Layer: 0
   m_Name: Puerta lp
   m_TagString: Untagged
@@ -249,6 +280,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6520331530661006565
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6466737632627526055}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.637232, y: 4.529772, z: 0.13383959}
+  m_Center: {x: 8.322444, y: 2.8127692, z: 13.993495}
 --- !u!1 &8757058992271322900
 GameObject:
   m_ObjectHideFlags: 0

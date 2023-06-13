@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3146797324190508602}
   - component: {fileID: 2018862688503425439}
   - component: {fileID: 4314597576576441685}
+  - component: {fileID: 1876620221433774640}
   m_Layer: 0
   m_Name: Ventana normal madera
   m_TagString: Untagged
@@ -83,3 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1876620221433774640
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2369029549799652480}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.9894257, y: 0.0925516, z: 5.335791}
+  m_Center: {x: 0, y: -0.004056146, z: -2.6678956}

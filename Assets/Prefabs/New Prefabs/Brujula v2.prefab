@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2699236515063111394}
   - component: {fileID: 3750451300852375797}
   - component: {fileID: 6115396764002890637}
+  - component: {fileID: 4624953447110349340}
   m_Layer: 0
   m_Name: Brujula
   m_TagString: Untagged
@@ -83,6 +84,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4624953447110349340
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064233398930635865}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.3679957, y: 0.09620476, z: 0.39842296}
+  m_Center: {x: 0.000039577484, y: 0.04810238, z: 0.003229268}
 --- !u!1 &3316273375820878037
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,6 +226,7 @@ GameObject:
   - component: {fileID: 4568792103215604658}
   - component: {fileID: 1911738716079063156}
   - component: {fileID: 3689591262702284142}
+  - component: {fileID: 4121754370863565428}
   m_Layer: 0
   m_Name: Taoa
   m_TagString: Untagged
@@ -284,6 +299,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4121754370863565428
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4470655154106581416}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.3679957, y: 0.029569156, z: 0.36799595}
+  m_Center: {x: -0.00000047683716, y: 0.004496337, z: 0.1839981}
 --- !u!1 &9064865685930678729
 GameObject:
   m_ObjectHideFlags: 0
