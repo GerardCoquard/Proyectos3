@@ -19,7 +19,7 @@ public class LightReciever : MonoBehaviour
     public ParticleSystem particles;
     private void Start() {
         OnLightRecived.AddListener(() => colorPropertySetter.SetIntensity(linkedBeamMaterial,onIntensity));
-        OnLightRecived.AddListener(() => particles?.Play());
+        if(particles != null) OnLightRecived.AddListener(() => particles.Play());
         OnLightNotRecived.AddListener(() => colorPropertySetter.SetIntensity(linkedBeamMaterial,offIntensity));
         colorPropertySetter.SetIntensity(linkedBeamMaterial,offIntensity);
     }
