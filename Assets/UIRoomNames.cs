@@ -32,6 +32,7 @@ public class UIRoomNames : MonoBehaviour
         while (time<fadeTime)
         {
             text.alpha = Mathf.Lerp(0,1,time/fadeTime);
+            time+=Time.deltaTime;
             yield return null;
         }
         text.alpha=1;
@@ -42,6 +43,7 @@ public class UIRoomNames : MonoBehaviour
         while (time<fadeTime)
         {
             text.alpha = Mathf.Lerp(1,0,time/fadeTime);
+            time+=Time.deltaTime;
             yield return null;
         }
         text.alpha=0;

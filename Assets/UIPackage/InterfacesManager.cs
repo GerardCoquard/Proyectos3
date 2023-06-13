@@ -44,6 +44,7 @@ public class InterfacesManager : MonoBehaviour
 
     public void SetAction(string actionName, bool state)
     {
+        return;
         if (!ContainsAction(actionName)) return;
         if (state) InputManager.GetAction(actionName).action += ((GameObject) => Open(GetInterface(actionName).interfaceObject));
         else InputManager.GetAction(actionName).action -= ((GameObject) => Open(GetInterface(actionName).interfaceObject));
