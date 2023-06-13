@@ -49,6 +49,15 @@ public class PusheableObject : MonoBehaviour
         CameraController.instance.ChangeFocus(PlayerController.instance.cameraFocus);
         OnUnselected?.Invoke();
     }
+
+    public void BoxFall()
+    {
+        rb.isKinematic = false;
+        rb.constraints = RigidbodyConstraints.None;
+        rb.freezeRotation = false;
+        rb.useGravity = true;
+        rb.interpolation = RigidbodyInterpolation.None;
+    }
     public void AddForceTowardsDirection(float force, Vector2 direction)
     {
         direction.Normalize();
@@ -82,6 +91,17 @@ public class PusheableObject : MonoBehaviour
     public void ChangeFocus(Transform newFocus)
     {
         focus = newFocus;
+    }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (rb.isKinematic) return;
+        rb.isKinematic = true;
+        rb.constraints = RigidbodyConstraints.FreezePositionY;
+        rb.freezeRotation = true;
+        rb.useGravity = false;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
 }
 

@@ -41,6 +41,8 @@ public class EventMonsterMirror : MonoBehaviour
             particle.Stop();
         }
     }
+
+   
     public void ThrowToMonster()
     {
        
