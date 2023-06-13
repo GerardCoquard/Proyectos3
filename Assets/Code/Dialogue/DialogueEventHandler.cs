@@ -19,7 +19,7 @@ public class DialogueEventHandler : MonoBehaviour
     {
         if (actorStartAnimation != null) actorAnimation.PlayQueued(actorStartAnimation.name);
         Book.instance.ResetBookGraphics();
-        interactableParticles.SetActive(false);
+        if(interactableParticles!=null) interactableParticles.SetActive(false);
         BookMovement.instance.DialogueStarted();
         yield return new WaitForSeconds(dialogueStartDelay);
         WorldScreenUI.instance.SetDialogue(startNode, otherTransform, this);
