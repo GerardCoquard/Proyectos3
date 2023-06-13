@@ -129,7 +129,6 @@ public class DialogueDisplay : MonoBehaviour
     public void StartDialogue()
     {
 
-        InterfacesManager.instance.SetAction("Pause",false);
         currentEventHandler.DisableInteractParticles();
         StartCoroutine(WaitToLand());
         PlayerController.instance.GetAnimator().SetBool("isMoving", false);
@@ -236,7 +235,6 @@ public class DialogueDisplay : MonoBehaviour
     }
     private void EndDialogue()
     {
-        InterfacesManager.instance.SetAction("Pause", true);
         PlayerController.instance.characterController.enabled = true;
         onEndEvent?.Invoke();
         currentEventHandler?.DoEndAnimation();

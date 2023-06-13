@@ -96,7 +96,7 @@ public class PusheableObject : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (rb.isKinematic) return;
+        if (rb.freezeRotation) return;
         rb.isKinematic = true;
         rb.constraints = RigidbodyConstraints.FreezePositionY;
         rb.freezeRotation = true;

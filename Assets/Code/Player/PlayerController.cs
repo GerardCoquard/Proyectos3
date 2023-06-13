@@ -388,10 +388,6 @@ public class PlayerController : MonoBehaviour
         {
             onGround = false;
         }
-
-
-
-
     }
 
     public bool GetIsJumping()
@@ -408,7 +404,16 @@ public class PlayerController : MonoBehaviour
             return dir.magnitude > 0.01 ? dir : Vector2.zero;
         }
     }
+    public void BlockPlayerInputs(bool state)
+    {
+        InputManager.ActionEnabled("Move",state);
+        InputManager.ActionEnabled("ChangeMode",state);
+        InputManager.ActionEnabled("Push",state);
+        InputManager.ActionEnabled("Jump",state);
+        movement = Vector3.zero;
+        tempDirection = Vector2.zero;
 
+    }
     private void LoadData()
     {
         transform.position = GameSaveManager.instance.GetSpawnPoint().position;
