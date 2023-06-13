@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-
     public static CameraController instance { get; private set; }
     Camera cam;
     BoxCollider box;
@@ -160,6 +159,8 @@ public class CameraController : MonoBehaviour
         if(!cinematic) this.target = target;
         lastTarget = target;
         pusheable = target.GetComponentInParent<PusheableObject>();
+        currentLateralSpeed = lateralSpeed*changeFocusMultiplier;
+        currentVerticalSpeed = verticalSpeed*changeFocusMultiplier;
     }
     public float MaxBookHeight()
     {
