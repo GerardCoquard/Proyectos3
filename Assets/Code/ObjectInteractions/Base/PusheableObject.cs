@@ -8,6 +8,7 @@ public class PusheableObject : MonoBehaviour
 {
     public UnityEvent OnSelected;
     public UnityEvent OnUnselected;
+    public ParticleSystem fallParticles;
     [NonSerialized]
     public Rigidbody rb;
     bool constrained;
@@ -97,6 +98,7 @@ public class PusheableObject : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (rb.freezeRotation) return;
+        fallParticles?.Play();
         rb.isKinematic = true;
         rb.constraints = RigidbodyConstraints.FreezePositionY;
         rb.freezeRotation = true;

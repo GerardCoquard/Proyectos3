@@ -14,10 +14,13 @@ public class EventMonsterMirror : MonoBehaviour
     public float finalParticleScale;
     public float scaleRatio;
     public float delayToKill;
+    public float monsterHitDelay;
     public float delayToDisapear;
     public float chargeTime;
     private bool isFinish;
     public UnityEvent eventToDo;
+    public UnityEvent beforeEventToDo;
+    public UnityEvent eventWhenDisapear;
 
     private void Start()
     {
@@ -25,7 +28,13 @@ public class EventMonsterMirror : MonoBehaviour
         isFinish = false;
         lineRenderer.gameObject.SetActive(false);
     }
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            ThrowToMonster();
+        }
+    }
     private void PlayParticles()
     {
         foreach (ParticleSystem particle in chargeParticles)
@@ -51,9 +60,13 @@ public class EventMonsterMirror : MonoBehaviour
         lineRenderer.SetPosition(0, transform.position);
         lineRenderer.SetPosition(1, eyeTransform.position);
         //Mirror
-        mirrorLineRenderer.gameObject.SetActive(true);
-        mirrorLineRenderer.SetPosition(0, mirrorReciver.position);
-        mirrorLineRenderer.SetPosition(1, mirrorEyeTransform.position);
+        if(mirrorLineRenderer != null)
+        {
+            mirrorLineRenderer.gameObject.SetActive(true);
+            mirrorLineRenderer.SetPosition(0, mirrorReciver.position);
+            mirrorLineRenderer.SetPosition(1, mirrorEyeTransform.position);
+        }
+       
 
         StartCoroutine(EventMonster());
         isFinish = true;
@@ -83,13 +96,16 @@ public class EventMonsterMirror : MonoBehaviour
 
     IEnumerator EventMonster()
     {
+        yield return new WaitForSeconds(monsterHitDelay);
+        beforeEventToDo?.Invoke();
         yield return new WaitForSeconds(delayToKill);
         eventToDo?.Invoke();
         yield return new WaitForSeconds(delayToDisapear);
+        eventWhenDisapear?.Invoke();
         lineRenderer.gameObject.SetActive(false);
-        mirrorLineRenderer.gameObject.SetActive(false);
+        if (mirrorLineRenderer != null) mirrorLineRenderer.gameObject.SetActive(false);
         eyeTransform.gameObject.SetActive(false);
-        mirrorEyeTransform.gameObject.SetActive(false);
+        if (mirrorLineRenderer != null) mirrorEyeTransform.gameObject.SetActive(false);
     }
 
 }

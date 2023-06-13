@@ -19,13 +19,6 @@ public class WallBreakEvent : MonoBehaviour
     public float radiusExplosion;
     public UnityEvent externalEvent;
 
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            DoEvent();
-        }
-    }
     private void ApplyForces()
     {
         if (woodPlatesBroken == null) return;
