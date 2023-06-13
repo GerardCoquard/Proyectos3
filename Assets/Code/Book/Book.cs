@@ -26,7 +26,6 @@ public class Book : MonoBehaviour
     public Material fixedRuneMat;
     public float runeFadeSpeed;
     public Transform attractor;
-    public BookMovement bookMovement;
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;

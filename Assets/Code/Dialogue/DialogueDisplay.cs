@@ -128,9 +128,9 @@ public class DialogueDisplay : MonoBehaviour
 
     public void StartDialogue()
     {
-
         currentEventHandler.DisableInteractParticles();
         StartCoroutine(WaitToLand());
+        PlayerController.instance.BlockPlayerInputs(false);
         PlayerController.instance.GetAnimator().SetBool("isMoving", false);
         dialogueRender.SetActive(true);
         dialogueText.text = "";
@@ -235,6 +235,8 @@ public class DialogueDisplay : MonoBehaviour
     }
     private void EndDialogue()
     {
+        BookMovement.instance.DialogueEnded();
+        PlayerController.instance.BlockPlayerInputs(true);
         PlayerController.instance.characterController.enabled = true;
         onEndEvent?.Invoke();
         currentEventHandler?.DoEndAnimation();

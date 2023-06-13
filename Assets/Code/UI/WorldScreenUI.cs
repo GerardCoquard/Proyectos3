@@ -23,7 +23,6 @@ public class WorldScreenUI : MonoBehaviour
     }
     public void SetDialogue(DialogueNode startNode, Transform interactablePosition, DialogueEventHandler handler)
     {
-        Book.instance.ResetBookGraphics();
         dialogueDisplay.SetStartNode(startNode);
         if(handler != null) dialogueDisplay.SetEventHandler(handler);
         dialogueDisplay.SetInteractablePos(interactablePosition);

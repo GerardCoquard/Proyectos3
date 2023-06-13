@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BookMovement : MonoBehaviour
 {
+    public static BookMovement instance;
     public float maxSpeed;
     public float minSpeed;
     public float maxAcceleration;
@@ -28,12 +29,26 @@ public class BookMovement : MonoBehaviour
     public float minRotationSpeed;
     public float fadeRotationSpeed;
     public Transform holder;
+    public float minDistanceToAttractor;
+    public float timeToDriftDialogue;
     float currentRotationSpeed;
     float currentSpeed;
     float _currentAcceleration;
     float currentTilt;
     float currentWeight;
     Vector3 velocity;
+    bool cinematicOn;
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position,innerRadius);
@@ -50,6 +65,7 @@ public class BookMovement : MonoBehaviour
     }
     void Update()
     {
+        if(cinematicOn) return;
         if(Book.instance.bookGhost.activeInHierarchy) Stop();
         else Move();
     }
@@ -174,6 +190,57 @@ public class BookMovement : MonoBehaviour
         Vector3 rotAxis = Vector3.Cross( referenceUp, vel );
         float tiltAngle = Mathf.Atan( vel.magnitude /velMagFor45Degree) * Mathf.Rad2Deg;
         return Quaternion.AngleAxis( tiltAngle, rotAxis ) *cleanRotation;
+    }
+    public void DialogueStarted()
+    {
+        StartCoroutine(GoToAttractor());
+    }
+    public void DialogueEnded()
+    {
+        cinematicOn = false;
+    }
+    IEnumerator GoToAttractor()
+    {
+        cinematicOn = true;
+        while(Vector3.Distance(transform.position,attractor.position+new Vector3(lateralOffset,0,0)) > minDistanceToAttractor)
+        {
+            MoveToAttractor();
+            yield return null;
+        }
+        float timeToReachRotation = 0;
+        while(timeToReachRotation<timeToDriftDialogue)
+        {
+            transform.localRotation = TiltRotationTowardsVelocity(Quaternion.Euler(transform.forward),Vector3.up,Vector3.zero,maxTilt);
+            Vector3 rot = new Vector3(0,0,0);
+            holder.localRotation = Quaternion.Lerp(holder.localRotation,Quaternion.identity,timeToReachRotation/timeToDriftDialogue);
+            timeToReachRotation+=Time.deltaTime;
+            yield return null;
+        }
+    }
+    void MoveToAttractor()
+    {
+        currentSpeed+=fadeSpeedVelocity*Time.deltaTime;
+        currentSpeed = Mathf.Clamp(currentSpeed,minSpeed,maxSpeed);
+        currentWeight = 1;
+        _currentAcceleration+=fadeAccelerationVelocity*Time.deltaTime;
+        _currentAcceleration = Mathf.Clamp(_currentAcceleration,minAcceleration,maxAcceleration);
+        currentTilt+=fadeTiltSpeed*Time.deltaTime;
+        currentTilt = Mathf.Clamp(currentTilt,minTilt,maxTilt);
+        currentRotationSpeed+=fadeRotationSpeed*Time.deltaTime;
+        currentRotationSpeed = Mathf.Clamp(currentRotationSpeed,minRotationSpeed,maxRotationSpeed);
+            
+        Vector3 currentAcceleration = GetWanderAroundAcceleration();
+        Vector3 velIncrement = currentAcceleration * Time.deltaTime;
+        velocity += velIncrement;
+        velocity = Vector3.ClampMagnitude(velocity,currentSpeed);
+        transform.position += velocity * Time.deltaTime;
+        transform.position = new Vector3(transform.position.x,attractor.position.y, transform.position.z);
+
+        transform.localRotation = TiltRotationTowardsVelocity(Quaternion.Euler(transform.forward),Vector3.up,velocity,currentTilt);
+        float angle = Vector3.Angle(Vector3.forward,new Vector3(velocity.x,0,velocity.z));
+        angle*=Mathf.Sign(velocity.x);
+        Vector3 rot = new Vector3(0,angle,0);
+        holder.localRotation = Quaternion.Lerp(holder.localRotation,Quaternion.Euler(rot),currentRotationSpeed*Time.deltaTime);
     }
 }
 

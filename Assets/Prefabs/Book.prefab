@@ -5468,6 +5468,8 @@ MonoBehaviour:
   minRotationSpeed: 1.5
   fadeRotationSpeed: 2
   holder: {fileID: 6290512253863281593}
+  minDistanceToAttractor: 0.1
+  timeToDriftDialogue: 0.5
 --- !u!1 &2334759947789851356
 GameObject:
   m_ObjectHideFlags: 0
@@ -5528,7 +5530,6 @@ MonoBehaviour:
   fixedRuneMat: {fileID: 2100000, guid: d60c797004fa45f46ac6b038396d0cce, type: 2}
   runeFadeSpeed: 5
   attractor: {fileID: 0}
-  bookMovement: {fileID: 0}
 --- !u!1 &2373984038157382816
 GameObject:
   m_ObjectHideFlags: 0

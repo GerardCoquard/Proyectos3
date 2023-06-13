@@ -11,7 +11,6 @@ public class Interactable : MonoBehaviour
     public UnityEvent OnEnd;
     private void Update()
     {
-        
         if (PlayerController.instance.CanInteract() && playerIn)
         {
             WorldScreenUI.instance.SetIcon(IconType.Dialogue, PlayerController.instance.transform.position+new Vector3(0,1,0));
