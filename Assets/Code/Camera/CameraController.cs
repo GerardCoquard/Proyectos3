@@ -176,16 +176,16 @@ public class CameraController : MonoBehaviour
     {
         lateralSpeed*=cinematicMultiplier;
         verticalSpeed*=cinematicMultiplier;
+        PlayerController.instance.BlockPlayerInputs(false);
         yield return new WaitForSeconds(time);
+        PlayerController.instance.BlockPlayerInputs(true);
         cinematic = false;
         lateralSpeed/=cinematicMultiplier;
         verticalSpeed/=cinematicMultiplier;
         ChangeFocus(lastTarget);
     }
-
     private void Load()
     {
         firstRoom = GameSaveManager.instance.GetCurrentRoom();
     }
-
 }
