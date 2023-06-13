@@ -42,23 +42,6 @@ public class InterfacesManager : MonoBehaviour
         interfaceToOpen.OpenMenu();
     }
 
-    public void SetAction(string actionName, bool state)
-    {
-        return;
-        if (!ContainsAction(actionName)) return;
-        if (state) InputManager.GetAction(actionName).action += ((GameObject) => Open(GetInterface(actionName).interfaceObject));
-        else InputManager.GetAction(actionName).action -= ((GameObject) => Open(GetInterface(actionName).interfaceObject));
-       
-    }
-    bool ContainsAction(string actionName)
-    {
-        foreach (_interface _interface in _interfaces)
-        {
-           
-            if (actionName == _interface.actionName) return true;
-        }
-        return false;
-    }
 
     _interface GetInterface(string actionName)
     {
