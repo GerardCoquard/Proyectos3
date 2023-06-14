@@ -23,8 +23,6 @@ public class Data : DynamicData
     //LOCALIZATION
     public int language;
     //PLAYER
-    public Vector3 playerPosition;
-    public Vector3 bookPosition;
     public int roomID;
 
     public Data()
