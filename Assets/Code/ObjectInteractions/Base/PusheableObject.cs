@@ -104,6 +104,7 @@ public class PusheableObject : MonoBehaviour
         rb.freezeRotation = true;
         rb.useGravity = false;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
+        transform.position += new Vector3(0, 0.1f, 0);
     }
 }
 
