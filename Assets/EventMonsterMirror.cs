@@ -29,13 +29,7 @@ public class EventMonsterMirror : MonoBehaviour
         isFinish = false;
         lineRenderer.gameObject.SetActive(false);
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            ThrowToMonster();
-        }
-    }
+   
     private void PlayParticles()
     {
         foreach (ParticleSystem particle in chargeParticles)
@@ -80,6 +74,7 @@ public class EventMonsterMirror : MonoBehaviour
     }
     IEnumerator ChargeLaser()
     {
+        Debug.Log("in");
         float localScale = chargeParticles[0].transform.localScale.x;
         PlayParticles();
         while(chargeParticles[0].transform.localScale.x < finalParticleScale)

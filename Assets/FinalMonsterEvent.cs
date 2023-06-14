@@ -14,7 +14,7 @@ public class FinalMonsterEvent : MonoBehaviour
     {
         foreach (EventMonsterMirror pilar in pilars)
         {
-            pilar.ThrowToMonster();
+            pilar.StartMonsterEvent();
         }
     }
 }
