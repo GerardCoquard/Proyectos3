@@ -167,6 +167,7 @@ MonoBehaviour:
   colorPropertySetter: {fileID: 6165227407603895971}
   offIntensity: 0.8
   onIntensity: 2
+  particles: {fileID: 0}
 --- !u!65 &2015472556745968093
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -287,6 +288,7 @@ GameObject:
   - component: {fileID: 3969026561213233179}
   - component: {fileID: 52648145778866110}
   - component: {fileID: 2837263900866216820}
+  - component: {fileID: 7639418459963243397}
   m_Layer: 0
   m_Name: Graphics
   m_TagString: Untagged
@@ -359,3 +361,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &7639418459963243397
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4350195818607944353}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5193325459140783615, guid: fe546b9783ece0a4fa0f603461f4c458, type: 3}

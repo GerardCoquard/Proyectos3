@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
     PusheableObject currentObjectPushing;
     [NonSerialized]
     public bool bookOpened;
+    bool inputBlocked;
 
     public delegate void BookActivated();
     public delegate void PlayerActivated();
@@ -98,7 +99,7 @@ public class PlayerController : MonoBehaviour
     }
     void OnPushInput(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && !inputBlocked)
         {
             if (currentObjectPushing != null) StopPushing();
             else CheckPush();
@@ -236,6 +237,11 @@ public class PlayerController : MonoBehaviour
     }
     void CheckPushAvailable()
     {
+        if(inputBlocked)
+        {
+            WorldScreenUI.instance.HideIcon(IconType.Push);
+            return;
+        }
         PusheableObject pusheable;
         if (CanInteract() && PusheableDetected(out pusheable, out RaycastHit hit))
         {
@@ -411,6 +417,8 @@ public class PlayerController : MonoBehaviour
         InputManager.ActionEnabled("Jump",state);
         movement = Vector3.zero;
         tempDirection = Vector2.zero;
+        inputBlocked = !state;
+        StopPushing();
 
     }
     private void LoadData()

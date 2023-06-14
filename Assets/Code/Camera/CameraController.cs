@@ -132,9 +132,16 @@ public class CameraController : MonoBehaviour
         Vector3 targetPos = target.position + new Vector3(direction.x,0,direction.y) * lateralOffset;
         float xPos = Mathf.Clamp(targetPos.x,xMin,xMax);
         float yPos = targetPos.y + height + extraHeight;
-        float zPos = Mathf.Clamp(target.position.z - depth - extraDepth,zMin,zMax);
+        float zPos = Mathf.Clamp(targetPos.z - depth - extraDepth,zMin,zMax);
         targetPos = new Vector3(xPos,yPos,zPos);
-        transform.position = new Vector3(Mathf.Lerp(transform.position.x,xPos,Time.deltaTime * currentLateralSpeed),Mathf.Lerp(transform.position.y,yPos,Time.deltaTime * currentLateralSpeed * 2),Mathf.Lerp(transform.position.z,zPos,Time.deltaTime * lateralSpeed * 2));
+        if(!cinematic) transform.position = new Vector3(Mathf.Lerp(transform.position.x,xPos,Time.deltaTime * currentLateralSpeed),Mathf.Lerp(transform.position.y,yPos,Time.deltaTime * currentLateralSpeed),Mathf.Lerp(transform.position.z,zPos,Time.deltaTime * currentLateralSpeed));
+        else 
+        {
+            yPos = target.position.y + height + extraHeight;
+            zPos = target.position.z - depth - extraDepth;
+            targetPos = new Vector3(target.position.x,yPos,zPos);
+            transform.position = Vector3.Lerp(transform.position,targetPos,Time.deltaTime*currentLateralSpeed);
+        }
     }
     private void HandleRotation()
     {
@@ -166,23 +173,26 @@ public class CameraController : MonoBehaviour
     {
         return box.bounds.center.y + box.bounds.extents.y;
     }
-    public void Cinematic(Transform target, float time)
+    public void Cinematic(Cinematic cine,Transform target, float time)
     {
         this.target = target;
         cinematic = true;
-        StartCoroutine(CinematicTime(time));
+        StopAllCoroutines();
+        StartCoroutine(CinematicTime(cine,time));
     }
-    IEnumerator CinematicTime(float time)
+    IEnumerator CinematicTime(Cinematic cine, float time)
     {
-        lateralSpeed*=cinematicMultiplier;
-        verticalSpeed*=cinematicMultiplier;
+        currentLateralSpeed=cinematicMultiplier*lateralSpeed;
+        currentVerticalSpeed=verticalSpeed*cinematicMultiplier;
         PlayerController.instance.BlockPlayerInputs(false);
+        cinematic = true;
         yield return new WaitForSeconds(time);
         PlayerController.instance.BlockPlayerInputs(true);
         cinematic = false;
-        lateralSpeed/=cinematicMultiplier;
-        verticalSpeed/=cinematicMultiplier;
-        ChangeFocus(lastTarget);
+        currentLateralSpeed=lateralSpeed;
+        currentVerticalSpeed=verticalSpeed;
+        if(cine.nextCinematic!=null) cine.nextCinematic.InstantCinematic();
+        else ChangeFocus(lastTarget);
     }
     private void Load()
     {
