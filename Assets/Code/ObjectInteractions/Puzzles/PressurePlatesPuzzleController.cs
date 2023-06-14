@@ -6,15 +6,21 @@ public class PressurePlatesPuzzleController: MonoBehaviour
 {
     [SerializeField] List<PressurePlateFixed> plates;
     [SerializeField] UnityEvent eventWhenComplete;
+    private bool eventInvoked = false;
 
 
     public void CheckIfComplete()
     {
         foreach (PressurePlateFixed plate in plates)
         {
+            Debug.Log(plate.IsPressed());
             if (!plate.IsPressed()) return;
         }
-        eventWhenComplete?.Invoke();
+        if (!eventInvoked)
+        {
+            eventWhenComplete?.Invoke();
+            eventInvoked = true;
+        } 
     }
 
 }

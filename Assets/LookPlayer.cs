@@ -15,6 +15,5 @@ public class LookPlayer : MonoBehaviour
         Quaternion targetRot = Quaternion.LookRotation(direction);
 
         objectLookPlayer.rotation = Quaternion.Lerp(objectLookPlayer.rotation, targetRot, speed * Time.deltaTime);
-        Debug.Log(objectLookPlayer.localEulerAngles);
     }
 }

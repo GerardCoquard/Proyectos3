@@ -31,13 +31,14 @@ public class PressurePlateFixed : MonoBehaviour
         {
             if(objectPressing.number == numberLinked)
             {
-                OnPressed?.Invoke();
                 pressed = true;
+                OnPressed?.Invoke();
             }
         }
     }
     private void OnTriggerExit(Collider other) {
         if(locked) return;
+        if (other.tag == "CharacterController") return;
         if (onTop.Contains(other.gameObject))
         {
             onTop.Remove(other.gameObject);
@@ -50,6 +51,7 @@ public class PressurePlateFixed : MonoBehaviour
             {
                 OnUnpressed?.Invoke();
                 pressed = false;
+                Debug.Log(pressed);
             }
         }
     }
