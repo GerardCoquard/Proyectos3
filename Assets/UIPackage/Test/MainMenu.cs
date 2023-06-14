@@ -5,6 +5,7 @@ using UnityEngine;
 public class MainMenu : Menu
 {
     public string sceneName;
+    public string creditsSceneName;
     public void NewGame()
     {
         Loader.instance.LoadScene(sceneName);
@@ -14,5 +15,11 @@ public class MainMenu : Menu
     public void Exit()
     {
         Application.Quit();
+    }
+    public void Credits()
+    {
+        Loader.instance.LoadScene(creditsSceneName);
+        InputManager.ChangeActionMap("Player");
+        Time.timeScale = 1;
     }
 }

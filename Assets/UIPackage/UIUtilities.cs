@@ -35,6 +35,7 @@ public static class UIUtilities
             if(EventSystem.current.currentSelectedGameObject!=null)EventSystem.current.currentSelectedGameObject.GetComponent<SelectableHandler>().Unhighlight();
             EventSystem.current.SetSelectedGameObject(null);
             Selectable selectable = GetTopLeftSelectable();
+            if(selectable == null) return;
             selectable?.Select();
             selectable?.OnSelect(null);
             break;
@@ -50,6 +51,7 @@ public static class UIUtilities
             {
                 if(item.interactable) targetButton = item;
             }
+            if(targetButton == null) return targetButton;
             RectTransform targetRectTrans = targetButton.GetComponent<RectTransform>();
 
             foreach (Selectable selectableUI in listOfSelectables)

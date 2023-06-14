@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class Menu : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class Menu : MonoBehaviour
     }
     public void HighlightButton()
     {
+        if(firstButton==null && !rememberLastButton) EventSystem.current.SetSelectedGameObject(null);
         if(InputManager.device == Devices.Gamepad) UIUtilities.HighlightButton(lastButton==null || !rememberLastButton? firstButton : lastButton);
     }
     void FreezeTime()
