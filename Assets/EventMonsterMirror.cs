@@ -100,7 +100,7 @@ public class EventMonsterMirror : MonoBehaviour
         eventWhenDisapear?.Invoke();
         lineRenderer.gameObject.SetActive(false);
         if (mirrorLineRenderer != null) mirrorLineRenderer.gameObject.SetActive(false);
-        eyeTransform.gameObject.SetActive(false);
+       
         if (mirrorLineRenderer != null) mirrorEyeTransform.gameObject.SetActive(false);
     }
 

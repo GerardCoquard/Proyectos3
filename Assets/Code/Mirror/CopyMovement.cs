@@ -10,10 +10,12 @@ public class CopyMovement : MonoBehaviour
     [SerializeField] private bool copyObjectRotation;
     private bool locked;
     public bool isPlayer;
+    public bool noInverse;
 
 
     private void Awake()
     {
+
         if (rotationInZ) transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, -transform.localScale.z);
         else transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
         SetElementInMirrorPosition();
