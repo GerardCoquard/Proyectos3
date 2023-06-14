@@ -7,6 +7,7 @@ public class LightBeam
     public Vector3 direction;
     public GameObject lightGameObject;
     public LineRenderer lineRenderer;
+    public ColorPropertySetter propertySetter;
     List<Vector3> lightIndices = new List<Vector3>();
     public LayerMask layerMask;
     public Material material;
@@ -38,6 +39,7 @@ public class LightBeam
         this.hitParticles = hitParticles;
 
         lineRenderer = lightGameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
+        propertySetter = lightGameObject.AddComponent(typeof(ColorPropertySetter)) as ColorPropertySetter;
         lineRenderer.startWidth = width;
         lineRenderer.endWidth = width;
         lineRenderer.material = material;
@@ -66,6 +68,7 @@ public class LightBeam
         this.hitParticles = hitParticles;
 
         lineRenderer = lightGameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
+        propertySetter = lightGameObject.AddComponent(typeof(ColorPropertySetter)) as ColorPropertySetter;
         lineRenderer.startWidth = width;
         lineRenderer.endWidth = width;
         lineRenderer.material = beam.material;
@@ -79,6 +82,11 @@ public class LightBeam
     public void ExecuteRay(Vector3 pos, Vector3 dir, LineRenderer renderer)
     {
         currentGrowth = 0;
+        if(lineRenderer.material.GetColor("_Color").a != 1)
+        {
+            Color newColor = lineRenderer.material.GetColor("_Color");
+            lineRenderer.material.SetColor("_Color", new Color(newColor.r,newColor.g,newColor.b,1));
+        }
         //Start the cast of the ray
         currentLength = Mathf.Clamp(currentLength+growthSpeed*Time.deltaTime,0,50);
         lineRenderer.positionCount = 0;

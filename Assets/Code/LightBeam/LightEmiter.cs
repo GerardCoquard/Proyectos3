@@ -29,15 +29,24 @@ public class LightEmiter : MonoBehaviour
     private void Update()
     {
         if(active) beam.ExecuteRay(rayStartPos.position, inverted ? -rayStartPos.forward : rayStartPos.forward, beam.lineRenderer);
-        else
-        {
-            beam.ResetBeam();
-        }
     }
     public void SetPower(bool state)
     {
+        StopAllCoroutines();
         active = state;
         if(colorPropertySetter!=null) colorPropertySetter.SetIntensity(material,active?onIntensity:offIntensity);
+        if(state==false) StartCoroutine(LowerBeamAlpha());
+    }
+    IEnumerator LowerBeamAlpha()
+    {
+        while(beam.lineRenderer.material.GetColor("_Color").a > 0)
+        {
+            beam.lineRenderer.material.SetColor("_Color",beam.lineRenderer.material.GetColor("_Color") - new Color(0,0,0,fadeOutSpeed*Time.deltaTime));
+            yield return null;
+        }
+        Color newColor = beam.lineRenderer.material.GetColor("_Color");
+        beam.lineRenderer.material.SetColor("_Color", new Color(newColor.r,newColor.g,newColor.b,0));
+        beam.ResetBeam();
     }
     
 

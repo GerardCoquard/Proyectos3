@@ -13,6 +13,7 @@ public class ColorPropertySetter : MonoBehaviour
         if (propertyBlock == null) propertyBlock = new MaterialPropertyBlock();
         propertyBlock.SetColor("_EmissionColor", ChangeHDRColorIntensity(material.GetColor("_Color"),intensity));
         propertyBlock.SetColor("_Color", material.GetColor("_Color"));
+        if(_renderer==null) _renderer = GetComponentInChildren<Renderer>();
         _renderer.SetPropertyBlock(propertyBlock);
     }
     private Color ChangeHDRColorIntensity(Color subjectColor, float intensityChange)
