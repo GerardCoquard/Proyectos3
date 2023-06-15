@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class BookAnimationManager : MonoBehaviour
 {
+    private void Start() {
+        Collider[] colliders =  GetComponentsInChildren<Collider>();
+        foreach (Collider item in colliders)
+        {
+            item.isTrigger = true;
+        }
+    }
     public void MoveBooks()
     {
+        Collider[] colliders =  GetComponentsInChildren<Collider>();
         MoveObject[] movers =  GetComponentsInChildren<MoveObject>();
         RotateObject[] rotators =  GetComponentsInChildren<RotateObject>();
         foreach (MoveObject item in movers)
@@ -15,6 +23,10 @@ public class BookAnimationManager : MonoBehaviour
         foreach (RotateObject item in rotators)
         {
             item.Rotate();
+        }
+        foreach (Collider item in colliders)
+        {
+            item.isTrigger = false;
         }
     }
 }

@@ -17,6 +17,7 @@ public class PusheableObject : MonoBehaviour
     public Transform focus;
     public float groundDetectionDistance = 0.2f;
     public float distanceToCheckOnGrounded = 0.3f;
+    public float speedUp = 1f;
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position,transform.position-new Vector3(0,groundDetectionDistance,0));
@@ -82,7 +83,6 @@ public class PusheableObject : MonoBehaviour
             if(!OnGround(transform.position+newDir*distanceToCheckOnGrounded))
             {
                 rb.velocity = Vector3.zero;
-                Debug.Log("A");
                 return;
             }
         }
@@ -90,12 +90,11 @@ public class PusheableObject : MonoBehaviour
         {
             if(!OnGround(PlayerController.instance.transform.position+newDir*distanceToCheckOnGrounded))
             {
-                Debug.Log("A");
                 rb.velocity = Vector3.zero;
                 return;
             }
         }
-        rb.velocity = newDir * force * Time.fixedDeltaTime;
+        rb.velocity = newDir * force * speedUp *Time.fixedDeltaTime;
     }
     public void SetConstraint(bool state, Vector3 ropeDirection)
     {
