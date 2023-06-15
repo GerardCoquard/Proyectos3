@@ -96,11 +96,9 @@ public class LightBeam
         CheckRecievers();
         if(lineRenderer.positionCount >= 2)
         {
-            /*Debug.Log("Line: " + lineRenderer.GetPosition(lineRenderer.positionCount - 1));
-            GameObject particleObj = new GameObject("hitParticles");
-            particleObj.AddComponent(hitParticles);
-            particleObj.transform.position = lineRenderer.GetPosition(lineRenderer.positionCount - 1);
-            hitParticles.Play();*/
+            
+            hitParticles.transform.position = lineRenderer.GetPosition(lineRenderer.positionCount - 1);
+            hitParticles.Play();
         }
     }
     public void CastLight(Vector3 pos, Vector3 dir, LineRenderer renderer)

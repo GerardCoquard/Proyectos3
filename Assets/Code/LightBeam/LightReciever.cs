@@ -17,6 +17,7 @@ public class LightReciever : MonoBehaviour
     Dictionary<LightBeam,LightBeamData> crossingBeams = new Dictionary<LightBeam, LightBeamData>();
 
     public ParticleSystem particles;
+    
     private void Start() {
         OnLightRecived.AddListener(() => colorPropertySetter.SetIntensity(linkedBeamMaterial,onIntensity));
         if(particles != null) OnLightRecived.AddListener(() => particles.Play());

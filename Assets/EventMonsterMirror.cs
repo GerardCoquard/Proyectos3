@@ -12,6 +12,7 @@ public class EventMonsterMirror : MonoBehaviour
     [SerializeField] Transform mirrorReciver;
     [SerializeField] Transform startPos;
     [SerializeField] List<ParticleSystem> chargeParticles;
+    [SerializeField] ParticleSystem hitParticles;
     public float finalParticleScale;
     public float scaleRatio;
     public float delayToKill;
@@ -54,6 +55,7 @@ public class EventMonsterMirror : MonoBehaviour
         lineRenderer.gameObject.SetActive(true);
         lineRenderer.SetPosition(0, startPos == null ? transform.position : startPos.position);
         lineRenderer.SetPosition(1, eyeTransform.position);
+        hitParticles.transform.position = eyeTransform.position;
         //Mirror
         if(mirrorLineRenderer != null)
         {
