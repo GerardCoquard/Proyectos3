@@ -19,7 +19,6 @@ public class LightEmiter : MonoBehaviour
     public float fadeOutSpeed;
     public bool inverted;
     public ParticleSystem hitParticles;
-    AudioSourceHandler sound;
 
     private void Start()
     {
@@ -36,15 +35,7 @@ public class LightEmiter : MonoBehaviour
         StopAllCoroutines();
         active = state;
         if(colorPropertySetter!=null) colorPropertySetter.SetIntensity(material,active?onIntensity:offIntensity);
-        if(state==false)
-        {
-            StartCoroutine(LowerBeamAlpha());
-            if(sound!=null) sound.FadeOut(2);
-        }
-        else
-        {
-            sound = AudioManager.Play("rayLoop").SpatialBlend(transform.position,10).FadeIn(2,0.3f).Loop(true);
-        }
+        if(state==false) StartCoroutine(LowerBeamAlpha());
     }
     IEnumerator LowerBeamAlpha()
     {

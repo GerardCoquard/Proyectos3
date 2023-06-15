@@ -18,7 +18,6 @@ public class PusheableObject : MonoBehaviour
     public float groundDetectionDistance = 0.2f;
     public float distanceToCheckOnGrounded = 0.3f;
     public float speedUp = 1f;
-    public bool tongue;
     AudioSourceHandler sound;
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
@@ -53,8 +52,6 @@ public class PusheableObject : MonoBehaviour
         CameraController.instance.ChangeFocus(PlayerController.instance.cameraFocus);
         OnSelected?.Invoke();
         sound = AudioManager.Play("dragObjectLoop").Volume(0.15f).Loop(true).Mute(true).Pitch(0.6f);
-        if(!tongue) AudioManager.Play("kidGrabObject3").Volume(0.2f).Pitch(0.7f);
-        else AudioManager.Play("kidGrabTongue2").Volume(0.4f);
     }
     public void NotPusheable()
     {
@@ -62,7 +59,6 @@ public class PusheableObject : MonoBehaviour
         CameraController.instance.ChangeFocus(PlayerController.instance.cameraFocus);
         OnUnselected?.Invoke();
         sound.Stop();
-        if(tongue) AudioManager.Play("kidGrabTongue1").Volume(0.4f);
     }
 
     public void BoxFall()
@@ -134,7 +130,6 @@ public class PusheableObject : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (rb.freezeRotation) return;
-        AudioManager.Play("boxDropping");
         fallParticles?.Play();
         rb.isKinematic = true;
         rb.constraints = RigidbodyConstraints.FreezePositionY;

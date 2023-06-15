@@ -28,7 +28,7 @@ public class CreditsCinematic : MonoBehaviour
     {
         if(context.ReadValue<float>() <= 0)
         {
-            anim.speed = 3;
+            anim.speed = 1;
         }
         else
         {
