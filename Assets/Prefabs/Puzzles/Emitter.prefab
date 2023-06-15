@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8778514555034916761}
   - component: {fileID: 4043826373821642347}
   - component: {fileID: 1561434407646434913}
+  - component: {fileID: 1146055476978328894}
   m_Layer: 0
   m_Name: Base piramide.003
   m_TagString: Untagged
@@ -83,6 +84,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1146055476978328894
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2238708046737323974}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4378918720827513488, guid: 89955ba60d069f84dbec46ce6c8c4cf4, type: 3}
 --- !u!1 &3389870158614236742
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,6 +109,7 @@ GameObject:
   - component: {fileID: 493457709060409540}
   - component: {fileID: 8260455065075690545}
   - component: {fileID: 7104416305404903171}
+  - component: {fileID: 6011608135594613402}
   m_Layer: 0
   m_Name: Cylinder.027
   m_TagString: Untagged
@@ -166,6 +182,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6011608135594613402
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3389870158614236742}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2076067837965943560, guid: 89955ba60d069f84dbec46ce6c8c4cf4, type: 3}
 --- !u!1 &3639851346810690939
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,6 +332,7 @@ GameObject:
   - component: {fileID: 5829128739878234958}
   - component: {fileID: 2979168465335256852}
   - component: {fileID: 2179752493370617866}
+  - component: {fileID: 6295470295077179027}
   m_Layer: 0
   m_Name: Cylinder.023
   m_TagString: Untagged
@@ -386,3 +417,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b31de5d96a0fad7488a9da0e58b8d9fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!64 &6295470295077179027
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7778068352646877455}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -1982877014985498672, guid: 89955ba60d069f84dbec46ce6c8c4cf4, type: 3}

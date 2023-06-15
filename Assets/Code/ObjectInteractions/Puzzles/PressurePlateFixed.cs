@@ -51,7 +51,6 @@ public class PressurePlateFixed : MonoBehaviour
             {
                 OnUnpressed?.Invoke();
                 pressed = false;
-                Debug.Log(pressed);
             }
         }
     }

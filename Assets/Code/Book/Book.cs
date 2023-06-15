@@ -73,6 +73,7 @@ public class Book : MonoBehaviour
     {
         if(shapeshiftedObject!=null)
         {
+            MirrorFocusManager.instance.RemoveMirror();
             Destroy(shapeshiftedObject.gameObject);
             shapeshiftedObject = null;
             particles.transform.position = bookGraphics.transform.position;
@@ -103,6 +104,7 @@ public class Book : MonoBehaviour
     void SpotFound(Vector3 pos, GameObject clone)
     {
         shapeshiftedObject = Instantiate(clone,pos, clone.transform.rotation);
+        MirrorFocusManager.instance.AddMirror(shapeshiftedObject.GetComponent<PusheableObject>());
         Shape shape = shapeshiftedObject.GetComponent<Shape>();
         shape.SetRune(fixedRuneMat);
         Destroy(shape);

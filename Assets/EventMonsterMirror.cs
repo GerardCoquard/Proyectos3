@@ -74,7 +74,6 @@ public class EventMonsterMirror : MonoBehaviour
     }
     IEnumerator ChargeLaser()
     {
-        Debug.Log("in");
         float localScale = chargeParticles[0].transform.localScale.x;
         PlayParticles();
         while(chargeParticles[0].transform.localScale.x < finalParticleScale)

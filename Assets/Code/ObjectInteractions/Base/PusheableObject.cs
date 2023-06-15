@@ -15,8 +15,8 @@ public class PusheableObject : MonoBehaviour
     Vector3 constrainDirection;
     public GameObject particles;
     public Transform focus;
-    public float groundDetectionDistance;
-    public float distanceToCheckOnGrounded;
+    public float groundDetectionDistance = 0.2f;
+    public float distanceToCheckOnGrounded = 0.3f;
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position,transform.position-new Vector3(0,groundDetectionDistance,0));
@@ -81,8 +81,16 @@ public class PusheableObject : MonoBehaviour
         {
             if(!OnGround(transform.position+newDir*distanceToCheckOnGrounded))
             {
-                Debug.Log("Not Grounded");
-                //return;
+                rb.velocity = Vector3.zero;
+                return;
+            }
+        }
+        if(!OnGround(PlayerController.instance.transform.position))
+        {
+            if(!OnGround(PlayerController.instance.transform.position+newDir*distanceToCheckOnGrounded))
+            {
+                rb.velocity = Vector3.zero;
+                return;
             }
         }
         rb.velocity = newDir * force * Time.fixedDeltaTime;
@@ -119,7 +127,7 @@ public class PusheableObject : MonoBehaviour
         rb.freezeRotation = true;
         rb.useGravity = false;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
-        transform.position += new Vector3(0, 0.1f, 0);
+        transform.position += new Vector3(0, 0.2f, 0);
     }
 }
 
