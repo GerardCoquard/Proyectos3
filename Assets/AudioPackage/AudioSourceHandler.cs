@@ -12,7 +12,7 @@ public class AudioSourceHandler : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
     private void Update() {
-        if(!audioSource.isPlaying && Time.timeScale != 0)
+        if(!audioSource.isPlaying && Time.timeScale != 0 && !audioSource.loop)
         {
             Destroy(gameObject);
         }
@@ -85,12 +85,38 @@ public class AudioSourceHandler : MonoBehaviour
     {
         audioSource.Play();
     }
-    IEnumerator Delete(AudioSource audioSource)
+    public void Stop()
     {
-        while(audioSource.isPlaying || Time.timeScale == 0)
+        Destroy(gameObject);
+    }
+    public void FadeOut(float speed)
+    {
+        StopAllCoroutines();
+        StartCoroutine(FadeOutCoroutine(speed));
+    }
+    public void FadeIn(float speed, float maxVolume)
+    {
+        StopAllCoroutines();
+        StartCoroutine(FadeInCoroutine(speed,maxVolume));
+    }
+    IEnumerator FadeOutCoroutine(float speed)
+    {
+        while(audioSource.volume > 0)
         {
+            audioSource.volume-=speed*Time.unscaledDeltaTime;
+            audioSource.volume = Mathf.Clamp(audioSource.volume,0f,1f);
             yield return null;
         }
-        Destroy(audioSource.gameObject);
+        Destroy(gameObject);
+    }
+    IEnumerator FadeInCoroutine(float speed, float maxVolume)
+    {
+        audioSource.volume = 0;
+        while(audioSource.volume < 1)
+        {
+            audioSource.volume+=speed*Time.unscaledDeltaTime;
+            audioSource.volume = Mathf.Clamp(audioSource.volume,0f,1f);
+            yield return null;
+        }
     }
 }

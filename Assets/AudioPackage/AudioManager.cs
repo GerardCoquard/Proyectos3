@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public static class AudioManager
 {
@@ -33,6 +34,7 @@ public static class AudioManager
         LoadAudio("Voice");
         audioHolder = CreateAudioHolder();
         DataManager.onSave += SaveData;
+        SceneManager.sceneUnloaded += ClearAllSounds;
     }
     public static AudioSourceHandler Play(string clipName)
     {
@@ -49,7 +51,7 @@ public static class AudioManager
     }
     static void LoadAudio(string groupName)
     {
-        if(Resources.LoadAll<AudioClip>(groupName).Length <= 0) Debug.LogWarning("Wrong Resources audio loading folder name");
+        if(Resources.LoadAll<AudioClip>(groupName).Length <= 0) Debug.LogWarning("Wrong Resources audio loading folder name: " + groupName);
         AudioClip [] sounds = Resources.LoadAll<AudioClip>(groupName);
         foreach (AudioClip sound in sounds)
         {
@@ -92,6 +94,13 @@ public static class AudioManager
         foreach (var vol in volumes)
         {
             DataManager.Save("volume" + vol.Key,vol.Value);
+        }
+    }
+    static void ClearAllSounds(Scene a)
+    {
+        foreach (Transform child in audioHolder.transform)
+        {
+            MonoBehaviour.Destroy(child.gameObject);
         }
     }
     static GameObject CreateAudioHolder()
