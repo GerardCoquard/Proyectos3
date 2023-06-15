@@ -13,10 +13,16 @@ public class PusheableObject : MonoBehaviour
     public Rigidbody rb;
     bool constrained;
     Vector3 constrainDirection;
-    public Transform uiPosition;
-    public float weightMultiplier = 1f;
     public GameObject particles;
     public Transform focus;
+    public float groundDetectionDistance;
+    public float distanceToCheckOnGrounded;
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(transform.position,transform.position-new Vector3(0,groundDetectionDistance,0));
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position,transform.position+new Vector3(distanceToCheckOnGrounded,0,0));
+    }
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -71,8 +77,15 @@ public class PusheableObject : MonoBehaviour
                 return;
             }
         }
-
-        rb.velocity = newDir * force * weightMultiplier * Time.fixedDeltaTime;
+        if(!OnGround(transform.position))
+        {
+            if(!OnGround(transform.position+newDir*distanceToCheckOnGrounded))
+            {
+                Debug.Log("Not Grounded");
+                return;
+            }
+        }
+        rb.velocity = newDir * force * Time.fixedDeltaTime;
     }
     public void SetConstraint(bool state, Vector3 ropeDirection)
     {
@@ -93,8 +106,10 @@ public class PusheableObject : MonoBehaviour
     {
         focus = newFocus;
     }
-
-
+    bool OnGround(Vector3 pos)
+    {
+        return Physics.Raycast(pos,Vector3.down,groundDetectionDistance,Physics.AllLayers, QueryTriggerInteraction.Ignore);
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if (rb.freezeRotation) return;

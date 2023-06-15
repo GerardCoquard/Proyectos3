@@ -100,7 +100,7 @@ public class BookGhost : MonoBehaviour
         return Quaternion.AngleAxis( tiltAngle, rotAxis ) * cleanRotation;
     }
     private void OnTriggerEnter(Collider other) {
-        Shape newShape = other.GetComponent<Shape>();
+        Shape newShape = other.GetComponentInParent<Shape>();
         if(newShape== null) return;
         if(newShape==selectedShape) return;
         ClearSelected();

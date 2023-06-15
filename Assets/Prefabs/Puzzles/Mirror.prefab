@@ -529,10 +529,11 @@ MonoBehaviour:
   OnUnselected:
     m_PersistentCalls:
       m_Calls: []
-  uiPosition: {fileID: 3543548982686742585}
-  weightMultiplier: 1
+  fallParticles: {fileID: 0}
   particles: {fileID: 5213995281355878762}
   focus: {fileID: 0}
+  groundDetectionDistance: 0.2
+  distanceToCheckOnGrounded: 0.3
 --- !u!114 &2088865780719896997
 MonoBehaviour:
   m_ObjectHideFlags: 0
