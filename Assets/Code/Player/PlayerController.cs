@@ -220,7 +220,8 @@ public class PlayerController : MonoBehaviour
 
     public void UnsetPause()
     {
-        StartCoroutine(StopPause());
+        isPaused = false;
+        
     }
     IEnumerator StopPause()
     {
