@@ -100,6 +100,7 @@ public class EventMonsterMirror : MonoBehaviour
         yield return new WaitForSeconds(delayToDisapear);
         eventWhenDisapear?.Invoke();
         lineRenderer.gameObject.SetActive(false);
+        hitParticles.gameObject.SetActive(false);
         if (mirrorLineRenderer != null) mirrorLineRenderer.gameObject.SetActive(false);
        
         if (mirrorLineRenderer != null) mirrorEyeTransform.gameObject.SetActive(false);

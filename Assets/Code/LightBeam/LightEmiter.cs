@@ -29,6 +29,7 @@ public class LightEmiter : MonoBehaviour
 
     private void Update()
     {
+        hitParticles.gameObject.SetActive(active);
         if(active) beam.ExecuteRay(rayStartPos.position, inverted ? -rayStartPos.forward : rayStartPos.forward, beam.lineRenderer);
     }
     public void SetPower(bool state)

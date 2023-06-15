@@ -10,23 +10,34 @@ public class Pilar : MonoBehaviour
     public PilarManager pilar;
     int collisions;
     bool locked;
+    public ColorPropertySetter propSet;
+    public float intensity = 2f;
+    private Renderer render;
+    private void Start()
+    {
+        render = propSet.GetComponent<Renderer>();
+    }
     public void OnCollision()
     {
         if(locked) return;
         if(collisions==0)
         {
+            propSet.SetIntensity(render.material, intensity);
             pilar.AddPilar(this);
             OnActivate?.Invoke();
         }
         AudioManager.Play("tonguePilarContact").Volume(0.4f);
         collisions++;
     }
+
+    
     public void OnExitCollision()
     {
         if(locked) return;
         collisions--;
         if(collisions==0)
         {
+            propSet.SetIntensity(render.material, -10);
             pilar.RemovePilar(this);
             OnDisable?.Invoke();
         }

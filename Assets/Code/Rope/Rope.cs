@@ -31,6 +31,7 @@ public class Rope : MonoBehaviour
         layerMask = Physics.AllLayers;
         layerMask &= ~(1 << LayerMask.NameToLayer("Rope"));
         layerMask &= ~(1 << LayerMask.NameToLayer("Player"));
+        layerMask &= ~(1 << LayerMask.NameToLayer("Character"));
         MaxLenghtReached();
         UpdateRopeGraphics();
         AddLastCollider();
