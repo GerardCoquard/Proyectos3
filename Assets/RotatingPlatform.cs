@@ -15,7 +15,7 @@ public class RotatingPlatform : MonoBehaviour
     {
         if (!isRotating)
         {
-
+            AudioManager.Play("swivelPlate1").Volume(0.5f);
             StartCoroutine(RotateObject(transform.rotation, transform.rotation * Quaternion.Euler(0, degreesToRotate, 0), rotationTime));
         }
     }
@@ -23,7 +23,7 @@ public class RotatingPlatform : MonoBehaviour
     {
         if (!isRotating)
         {
-
+            AudioManager.Play("swivelPlate1").Volume(0.5f);
             StartCoroutine(RotateObject(transform.rotation, transform.rotation * Quaternion.Euler(0, -degreesToRotate, 0), rotationTime));
         }
     }

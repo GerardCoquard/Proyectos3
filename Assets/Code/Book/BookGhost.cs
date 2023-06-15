@@ -50,7 +50,6 @@ public class BookGhost : MonoBehaviour
         transform.localRotation = Quaternion.identity;
         holder.localRotation = Quaternion.identity;
         ClearSelected();
-
         WorldScreenUI.instance.HideIcon(IconType.Book);
     }
     private void OnMovementInput(InputAction.CallbackContext context)

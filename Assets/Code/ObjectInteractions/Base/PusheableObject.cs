@@ -18,6 +18,7 @@ public class PusheableObject : MonoBehaviour
     public float groundDetectionDistance = 0.2f;
     public float distanceToCheckOnGrounded = 0.3f;
     public float speedUp = 1f;
+    AudioSourceHandler sound;
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position,transform.position-new Vector3(0,groundDetectionDistance,0));
@@ -50,12 +51,14 @@ public class PusheableObject : MonoBehaviour
         rb.isKinematic = false;
         CameraController.instance.ChangeFocus(PlayerController.instance.cameraFocus);
         OnSelected?.Invoke();
+        sound = AudioManager.Play("dragObjectLoop").Volume(0.15f).Loop(true).Mute(true).Pitch(0.6f);
     }
     public void NotPusheable()
     {
         rb.isKinematic = true;
         CameraController.instance.ChangeFocus(PlayerController.instance.cameraFocus);
         OnUnselected?.Invoke();
+        sound.Stop();
     }
 
     public void BoxFall()
@@ -75,6 +78,7 @@ public class PusheableObject : MonoBehaviour
             if(Vector3.Dot(newDir,constrainDirection) <= 0)
             {
                 rb.velocity = Vector3.zero;
+                sound.Mute(true);
                 return;
             }
         }
@@ -83,6 +87,7 @@ public class PusheableObject : MonoBehaviour
             if(!OnGround(transform.position+newDir*distanceToCheckOnGrounded))
             {
                 rb.velocity = Vector3.zero;
+                sound.Mute(true);
                 return;
             }
         }
@@ -91,9 +96,12 @@ public class PusheableObject : MonoBehaviour
             if(!OnGround(PlayerController.instance.transform.position+newDir*distanceToCheckOnGrounded))
             {
                 rb.velocity = Vector3.zero;
+                sound.Mute(true);
                 return;
             }
         }
+        if(newDir!=Vector3.zero) sound.Mute(false);
+        else sound.Mute(true);
         rb.velocity = newDir * force * speedUp *Time.fixedDeltaTime;
     }
     public void SetConstraint(bool state, Vector3 ropeDirection)

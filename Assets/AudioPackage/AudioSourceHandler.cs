@@ -8,11 +8,12 @@ public class AudioSourceHandler : MonoBehaviour
 {
     AudioSource audioSource;
     [NonSerialized] public bool dontPause = false;
+    bool dontDestroy;
     private void OnEnable() {
         audioSource = GetComponent<AudioSource>();
     }
     private void Update() {
-        if(!audioSource.isPlaying && Time.timeScale != 0 && !audioSource.loop)
+        if(!audioSource.isPlaying && Time.timeScale != 0 && !audioSource.loop && !dontDestroy)
         {
             Destroy(gameObject);
         }
@@ -37,17 +38,12 @@ public class AudioSourceHandler : MonoBehaviour
         audioSource.mute = muted;
         return this;
     }
-    public AudioSourceHandler SpatialBlend(float sp)
+    public AudioSourceHandler SpatialBlend(Vector3 pos, float range)
     {
-        sp = Mathf.Clamp(sp,0f,1f);
-        audioSource.spatialBlend = sp;
-        return this;
-    }
-    public AudioSourceHandler SpatialRadius(float min,float max)
-    {
-        SpatialBlend(1);
-        audioSource.minDistance = min;
-        audioSource.maxDistance = max;
+        transform.position = pos;
+        audioSource.spatialBlend = 1;
+        audioSource.minDistance = 0;
+        audioSource.maxDistance = range;
         return this;
     }
     public AudioSourceHandler Pitch(float pitch)
@@ -64,6 +60,11 @@ public class AudioSourceHandler : MonoBehaviour
     public AudioSourceHandler NoPause(bool noPause)
     {
         dontPause = noPause;
+        return this;
+    }
+    public AudioSourceHandler DontDestroy()
+    {
+        dontDestroy = true;
         return this;
     }
     public void Pause()

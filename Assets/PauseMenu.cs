@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : Menu
 {
+    AudioSourceHandler sound;
     public void ToMenu()
     {
         SceneManager.LoadScene("Menu");
@@ -16,6 +17,7 @@ public class PauseMenu : Menu
         if(PlayerController.instance == null) return;
         PlayerController.instance.GetAnimator().SetBool("Paused", true);
         PlayerController.instance.isPaused = true;
+        sound = AudioManager.Play("openMenu").DontDestroy();
     }
 
     public override void OnDisable()
@@ -24,5 +26,7 @@ public class PauseMenu : Menu
         if(PlayerController.instance == null) return;
         PlayerController.instance.GetAnimator().SetBool("Paused", false);
         PlayerController.instance.UnsetPause();
+        sound.FadeOut(2);
+        AudioManager.Play("closeMenu").Pitch(1+Random.Range(-0.4f,-0.2f)).FadeOut(1.5f);
     }
 }

@@ -62,18 +62,21 @@ public class Book : MonoBehaviour
         StartCoroutine(ShowRunes());
         ResetBookGraphics();
         bookGhost.SetActive(true);
+        AudioManager.Play("bookModeOn").Volume(0.2f);
     }
     public void DeactivateBook()
     {
         StopAllCoroutines();
         StartCoroutine(HideRunes());
         bookGhost.SetActive(false);
+        AudioManager.Play("bookModeOff").Volume(0.2f);
     }
     public void ResetBookGraphics()
     {
         if(shapeshiftedObject!=null)
         {
             MirrorFocusManager.instance.RemoveMirror();
+            AudioManager.Play("bookDetransformation").Volume(1f).SpatialBlend(shapeshiftedObject.transform.position,20f);
             Destroy(shapeshiftedObject.gameObject);
             shapeshiftedObject = null;
             particles.transform.position = bookGraphics.transform.position;
@@ -103,6 +106,7 @@ public class Book : MonoBehaviour
     }
     void SpotFound(Vector3 pos, GameObject clone)
     {
+        AudioManager.Play("bookTransformation").Volume(0.5f);
         shapeshiftedObject = Instantiate(clone,pos, clone.transform.rotation);
         MirrorFocusManager.instance.AddMirror(shapeshiftedObject.GetComponent<PusheableObject>());
         Shape shape = shapeshiftedObject.GetComponent<Shape>();
@@ -141,6 +145,7 @@ public class Book : MonoBehaviour
                 }
             }
         }
+        AudioManager.Play("bookTransformationError").Volume(0.3f);//
         PlayerController.instance.SwapControl();
         BookUI.instance.ShowWarning();
     }
