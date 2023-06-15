@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioTest : MonoBehaviour
+public class MusicPlay : MonoBehaviour
 {
     public string soundName;
     public float volume = 1;
