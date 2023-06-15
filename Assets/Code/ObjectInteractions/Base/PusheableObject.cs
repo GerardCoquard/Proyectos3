@@ -82,7 +82,7 @@ public class PusheableObject : MonoBehaviour
             if(!OnGround(transform.position+newDir*distanceToCheckOnGrounded))
             {
                 Debug.Log("Not Grounded");
-                return;
+                //return;
             }
         }
         rb.velocity = newDir * force * Time.fixedDeltaTime;

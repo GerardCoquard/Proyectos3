@@ -25,6 +25,7 @@ public class PlayerAnimatorController : MonoBehaviour
     {
         foreach (Animator animator in playerAnimators)
         {
+            if(animator.Equals(null)) return;
             animator.SetBool(name, state);
         }
     }
