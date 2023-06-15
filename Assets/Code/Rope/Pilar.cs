@@ -18,6 +18,7 @@ public class Pilar : MonoBehaviour
             pilar.AddPilar(this);
             OnActivate?.Invoke();
         }
+        AudioManager.Play("tonguePilarContact").Volume(0.4f);
         collisions++;
     }
     public void OnExitCollision()
@@ -29,6 +30,7 @@ public class Pilar : MonoBehaviour
             pilar.RemovePilar(this);
             OnDisable?.Invoke();
         }
+        AudioManager.Play("tonguePilarContact").Volume(0.4f).Pitch(0.7f);
     }
     public void SetLocked(bool state)
     {

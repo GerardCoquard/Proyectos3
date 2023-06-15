@@ -91,15 +91,17 @@ public class AudioSourceHandler : MonoBehaviour
     {
         Destroy(gameObject);
     }
-    public void FadeOut(float speed)
+    public AudioSourceHandler FadeOut(float speed)
     {
         StopAllCoroutines();
         StartCoroutine(FadeOutCoroutine(speed));
+        return this;
     }
-    public void FadeIn(float speed, float maxVolume)
+    public AudioSourceHandler FadeIn(float speed, float maxVolume)
     {
         StopAllCoroutines();
         StartCoroutine(FadeInCoroutine(speed,maxVolume));
+        return this;
     }
     IEnumerator FadeOutCoroutine(float speed)
     {
