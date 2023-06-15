@@ -223,11 +223,7 @@ public class PlayerController : MonoBehaviour
         isPaused = false;
         
     }
-    IEnumerator StopPause()
-    {
-        yield return new WaitForSeconds(pauseDelay);
-        isPaused = false;
-    }
+   
     IEnumerator TimeToBreakIdle()
     {
         float timer = 0f;
@@ -471,4 +467,3 @@ public class PlayerController : MonoBehaviour
     }
 
 }
-
