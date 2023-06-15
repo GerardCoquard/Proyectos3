@@ -45,6 +45,7 @@ public class AudioSourceHandler : MonoBehaviour
     }
     public AudioSourceHandler SpatialRadius(float min,float max)
     {
+        SpatialBlend(1);
         audioSource.minDistance = min;
         audioSource.maxDistance = max;
         return this;

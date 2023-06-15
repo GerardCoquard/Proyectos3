@@ -36443,7 +36443,7 @@ GameObject:
   - component: {fileID: 1667916242}
   - component: {fileID: 1667916241}
   m_Layer: 0
-  m_Name: Test
+  m_Name: Music
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36461,6 +36461,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e829b4c644ba7b54aa45f0e3f755af9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundName: soundTrackMenuLoop
+  volume: 1
 --- !u!4 &1667916242
 Transform:
   m_ObjectHideFlags: 0
