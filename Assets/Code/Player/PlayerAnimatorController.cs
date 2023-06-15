@@ -6,6 +6,13 @@ public class PlayerAnimatorController : MonoBehaviour
 {
     public List<Animator> playerAnimators = new List<Animator>();
     
+    public void PlayRandomIdle()
+    {
+        foreach (Animator animator in playerAnimators)
+        {
+            animator.SetTrigger("Idle" + Random.Range(1, 3).ToString());
+        }
+    }
     public void SetFloat(string name, float value)
     {
 

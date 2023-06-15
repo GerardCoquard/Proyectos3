@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour
 {
@@ -56,7 +57,13 @@ public class PlayerController : MonoBehaviour
     public event StoppedPushing OnStoppedPushing;
 
     private Vector3 myPosition;
-
+    private bool isInputPressed;
+    public float maxTimeForBreak = 6f;
+    public float minTimeForBreak = 4f;
+    private bool breakEnded = true;
+    private IEnumerator idleCo;
+    public bool isPaused;
+    public float pauseDelay = 2f;
     private void Awake()
     {
 
@@ -184,7 +191,19 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        if (characterController.enabled)
+
+        isInputPressed = (tempDirection != Vector2.zero || isJumping || currentObjectPushing != null || !characterController.enabled) && !isPaused;
+        if (!isInputPressed && breakEnded)
+        {
+            idleCo = TimeToBreakIdle();
+            StartCoroutine(idleCo);
+        }
+        else if(!breakEnded && isInputPressed)
+        {
+            StopCoroutine(idleCo);
+            breakEnded = true;
+        }
+        if (characterController.enabled && !isPaused)
         {
             HandleRotation();
             HandleAcceleration();
@@ -196,8 +215,32 @@ public class PlayerController : MonoBehaviour
         CheckPushAvailable();
         SetGravity();
         animatorController.SetBool("Grounded", onGround);
+        animatorController.SetBool("InputPressed", isInputPressed);
     }
 
+    public void UnsetPause()
+    {
+        StartCoroutine(StopPause());
+    }
+    IEnumerator StopPause()
+    {
+        yield return new WaitForSeconds(pauseDelay);
+        isPaused = false;
+    }
+    IEnumerator TimeToBreakIdle()
+    {
+        float timer = 0f;
+        float maxTime = Random.Range(minTimeForBreak, maxTimeForBreak);
+        breakEnded = false;
+        while (timer < maxTime)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        animatorController.PlayRandomIdle();
+        idleCo = TimeToBreakIdle();
+        StartCoroutine(idleCo);
+    }
     IEnumerator DelayStartPushing()
     {
         yield return new WaitForSeconds(pushAnimationDuration);
@@ -237,7 +280,7 @@ public class PlayerController : MonoBehaviour
     }
     void CheckPushAvailable()
     {
-        if(inputBlocked)
+        if (inputBlocked)
         {
             WorldScreenUI.instance.HideIcon(IconType.Push);
             return;
@@ -251,7 +294,7 @@ public class PlayerController : MonoBehaviour
     }
     public bool CanInteract()
     {
-        if (isJumping || !onGround) return false;
+        if (isJumping || !onGround || isPaused) return false;
         if (currentObjectPushing != null) return false;
         if (bookOpened) return false;
         if (!characterController.enabled) return false;
@@ -348,7 +391,7 @@ public class PlayerController : MonoBehaviour
 
     private bool CanJump()
     {
-        return currentObjectPushing == null && !isJumping && onGround;
+        return currentObjectPushing == null && !isJumping && onGround && !isPaused;
     }
 
     void SetGravity()
@@ -412,9 +455,9 @@ public class PlayerController : MonoBehaviour
     }
     public void BlockPlayerInputs(bool state)
     {
-        InputManager.ActionEnabled("Move",state);
-        InputManager.ActionEnabled("ChangeMode",state);
-        InputManager.ActionEnabled("Jump",state);
+        InputManager.ActionEnabled("Move", state);
+        InputManager.ActionEnabled("ChangeMode", state);
+        InputManager.ActionEnabled("Jump", state);
         movement = Vector3.zero;
         tempDirection = Vector2.zero;
         inputBlocked = !state;
