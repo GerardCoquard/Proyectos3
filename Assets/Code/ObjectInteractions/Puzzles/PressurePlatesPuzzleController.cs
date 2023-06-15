@@ -13,7 +13,6 @@ public class PressurePlatesPuzzleController: MonoBehaviour
     {
         foreach (PressurePlateFixed plate in plates)
         {
-            Debug.Log(plate.IsPressed());
             if (!plate.IsPressed()) return;
         }
         if (!eventInvoked)
