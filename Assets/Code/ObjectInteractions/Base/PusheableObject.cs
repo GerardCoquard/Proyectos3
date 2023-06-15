@@ -82,6 +82,7 @@ public class PusheableObject : MonoBehaviour
             if(!OnGround(transform.position+newDir*distanceToCheckOnGrounded))
             {
                 rb.velocity = Vector3.zero;
+                Debug.Log("A");
                 return;
             }
         }
@@ -89,6 +90,7 @@ public class PusheableObject : MonoBehaviour
         {
             if(!OnGround(PlayerController.instance.transform.position+newDir*distanceToCheckOnGrounded))
             {
+                Debug.Log("A");
                 rb.velocity = Vector3.zero;
                 return;
             }

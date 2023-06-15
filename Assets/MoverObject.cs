@@ -36,4 +36,8 @@ public class MoverObject : MonoBehaviour
             pushObjects.Remove(pusheableObject);
         }
     }
+    public bool HasObjects()
+    {
+        return pushObjects.Count > 0;
+    }
 }

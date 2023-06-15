@@ -19,6 +19,11 @@ public class MoveObject : MonoBehaviour
         finalPos = finalPosition.position;
         distanceBetweenPositions = Vector3.Distance(initPos, finalPos);
     }
+    public void ChangeParams(Transform final)
+    {
+        finalPos = final.position;
+        distanceBetweenPositions = Vector3.Distance(initPos, finalPos);
+    }
     public void Move()
     {
         if(locked) return;

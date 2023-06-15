@@ -13,6 +13,7 @@ public class PauseMenu : Menu
     public override void OnEnable()
     {
         base.OnEnable();
+        if(PlayerController.instance == null) return;
         PlayerController.instance.GetAnimator().SetBool("Paused", true);
         PlayerController.instance.isPaused = true;
     }
@@ -20,6 +21,7 @@ public class PauseMenu : Menu
     public override void OnDisable()
     {
         base.OnDisable();
+        if(PlayerController.instance == null) return;
         PlayerController.instance.GetAnimator().SetBool("Paused", false);
         PlayerController.instance.UnsetPause();
     }

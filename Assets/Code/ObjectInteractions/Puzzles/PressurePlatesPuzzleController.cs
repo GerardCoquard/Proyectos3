@@ -8,7 +8,7 @@ public class PressurePlatesPuzzleController: MonoBehaviour
     [SerializeField] UnityEvent eventWhenComplete;
     private bool eventInvoked = false;
 
-
+    
     public void CheckIfComplete()
     {
         foreach (PressurePlateFixed plate in plates)

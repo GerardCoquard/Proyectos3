@@ -62,7 +62,7 @@ public class Rope : MonoBehaviour
     {
         RaycastHit hit;
         Vector3 pointPos = ropePositions[ropePositions.Count - 2].point;
-        if (Physics.Linecast(holder.position, pointPos, out hit,layerMask,QueryTriggerInteraction.Ignore))
+        if (Physics.Linecast(holder.position+new Vector3(0,0.8f,0), pointPos, out hit,layerMask,QueryTriggerInteraction.Ignore))
         {
             Vector3 hitPoint = hit.point+hit.normal*tolerance;
             AddPosToRope(hitPoint,hit.normal,hit.collider.GetComponent<Pilar>());
@@ -73,9 +73,9 @@ public class Rope : MonoBehaviour
     {
         RaycastHit hit;
         Vector3 pointPos = ropePositions[ropePositions.Count - 3].point;
-        Vector3 lastPointToPlayer = holder.position-ropePositions[ropePositions.Count - 2].point;
+        Vector3 lastPointToPlayer = holder.position+new Vector3(0,0.8f,0)-ropePositions[ropePositions.Count - 2].point;
         Vector3 lastPoint = ropePositions[ropePositions.Count - 2].point + lastPointToPlayer*0.2f;
-        if (!Physics.Linecast(holder.position, pointPos, out hit,layerMask,QueryTriggerInteraction.Ignore))
+        if (!Physics.Linecast(holder.position+new Vector3(0,0.8f,0), pointPos, out hit,layerMask,QueryTriggerInteraction.Ignore))
         {
             if(!Physics.Linecast(lastPoint, pointPos, out hit,layerMask,QueryTriggerInteraction.Ignore))
             {
@@ -91,7 +91,7 @@ public class Rope : MonoBehaviour
         if(ropePositions.Count>0) ropePositions.RemoveAt(ropePositions.Count - 1);
         ropePositions.Add(new RopePoint(_pos,_normal,pilar));
         if(pilar!=null) pilar.OnCollision();
-        ropePositions.Add(new RopePoint(holder.position,Vector3.zero,null));
+        ropePositions.Add(new RopePoint(holder.position+new Vector3(0,0.8f,0),Vector3.zero,null));
         if(ropePositions.Count>2) AddCollider();
     }
 
@@ -107,6 +107,7 @@ public class Rope : MonoBehaviour
     }
     void UpdateLineWidth()
     {
+        if(rope.positionCount<=1) return;
         float currentWidth = currentLenght/maxLength*(maxWidth-minWidth);
         currentWidth = maxWidth-currentWidth;
         rope.widthMultiplier = currentWidth;
@@ -168,7 +169,7 @@ public class Rope : MonoBehaviour
         if(onUse) RemoveLastCollider();
         else AddLastCollider();
     }
-    void LastSegmentGoToPlayerPos() => rope.SetPosition(rope.positionCount - 1, holder.position);
+    void LastSegmentGoToPlayerPos() => rope.SetPosition(rope.positionCount - 1, holder.position+new Vector3(0,0.8f,0));
     public struct RopePoint
     {
         public RopePoint(Vector3 _point,Vector3 _normal,Pilar _pilar)
