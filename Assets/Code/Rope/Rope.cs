@@ -108,12 +108,12 @@ public class Rope : MonoBehaviour
     }
     void UpdateLineWidth()
     {
-        if(rope.positionCount<=1) return;
         float currentWidth = currentLenght/maxLength*(maxWidth-minWidth);
         currentWidth = maxWidth-currentWidth;
         rope.widthMultiplier = currentWidth;
         for (int i = 0; i < colliders.Count; i++)
         {
+            if(i+1 > rope.positionCount-1) continue;
             Vector3 pointA = rope.GetPosition(i+1);
             Vector3 pointB = rope.GetPosition(i);
             Vector3 pointAB = pointB-pointA;

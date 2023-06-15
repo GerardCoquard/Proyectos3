@@ -116,11 +116,12 @@ public class AudioSourceHandler : MonoBehaviour
     IEnumerator FadeInCoroutine(float speed, float maxVolume)
     {
         audioSource.volume = 0;
-        while(audioSource.volume < 1)
+        while(audioSource.volume < maxVolume)
         {
             audioSource.volume+=speed*Time.unscaledDeltaTime;
-            audioSource.volume = Mathf.Clamp(audioSource.volume,0f,1f);
+            audioSource.volume = Mathf.Clamp(audioSource.volume,0f,maxVolume);
             yield return null;
         }
+        audioSource.volume = maxVolume;
     }
 }

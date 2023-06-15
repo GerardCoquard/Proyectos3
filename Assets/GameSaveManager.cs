@@ -66,10 +66,27 @@ public class GameSaveManager : MonoBehaviour
             }
         }
     }
+    void SetMusic()
+    {
+        switch (DataManager.Load<int>("roomID"))
+        {
+            case 1:
+            MusicManager.instance.AddSong("soundTrackAfternoonLoop",1);
+            MusicManager.instance.AddSong("soundTrackBaseAmbientLoop",0.01f);
+            break;
+            case 2: 
+            MusicManager.instance.AddSong("soundTrackBaseAmbientLoop",0.01f);
+            break;
+            case 4:
+            MusicManager.instance.AddSong("soundTrackNightLoop",0.01f);
+            break;
+        }
+    }
     private void Load()
     {
         currentRoom = DataManager.Load<int>("roomID");
         UnenableLevels();
+        SetMusic();
     }
 
     private void Save()
