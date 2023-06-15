@@ -71,15 +71,16 @@ public class GameSaveManager : MonoBehaviour
         switch (DataManager.Load<int>("roomID"))
         {
             case 1:
-            MusicManager.instance.AddSong("soundTrackAfternoonLoop",1);
-            MusicManager.instance.AddSong("soundTrackBaseAmbientLoop",0.01f);
+            MusicManager.instance.AddSong("soundTrackAfternoonLoop");
+            MusicManager.instance.AddSong("soundTrackBaseAmbientLoop");
             break;
             case 2: 
-            MusicManager.instance.AddSong("soundTrackBaseAmbientLoop",0.01f);
+            MusicManager.instance.AddSong("soundTrackBaseAmbientLoop");
             break;
             case 4:
-            MusicManager.instance.AddSong("soundTrackNightLoop",0.01f);
+            MusicManager.instance.AddSong("soundTrackNightLoop");
             break;
+            
         }
     }
     private void Load()

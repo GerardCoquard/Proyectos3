@@ -12,9 +12,37 @@ public class MusicManager : MonoBehaviour
     public float fadeInSpeed;
     public float fadeOutSpeed;
     Dictionary<string,AudioSourceHandler> dictionary = new Dictionary<string, AudioSourceHandler>();
-    public void AddSong(string soundName, float vol)
+    public void AddSong(string soundName)
     {
         if(dictionary.ContainsKey(soundName)) return;
+        float vol;
+        switch(soundName)
+        {
+            case "soundTrackAfternoonLoop":
+            vol = 1f;
+            break;
+
+            case "soundTrackBaseAmbientLoop":
+            vol = 0.01f;
+            break;
+
+            case "soundTrackNightLoop":
+            vol = 0.01f;
+            break;
+
+
+            case "soundTrackExtraBirdsLoop":
+            vol = 0.3f;
+            break;
+
+            case "soundTrackMonsterEncounterLoop":
+            vol = 0.01f;
+            break;
+            default:
+            vol = 0;
+            Debug.Log("ERROR EN MUSIC MANAGER?");
+            break;
+        }
         dictionary.Add(soundName,AudioManager.Play(soundName).Loop(true).FadeIn(fadeInSpeed,vol));
     }
     public void StopSong(string soundName)
