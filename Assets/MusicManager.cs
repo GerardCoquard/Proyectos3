@@ -27,7 +27,7 @@ public class MusicManager : MonoBehaviour
             break;
 
             case "soundTrackNightLoop":
-            vol = 0.01f;
+            vol = 0.1f;
             break;
 
 
@@ -36,7 +36,7 @@ public class MusicManager : MonoBehaviour
             break;
 
             case "soundTrackMonsterEncounterLoop":
-            vol = 0.01f;
+            vol = 0.1f;
             break;
             default:
             vol = 0;
