@@ -312,8 +312,11 @@ public class PlayerController : MonoBehaviour
             pusheable = hit.collider.GetComponentInParent<PusheableObject>();
             if (pusheable != null && Vector3.Dot(transform.forward, -hit.normal) >= angleDot)
             {
-                transform.forward = -hit.normal;
-                return true;
+                if(pusheable.canBePushed)
+                {
+                    transform.forward = -hit.normal;
+                    return true;
+                }
             }
         }
         return false;
@@ -338,7 +341,7 @@ public class PlayerController : MonoBehaviour
             OnObjectPushed?.Invoke();
         }
     }
-    void StopPushing()
+    public void StopPushing()
     {
         if (!canPush) return;
         if (currentObjectPushing == null) return;

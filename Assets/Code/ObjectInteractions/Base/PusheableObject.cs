@@ -20,6 +20,7 @@ public class PusheableObject : MonoBehaviour
     public float speedUp = 1f;
     public bool tongue;
     AudioSourceHandler sound;
+    public bool canBePushed = true;
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position,transform.position-new Vector3(0,groundDetectionDistance,0));

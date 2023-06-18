@@ -28,10 +28,9 @@ public static class AudioManager
             if(defaultConfig.ContainsKey(group.name)) defaultVolumes.Add(group.name,defaultConfig[group.name]);
             else Debug.LogWarning("Default audio value of " + group.name + " named incorrectly");
             SetVolume(group.name,volumes[group.name]);
+            CoroutineManager.StartCoroutine(SetVolumeDelayed(group.name,volumes[group.name]));
+            if(group.name != "Master") LoadAudio(group.name);
         }
-        LoadAudio("Music");
-        LoadAudio("SFX");
-        LoadAudio("Voice");
         audioHolder = CreateAudioHolder();
         DataManager.onSave += SaveData;
         SceneManager.sceneUnloaded += ClearAllSounds;
@@ -80,6 +79,14 @@ public static class AudioManager
     }
     public static void SetVolume(string volName,  float volume)
     {
+        volume = Mathf.Clamp(volume,0f,1f);
+        float innerVol = Mathf.Log10(volume)*multiplier;
+        audioMixer.SetFloat(volName, innerVol);
+        volumes[volName] = volume;
+    }
+    public static IEnumerator SetVolumeDelayed(string volName,  float volume)
+    {
+        yield return new WaitForEndOfFrame();
         volume = Mathf.Clamp(volume,0f,1f);
         float innerVol = Mathf.Log10(volume)*multiplier;
         audioMixer.SetFloat(volName, innerVol);

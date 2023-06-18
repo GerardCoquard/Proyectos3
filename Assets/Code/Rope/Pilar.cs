@@ -22,11 +22,11 @@ public class Pilar : MonoBehaviour
         if(locked) return;
         if(collisions==0)
         {
-            propSet.SetIntensity(render.material, intensity);
+            if(pilar.CorrectOrder(this)) propSet.SetIntensity(render.material, intensity);
             pilar.AddPilar(this);
             OnActivate?.Invoke();
+            AudioManager.Play("tonguePilarContact").Volume(0.4f);
         }
-        AudioManager.Play("tonguePilarContact").Volume(0.4f);
         collisions++;
     }
 
@@ -40,8 +40,8 @@ public class Pilar : MonoBehaviour
             propSet.SetIntensity(render.material, -10);
             pilar.RemovePilar(this);
             OnDisable?.Invoke();
+            AudioManager.Play("tonguePilarContact").Volume(0.4f).Pitch(0.7f);
         }
-        AudioManager.Play("tonguePilarContact").Volume(0.4f).Pitch(0.7f);
     }
     public void SetLocked(bool state)
     {

@@ -38,6 +38,15 @@ public class MoverObject : MonoBehaviour
     }
     public bool HasObjects()
     {
+        List<PusheableObject> temp = new List<PusheableObject>();
+        foreach (PusheableObject item in pushObjects)
+        {
+            if(item == null) temp.Add(item);
+        }
+        foreach (PusheableObject item in temp)
+        {
+            pushObjects.Remove(item);
+        }
         return pushObjects.Count > 0;
     }
 }

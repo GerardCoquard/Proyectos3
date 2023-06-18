@@ -40,6 +40,12 @@ public class RotatingPlatform : MonoBehaviour
             else pushObjects[i].rb.interpolation = RigidbodyInterpolation.None;
         }
 
+        foreach (PusheableObject item in pushObjects)
+        {
+            item.canBePushed = false;
+            if(!item.rb.isKinematic) PlayerController.instance.StopPushing();
+        }
+
         float t = 0f;
         isRotating = true;
         while (t < duration)
@@ -57,6 +63,11 @@ public class RotatingPlatform : MonoBehaviour
                 i++;
             }
             else pushObjects[i].rb.interpolation = RigidbodyInterpolation.Interpolate;
+        }
+
+        foreach (PusheableObject item in pushObjects)
+        {
+            item.canBePushed = true;
         }
     }
 

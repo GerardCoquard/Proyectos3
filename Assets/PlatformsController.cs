@@ -15,6 +15,8 @@ public class PlatformsController : MonoBehaviour
     public MoveObject big;
     bool up;
     bool blocked;
+    public float shortTime;
+    public float longTime;
     private void Start() {
         small2.Move();
     }
@@ -30,15 +32,15 @@ public class PlatformsController : MonoBehaviour
         }
         else
         {
-            if(small1Platform.HasObjects()) small1.ChangeParams(small1Large);
-            else small1.ChangeParams(small1Short);
+            if(small1Platform.HasObjects()) small1.ChangeParams(small1Large,longTime);
+            else small1.ChangeParams(small1Short,shortTime);
             small1.Move();
         }
 
         if(up)
         {
-            if(small2Platform.HasObjects()) small2.ChangeParams(small2Short);
-            else small2.ChangeParams(small2Large);
+            if(small2Platform.HasObjects()) small2.ChangeParams(small2Short,longTime);
+            else small2.ChangeParams(small2Large,shortTime);
             small2.Move();
         }
         else
@@ -51,15 +53,15 @@ public class PlatformsController : MonoBehaviour
     {
         blocked = true;
         big.ResetMove();
-        small1.ChangeParams(small1Large);
+        small1.ChangeParams(small1Large,longTime);
         small1.Move();
-        small2.ChangeParams(small2Short);
+        small2.ChangeParams(small2Short,longTime);
         small2.Move();
     }
     public void OnMonsterExit()
     {
         blocked = true;
-        small2.ChangeParams(small2Large);
+        small2.ChangeParams(small2Large,shortTime);
         small2.Move();
     }
 }

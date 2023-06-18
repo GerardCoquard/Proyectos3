@@ -35,4 +35,8 @@ public class PilarManager : MonoBehaviour
         }
         return true;
     }
+    public bool CorrectOrder(Pilar pilar)
+    {
+        return currentPilars[currentPilars.Count-1] == correctPilarsOrder[currentPilars.Count-1];
+    }
 }

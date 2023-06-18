@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MoveObject : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class MoveObject : MonoBehaviour
     Vector3 finalPos;
     float distanceBetweenPositions;
     bool locked;
+    public UnityEvent OnStart;
+    public UnityEvent OnFinish;
 
     private void Start()
     {
@@ -19,8 +22,9 @@ public class MoveObject : MonoBehaviour
         finalPos = finalPosition.position;
         distanceBetweenPositions = Vector3.Distance(initPos, finalPos);
     }
-    public void ChangeParams(Transform final)
+    public void ChangeParams(Transform final, float newTime)
     {
+        timeToReach = newTime;
         finalPos = final.position;
         distanceBetweenPositions = Vector3.Distance(initPos, finalPos);
     }
@@ -50,6 +54,7 @@ public class MoveObject : MonoBehaviour
     }
     IEnumerator MoveCoroutine()
     {
+        OnStart?.Invoke();
         yield return new WaitForSeconds(delay);
         float distanceToTarget = Vector3.Distance(transform.position, finalPos);
         float time = distanceToTarget / distanceBetweenPositions * timeToReach;
@@ -62,9 +67,11 @@ public class MoveObject : MonoBehaviour
             yield return null;
         }
         transform.position = finalPos;
+        OnFinish?.Invoke();
     }
     IEnumerator ResetObjectCoroutine()
     {
+        OnStart?.Invoke();
         float distanceToTarget = Vector3.Distance(transform.position, initPos);
         float time = distanceToTarget / distanceBetweenPositions * timeToReach;
         Vector3 _initPos = transform.position;
@@ -76,6 +83,7 @@ public class MoveObject : MonoBehaviour
             yield return null;
         }
         transform.position = initPos;
+        OnFinish?.Invoke();
     }
     public void SetLocked(bool state)
     {
