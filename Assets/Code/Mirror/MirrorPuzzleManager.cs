@@ -57,8 +57,6 @@ public class MirrorPuzzleManager : MonoBehaviour
     {
         if (!isCompleted)
         {
-
-            Debug.Log("COMPLETED");
             eventOnComplete?.Invoke();
             isCompleted = true;
         }
