@@ -55,7 +55,7 @@ static class InputManager
         {
             _event.ClearListeners();
         }
-        OnDeviceChanged = null;
+        //OnDeviceChanged = null;
     }
     public static void OnInputDeviceChange(InputUser user, InputUserChange change, InputDevice _device)
     {

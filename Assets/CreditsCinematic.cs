@@ -11,6 +11,7 @@ public class CreditsCinematic : MonoBehaviour
     private void OnEnable() {
         InputManager.GetAction("Jump").action += FastForward;
         InputManager.GetAction("Pause").action += StopCinematic;
+        anim.speed = 2;
     }
     private void OnDisable() {
         InputManager.GetAction("Jump").action -= FastForward;
@@ -28,7 +29,7 @@ public class CreditsCinematic : MonoBehaviour
     {
         if(context.ReadValue<float>() <= 0)
         {
-            anim.speed = 3;
+            anim.speed = 2;
         }
         else
         {

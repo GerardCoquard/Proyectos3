@@ -4,7 +4,6 @@ using UnityEngine;
 public class CameraShake : MonoBehaviour
 {
     [SerializeField] float magnitude;
-
     public static CameraShake instance;
     void Awake()
     {
@@ -14,7 +13,7 @@ public class CameraShake : MonoBehaviour
 
     public void StartShake(float time)
     {
-        StartCoroutine(Shake(time));
+        if(OptionsManager.cameraShake) StartCoroutine(Shake(time));
     }
     IEnumerator Shake(float time)
     {

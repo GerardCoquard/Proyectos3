@@ -27,7 +27,11 @@ public static class UIUtilities
         switch (newDevice)
         {
             case Devices.Keyboard:
-            if(EventSystem.current.currentSelectedGameObject!=null)EventSystem.current.currentSelectedGameObject.GetComponent<SelectableHandler>().Unhighlight();
+            if(EventSystem.current.currentSelectedGameObject!=null)
+            {
+                Cursor.visible = true;
+                EventSystem.current.currentSelectedGameObject.GetComponent<SelectableHandler>().Unhighlight();
+            }
             EventSystem.current.SetSelectedGameObject(null);
             break;
 
@@ -35,6 +39,7 @@ public static class UIUtilities
             if(EventSystem.current.currentSelectedGameObject!=null)EventSystem.current.currentSelectedGameObject.GetComponent<SelectableHandler>().Unhighlight();
             EventSystem.current.SetSelectedGameObject(null);
             Selectable selectable = GetTopLeftSelectable();
+            Cursor.visible = false;
             if(selectable == null) return;
             selectable?.Select();
             selectable?.OnSelect(null);

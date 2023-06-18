@@ -21,7 +21,7 @@ public class Menu : MonoBehaviour
     public virtual void OnEnable()
     {
         if(!initialized) OnStart();
-        Cursor.visible = true;
+        CursorVisible(true);
         HighlightButton();
         SubscribeOnBack();
         FreezeTime();
@@ -91,6 +91,10 @@ public class Menu : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         SubscribeOnBack();
+    }
+    public void CursorVisible(bool state)
+    {
+        if(InputManager.device == Devices.Keyboard) Cursor.visible = state;
     }
 
 }
