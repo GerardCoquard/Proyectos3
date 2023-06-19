@@ -35,6 +35,9 @@ public class DialogueDisplay : MonoBehaviour
 
     public static DialogueDisplay instance;
 
+    [SerializeField] TextMeshProUGUI emisorName;
+    [SerializeField] TextMeshProUGUI emisorText;
+
     private void Awake()
     {
         if (instance == null)
@@ -48,14 +51,9 @@ public class DialogueDisplay : MonoBehaviour
         finalScale = initialScale * finalScaleMultiplier;
         distanceBetweenScales = Vector3.Distance(initialScale, finalScale);
         initialUiPosition = new Vector3(uiRenderer.transform.localPosition.x, 0, uiRenderer.transform.localPosition.z);
-       
-    }
-    private void Update()
-    {
 
-        dialogueRender.transform.position = currentNode.emisor == SPEAKER.BOOK ? WorldScreenUI.instance.WorldPosToScreen(Book.instance.dialoguePosition.position) : WorldScreenUI.instance.WorldPosToScreen(interactablePos.position);
-        UiPosition();
     }
+
     private void OnEnable()
     {
         InputManager.GetAction("Push").action += Interact;
@@ -68,29 +66,7 @@ public class DialogueDisplay : MonoBehaviour
         InputManager.GetAction("ExitDialogue").action -= End;
     }
 
-    private void GraphicUpdate()
-    {
-        if (currentNode.emisor == SPEAKER.BOOK)
-        {
-            if(finalScale.x < 0f)
-            {
-                finalScale = new Vector3(-finalScale.x, finalScale.y, finalScale.z);
-                dialogueText.transform.localScale = new Vector3(-dialogueText.transform.localScale.x, dialogueText.transform.localScale.y, dialogueText.transform.localScale.z);
-            }
-           
-            
-        }
-        else
-        {
-            
-            if (finalScale.x > 0f)
-            {
-                finalScale = new Vector3(-finalScale.x, finalScale.y, finalScale.z);
-                dialogueText.transform.localScale = new Vector3(-dialogueText.transform.localScale.x, dialogueText.transform.localScale.y, dialogueText.transform.localScale.z);
-            }
-            
-        }
-    }
+
 
     private void Interact(InputAction.CallbackContext context)
     {
@@ -126,10 +102,16 @@ public class DialogueDisplay : MonoBehaviour
         }
     }
 
+    private void SetEmisorName()
+    {
+        if (emisorName.text == currentNode.emisor) return;
+        emisorName.text = currentNode.emisor;
+    }
     public void StartDialogue()
     {
         currentEventHandler.DisableInteractParticles();
         StartCoroutine(WaitToLand());
+        SetEmisorName();
         PlayerController.instance.BlockPlayerInputs(false);
         PlayerController.instance.GetAnimator().SetBool("isMoving", false);
         dialogueRender.SetActive(true);
@@ -137,13 +119,12 @@ public class DialogueDisplay : MonoBehaviour
         currentNode = startNode;
         currentState = DIALOGUE_STATE.DEFAULT;
         currentTypeSpeed = defaultTypeSpeed;
-        StartCoroutine(ScaleCoroutine());
     }
     IEnumerator WaitToLand()
     {
         while (PlayerController.instance.GetIsJumping())
         {
-            yield return null; 
+            yield return null;
         }
         PlayerController.instance.characterController.enabled = false;
     }
@@ -161,41 +142,6 @@ public class DialogueDisplay : MonoBehaviour
         interactablePos = pos;
     }
 
-    IEnumerator ScaleCoroutine()
-    {
-        GraphicUpdate();
-        isTextFinished = false;
-        onAnimation = true;
-        float distanceToScale = Vector3.Distance(dialogueRender.transform.localScale, finalScale * 1.5f);
-        float time = distanceToScale / distanceBetweenScales * timeToReachScale;
-        Vector3 _initScale = dialogueRender.transform.localScale;
-        float timer = 0f;
-        while (timer < time)
-        {
-            dialogueRender.transform.localScale = Vector3.Lerp(_initScale, finalScale * 1.5f, timer / time);
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        StartCoroutine(ScaleBack());
-    }
-
-    IEnumerator ScaleBack()
-    {
-        
-        
-        float distanceToScale = Vector3.Distance(dialogueRender.transform.localScale, finalScale);
-        float time = distanceToScale / distanceBetweenScales * timeToReachScale;
-        Vector3 _initScale = dialogueRender.transform.localScale;
-        float timer = 0f;
-        while (timer < time)
-        {
-            dialogueRender.transform.localScale = Vector3.Lerp(_initScale, finalScale, timer / time);
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        dialogueRender.transform.localScale = finalScale;
-        StartCoroutine(Type());
-    }
 
     IEnumerator Type()
     {
@@ -204,30 +150,22 @@ public class DialogueDisplay : MonoBehaviour
         {
 
             dialogueText.text += letter;
-            AudioManager.Play("textSound").Pitch(1+UnityEngine.Random.Range(-0.3f,0f)).Volume(0.3f);
+            AudioManager.Play("textSound").Pitch(1 + UnityEngine.Random.Range(-0.3f, 0f)).Volume(0.3f);
             yield return new WaitForSeconds(currentTypeSpeed);
         }
         isTextFinished = true;
-        
+
     }
 
-    private void UiPosition()
-    {
-        if ((dialogueRender.transform.localScale.x < 0f && uiRenderer.transform.localScale.x > 0f) || (dialogueRender.transform.localScale.x > 0f && uiRenderer.transform.localScale.x < 0f))
-        {
-            uiRenderer.transform.localScale = new Vector3(-uiRenderer.transform.localScale.x, uiRenderer.transform.localScale.y, uiRenderer.transform.localScale.z);
-        }
-        float dialogueBoxHeight = textBox.rect.height;
-        uiRenderer.transform.localPosition = new Vector3(initialUiPosition.x, initialUiPosition.y - dialogueBoxHeight, initialUiPosition.z);
-    }
+
     private void NextSentence()
     {
         if (currentNode.TargetNode != null)
         {
             currentNode = currentNode.TargetNode;
+            SetEmisorName();
             dialogueText.text = "";
             dialogueRender.transform.localScale = initialScale;
-            StartCoroutine(ScaleCoroutine());
         }
         else
         {

@@ -10,12 +10,8 @@ public class DialogueNode : ScriptableObject
     public string textID;
     public AudioClip[] audio;
     public DialogueNode TargetNode;
-    public SPEAKER emisor;
+    public string emisor;
 }
 
-public enum SPEAKER
-{
-    OTHER,
-    BOOK
-}
+
 
