@@ -20,20 +20,20 @@ public class MusicManager : MonoBehaviour
         {
 
             case "soundTrackBaseAmbientLoop":
-            vol = 0.01f;
+            vol = 1f;
             break;
 
             case "soundTrackNightLoop":
-            vol = 0.1f;
+            vol = 1f;
             break;
 
 
             case "soundTrackExtraBirdsLoop":
-            vol = 0.3f;
+            vol = 1f;
             break;
 
             case "soundTrackMonsterEncounterLoop":
-            vol = 0.1f;
+            vol = 0.8f;
             break;
             default:
             vol = 0;
