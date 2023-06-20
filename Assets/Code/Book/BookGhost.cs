@@ -18,6 +18,7 @@ public class BookGhost : MonoBehaviour
     CharacterController characterController;
     Shape selectedShape;
     bool delay;
+    float controlsTimer;
     private void Start() {
         characterController = GetComponent<CharacterController>();
     }
@@ -40,6 +41,7 @@ public class BookGhost : MonoBehaviour
         if(InputManager.GetAction("Move").GetEnabled()) movement = InputManager.GetAction("Move").context.ReadValue<Vector2>();
         if(InputManager.GetAction("Jump").GetEnabled()) up = InputManager.GetAction("Jump").context.ReadValue<float>() == 1;
         if(InputManager.GetAction("Down").GetEnabled()) down = InputManager.GetAction("Down").context.ReadValue<float>() == 1;
+        controlsTimer = 0;
     }
     private void OnDisable() {
         InputManager.GetAction("Move").action -= OnMovementInput;
@@ -51,6 +53,7 @@ public class BookGhost : MonoBehaviour
         holder.localRotation = Quaternion.identity;
         ClearSelected();
         WorldScreenUI.instance.HideIcon(IconType.Book);
+        ControlsUI.instance.HideBookControls();
     }
     private void OnMovementInput(InputAction.CallbackContext context)
     {
@@ -71,6 +74,7 @@ public class BookGhost : MonoBehaviour
     private void Update() {
         if(!delay) return;
         Move();
+        CheckForControls();
         if(selectedShape != null) WorldScreenUI.instance.SetIcon(IconType.Book, transform.position+new Vector3(0,0.6f,0));
         else WorldScreenUI.instance.HideIcon(IconType.Book);
     }
@@ -80,8 +84,10 @@ public class BookGhost : MonoBehaviour
         if(up && transform.position.y<CameraController.instance.MaxBookHeight()) vertical++;
         if(down) vertical--;
         Vector3 finalMovement = new Vector3(movement.x,vertical,movement.y).normalized;
-        
+
         characterController.Move(finalMovement * Time.deltaTime * speed);
+
+        if(finalMovement!=Vector3.zero) ResetControlsTimer();
 
         transform.localRotation = Quaternion.Lerp(transform.localRotation,TiltRotationTowardsVelocity(Quaternion.Euler(transform.forward),Vector3.up,finalMovement,tiltSpeed),tiltCatchUp*Time.deltaTime);
         if(finalMovement.x != 0 || finalMovement.z != 0)
@@ -128,5 +134,18 @@ public class BookGhost : MonoBehaviour
         delay = false;
         yield return new WaitForSeconds(0.25f);
         delay = true;
+    }
+    void CheckForControls()
+    {
+        if(controlsTimer<ControlsUI.instance.timeToDisplay)
+        {
+            controlsTimer+=Time.deltaTime;
+        }
+        else ControlsUI.instance.ShowBookControls();
+    }
+    void ResetControlsTimer()
+    {
+        controlsTimer = 0;
+        ControlsUI.instance.HideBookControls();
     }
 }
