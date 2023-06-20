@@ -23,9 +23,12 @@ public class PressurePlateFixed : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other) {
         if(locked) return;
-        AudioManager.Play("pressurePlate").Volume(0.5f).Pitch(1+UnityEngine.Random.Range(0.1f,0.2f));
         if (other.tag == "CharacterController") return;
-        if (onTop.Count == 0) anim.SetBool("Pressed",true);
+        if (onTop.Count == 0)
+        {
+            anim.SetBool("Pressed",true);
+            AudioManager.Play("pressurePlate").Volume(0.5f).Pitch(1+UnityEngine.Random.Range(0.1f,0.2f));
+        }
         onTop.Add(other.gameObject);
         FixedPlateObject objectPressing = other.GetComponent<FixedPlateObject>();
         if(objectPressing!=null)

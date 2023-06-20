@@ -24,7 +24,11 @@ public class PressurePlate : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         if(locked) return;
         if (other.tag == "CharacterController") return;
-        if(onTop.Count == 0) OnPressed?.Invoke();
+        if(onTop.Count == 0) 
+        {
+            AudioManager.Play("pressurePlate").Volume(0.5f).Pitch(1+UnityEngine.Random.Range(0.1f,0.2f));
+            OnPressed?.Invoke();
+        }
         onTop.Add(other.gameObject);
     }
     private void OnTriggerExit(Collider other) {
