@@ -26,6 +26,7 @@ public class Book : MonoBehaviour
     public Material fixedRuneMat;
     public float runeFadeSpeed;
     public Transform attractor;
+    public Material ghostMat;
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
@@ -110,11 +111,11 @@ public class Book : MonoBehaviour
         shapeshiftedObject = Instantiate(clone,pos, clone.transform.rotation);
         MirrorFocusManager.instance.AddMirror(shapeshiftedObject.GetComponent<PusheableObject>());
         Shape shape = shapeshiftedObject.GetComponent<Shape>();
-        shape.SetRune(fixedRuneMat);
         Destroy(shape);
         particles.transform.position = bookGraphics.transform.position;
         particles.Play();
         bookGraphics.SetActive(false);
+        shape.SetRune(fixedRuneMat);
         PlayerController.instance.SwapControl();
     }
     public void Shapehift(Shape shape, Vector3 extents)
