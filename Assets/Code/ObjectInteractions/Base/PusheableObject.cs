@@ -21,6 +21,7 @@ public class PusheableObject : MonoBehaviour
     public bool tongue;
     AudioSourceHandler sound;
     public bool canBePushed = true;
+    bool particlesBlocked;
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
         Gizmos.DrawLine(transform.position,transform.position-new Vector3(0,groundDetectionDistance,0));
@@ -117,11 +118,13 @@ public class PusheableObject : MonoBehaviour
     void ShowParticles()
     {
         if (!particles) return;
+        if(particlesBlocked) return;
         particles.SetActive(true);
     }
     void HideParticles()
     {
         if (!particles) return;
+        if(particlesBlocked) return;
         particles.SetActive(false);
     }
     public void ChangeFocus(Transform newFocus)
@@ -143,6 +146,11 @@ public class PusheableObject : MonoBehaviour
         rb.useGravity = false;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         transform.position += new Vector3(0, 0.2f, 0);
+    }
+    public void BlockParticles()
+    {
+        particlesBlocked = true;
+        particles.SetActive(false);
     }
 }
 
