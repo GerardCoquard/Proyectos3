@@ -23,6 +23,7 @@ public class Interactable : MonoBehaviour
 
     private void DialogueInteract(InputAction.CallbackContext context)
     {
+        Debug.Log("A");
         if (context.performed && PlayerController.instance.CanInteract())
         {
             DialogueDisplay.instance.onEndEvent = OnEnd;

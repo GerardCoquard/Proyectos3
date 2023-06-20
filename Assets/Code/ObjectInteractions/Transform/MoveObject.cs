@@ -19,11 +19,15 @@ public class MoveObject : MonoBehaviour
     private void Start()
     {
         initPos = transform.position;
-        finalPos = finalPosition.position;
-        distanceBetweenPositions = Vector3.Distance(initPos, finalPos);
+        if(finalPosition!=null)
+        {
+            finalPos = finalPosition.position;
+            distanceBetweenPositions = Vector3.Distance(initPos, finalPos);
+        }
     }
     public void ChangeParams(Transform final, float newTime)
     {
+        if(initPos == Vector3.zero) initPos = transform.position;
         timeToReach = newTime;
         finalPos = final.position;
         distanceBetweenPositions = Vector3.Distance(initPos, finalPos);

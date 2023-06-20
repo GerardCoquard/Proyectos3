@@ -88,7 +88,7 @@ public class LightBeam
             lineRenderer.material.SetColor("_Color", new Color(newColor.r,newColor.g,newColor.b,1));
         }
         //Start the cast of the ray
-        currentLength = Mathf.Clamp(currentLength+growthSpeed*Time.deltaTime,0,50);
+        currentLength = Mathf.Clamp(currentLength+growthSpeed*Time.deltaTime,0,100);
         lineRenderer.positionCount = 0;
         lightIndices.Clear();
         CastLight(pos, dir, renderer);

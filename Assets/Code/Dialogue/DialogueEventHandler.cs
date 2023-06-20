@@ -12,6 +12,7 @@ public class DialogueEventHandler : MonoBehaviour
     public GameObject interactableParticles;
     public void StartDialogueEvent()
     {
+        return; /////////////
         StartCoroutine(StartDialogueCoroutine());
     }
 

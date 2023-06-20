@@ -22,8 +22,8 @@ public class Pilar : MonoBehaviour
         if(locked) return;
         if(collisions==0)
         {
-            if(pilar.CorrectOrder(this)) propSet.SetIntensity(render.material, intensity);
             pilar.AddPilar(this);
+            if(pilar.CorrectOrder(this)) propSet.SetIntensity(render.material, intensity);
             OnActivate?.Invoke();
             AudioManager.Play("tonguePilarContact").Volume(0.4f);
         }

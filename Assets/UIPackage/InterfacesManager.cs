@@ -25,6 +25,9 @@ public class InterfacesManager : MonoBehaviour
             Destroy(this);
         }
     }
+    private void Start() {
+        Cursor.visible = false;
+    }
     private void OnEnable() {
         foreach (_interface _interface in _interfaces)
         {
