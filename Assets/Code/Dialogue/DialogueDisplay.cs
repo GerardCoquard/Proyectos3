@@ -10,8 +10,7 @@ public class DialogueDisplay : MonoBehaviour
 {
     [SerializeField] public GameObject dialogueRender;
     [SerializeField] public GameObject uiRenderer;
-    [SerializeField] RectTransform textBox;
-    private Vector3 initialUiPosition;
+    [SerializeField] TextMeshProUGUI emisorName;
     [SerializeField] TextMeshProUGUI dialogueText;
     private DialogueNode startNode;
     private Transform interactablePos;
@@ -23,20 +22,10 @@ public class DialogueDisplay : MonoBehaviour
     public bool isTextFinished;
     private bool onAnimation;
     private DialogueEventHandler currentEventHandler;
-
-    Vector3 initialScale;
-    Vector3 finalScale;
-    public float timeToReachScale;
-    public float finalScaleMultiplier;
-    float distanceBetweenScales;
-
     public UnityEvent onEndEvent;
     private DIALOGUE_STATE currentState = DIALOGUE_STATE.DEFAULT;
-
     public static DialogueDisplay instance;
 
-    [SerializeField] TextMeshProUGUI emisorName;
-    [SerializeField] TextMeshProUGUI emisorText;
 
     private void Awake()
     {
@@ -47,10 +36,6 @@ public class DialogueDisplay : MonoBehaviour
         else Destroy(this);
 
         dialogueRender.SetActive(false);
-        initialScale = dialogueRender.transform.localScale;
-        finalScale = initialScale * finalScaleMultiplier;
-        distanceBetweenScales = Vector3.Distance(initialScale, finalScale);
-        initialUiPosition = new Vector3(uiRenderer.transform.localPosition.x, 0, uiRenderer.transform.localPosition.z);
 
     }
 
@@ -104,14 +89,13 @@ public class DialogueDisplay : MonoBehaviour
 
     private void SetEmisorName()
     {
-        if (emisorName.text == currentNode.emisor) return;
-        emisorName.text = currentNode.emisor;
+        emisorName.color = currentNode.nameColor;
+        emisorName.text = LocalizationManager.GetLocalizedValue(currentNode.emisorID);
     }
     public void StartDialogue()
     {
         currentEventHandler.DisableInteractParticles();
         StartCoroutine(WaitToLand());
-        SetEmisorName();
         PlayerController.instance.BlockPlayerInputs(false);
         PlayerController.instance.GetAnimator().SetBool("isMoving", false);
         dialogueRender.SetActive(true);
@@ -119,6 +103,8 @@ public class DialogueDisplay : MonoBehaviour
         currentNode = startNode;
         currentState = DIALOGUE_STATE.DEFAULT;
         currentTypeSpeed = defaultTypeSpeed;
+        SetEmisorName();
+        StartCoroutine(Type());
     }
     IEnumerator WaitToLand()
     {
@@ -146,6 +132,7 @@ public class DialogueDisplay : MonoBehaviour
     IEnumerator Type()
     {
         onAnimation = false;
+        isTextFinished = false;
         foreach (char letter in LocalizationManager.GetLocalizedValue(currentNode.textID).ToCharArray())
         {
 
@@ -165,7 +152,7 @@ public class DialogueDisplay : MonoBehaviour
             currentNode = currentNode.TargetNode;
             SetEmisorName();
             dialogueText.text = "";
-            dialogueRender.transform.localScale = initialScale;
+            StartCoroutine(Type());
         }
         else
         {

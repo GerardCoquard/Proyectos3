@@ -10,7 +10,8 @@ public class DialogueNode : ScriptableObject
     public string textID;
     public AudioClip[] audio;
     public DialogueNode TargetNode;
-    public string emisor;
+    public string emisorID;
+    public Color nameColor;
 }
 
 
