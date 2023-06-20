@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour
             StopCoroutine(idleCo);
             breakEnded = true;
         }
-        if (characterController.enabled && !isPaused)
+        if (characterController.enabled)
         {
             HandleRotation();
             HandleAcceleration();
