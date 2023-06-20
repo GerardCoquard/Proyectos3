@@ -71,7 +71,6 @@ public class GameSaveManager : MonoBehaviour
         switch (DataManager.Load<int>("roomID"))
         {
             case 1:
-            MusicManager.instance.AddSong("soundTrackAfternoonLoop");
             MusicManager.instance.AddSong("soundTrackBaseAmbientLoop");
             break;
             case 2: 

@@ -18,9 +18,6 @@ public class MusicManager : MonoBehaviour
         float vol;
         switch(soundName)
         {
-            case "soundTrackAfternoonLoop":
-            vol = 1f;
-            break;
 
             case "soundTrackBaseAmbientLoop":
             vol = 0.01f;
