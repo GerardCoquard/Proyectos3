@@ -15,7 +15,7 @@ public class RotatingPlatform : MonoBehaviour
     {
         if (!isRotating)
         {
-            AudioManager.Play("swivelPlate1").Volume(0.5f);
+            AudioManager.Play("swivelPlate1").Volume(0.25f);
             StartCoroutine(RotateObject(transform.rotation, transform.rotation * Quaternion.Euler(0, degreesToRotate, 0), rotationTime));
         }
     }
@@ -23,7 +23,7 @@ public class RotatingPlatform : MonoBehaviour
     {
         if (!isRotating)
         {
-            AudioManager.Play("swivelPlate1").Volume(0.5f);
+            AudioManager.Play("swivelPlate1").Volume(0.25f);
             StartCoroutine(RotateObject(transform.rotation, transform.rotation * Quaternion.Euler(0, -degreesToRotate, 0), rotationTime));
         }
     }
@@ -43,6 +43,7 @@ public class RotatingPlatform : MonoBehaviour
         foreach (PusheableObject item in pushObjects)
         {
             item.canBePushed = false;
+            if (item == null) continue;
             if(!item.rb.isKinematic) PlayerController.instance.StopPushing();
         }
 
