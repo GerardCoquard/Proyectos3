@@ -23,6 +23,6 @@ public class DoorFinalEvent : MonoBehaviour
             yield return null;
         }
         bg.color = new Color(bg.color.r, bg.color.g, bg.color.b, 1);
-        Loader.instance.LoadScene("CREDITS");
+        Loader.instance.LoadScene("FINAL_CINEMATIC");
     }
 }
