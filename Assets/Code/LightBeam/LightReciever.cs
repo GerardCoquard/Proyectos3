@@ -17,7 +17,7 @@ public class LightReciever : MonoBehaviour
     Dictionary<LightBeam, LightBeamData> crossingBeams = new Dictionary<LightBeam, LightBeamData>();
 
     public ParticleSystem particles;
-
+    private AudioSourceHandler laserSound;
     private void Start()
     {
         OnLightRecived.AddListener(() => colorPropertySetter.SetIntensity(linkedBeamMaterial, onIntensity));
@@ -90,5 +90,19 @@ public class LightReciever : MonoBehaviour
         LightBeam extraLightBeam = new LightBeam(beam, hitParticles);
         LightBeamData extraData = new LightBeamData(extraLightBeam, Vector3.zero, Vector3.zero);
         crossingBeams.Add(beam, extraData);
+    }
+
+    public void LaserSound()
+    {
+        StartCoroutine(PlayLaserSound());
+    }
+
+   
+    IEnumerator PlayLaserSound()
+    {
+        laserSound = AudioManager.Play("spellActivation1").Volume(0.3f);
+        yield return new WaitForSeconds(3);
+        laserSound.Stop();
+        laserSound = AudioManager.Play("fireLaser").Volume(0.3f);
     }
 }

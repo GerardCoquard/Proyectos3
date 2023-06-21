@@ -16,6 +16,7 @@ public class WallBreakEvent : MonoBehaviour
 
     public float forceApplied = 5f;
     public float timeForPieces = 5f;
+    public float timeToActivateHead = 5f;
     public float radiusExplosion;
     public UnityEvent externalEvent;
 
@@ -55,13 +56,20 @@ public class WallBreakEvent : MonoBehaviour
 
     private void ActivateMonsterHead()
     {
-        if (monsterHead == null) return;
-        foreach (GameObject obj in monsterHead)
-        {
-            obj.SetActive(true);
-        }
+        StartCoroutine(ActivateMonsterHeadCoroutine());
     }
-
+    IEnumerator ActivateMonsterHeadCoroutine()
+    {
+        yield return new WaitForSeconds(timeToActivateHead);
+        if (monsterHead != null) 
+        {
+            foreach (GameObject obj in monsterHead)
+            {
+                obj.SetActive(true);
+            }
+        }
+        
+    }
     public void DoEvent()
     {
         InstantiateParticles(); 

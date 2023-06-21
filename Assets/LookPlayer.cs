@@ -7,6 +7,8 @@ public class LookPlayer : MonoBehaviour
     [SerializeField] Transform objectLookPlayer;
     [SerializeField] Transform target;
     [SerializeField] float speed;
+    [SerializeField] float minRot;
+    [SerializeField] float maxRot;
 
     private void Update()
     {
@@ -16,5 +18,11 @@ public class LookPlayer : MonoBehaviour
         Quaternion targetRot = Quaternion.LookRotation(direction);
 
         objectLookPlayer.rotation = Quaternion.Lerp(objectLookPlayer.rotation, targetRot, speed * Time.deltaTime);
+
+        Vector3 currentEulerAngles = objectLookPlayer.rotation.eulerAngles;
+
+        currentEulerAngles.y = Mathf.Clamp(currentEulerAngles.y, minRot, maxRot);
+
+        objectLookPlayer.rotation = Quaternion.Euler(currentEulerAngles);
     }
 }
