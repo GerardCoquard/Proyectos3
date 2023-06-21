@@ -96,8 +96,8 @@ public class DialogueDisplay : MonoBehaviour
     {
         currentEventHandler.DisableInteractParticles();
         StartCoroutine(WaitToLand());
-        PlayerController.instance.BlockPlayerInputs(false);
-        PlayerController.instance.GetAnimator().SetBool("isMoving", false);
+        if(PlayerController.instance != null) PlayerController.instance.BlockPlayerInputs(false);
+        if (PlayerController.instance != null) PlayerController.instance.GetAnimator().SetBool("isMoving", false);
         dialogueRender.SetActive(true);
         dialogueText.text = "";
         currentNode = startNode;
@@ -108,11 +108,15 @@ public class DialogueDisplay : MonoBehaviour
     }
     IEnumerator WaitToLand()
     {
-        while (PlayerController.instance.GetIsJumping())
+        if (PlayerController.instance != null)
         {
-            yield return null;
+
+            while (PlayerController.instance.GetIsJumping())
+            {
+                yield return null;
+            }
+            PlayerController.instance.characterController.enabled = false;
         }
-        PlayerController.instance.characterController.enabled = false;
     }
     public void SetStartNode(DialogueNode startNode)
     {
@@ -137,7 +141,7 @@ public class DialogueDisplay : MonoBehaviour
         {
 
             dialogueText.text += letter;
-            AudioManager.Play("dialogue"+UnityEngine.Random.Range(1,12).ToString()).Volume(1f);
+            AudioManager.Play("dialogue" + UnityEngine.Random.Range(1, 12).ToString()).Volume(1f);
             yield return new WaitForSeconds(currentTypeSpeed);
         }
         isTextFinished = true;
@@ -162,8 +166,8 @@ public class DialogueDisplay : MonoBehaviour
     private void EndDialogue()
     {
         BookMovement.instance.DialogueEnded();
-        PlayerController.instance.BlockPlayerInputs(true);
-        PlayerController.instance.characterController.enabled = true;
+        if (PlayerController.instance != null) PlayerController.instance.BlockPlayerInputs(true);
+        if (PlayerController.instance != null) PlayerController.instance.characterController.enabled = true;
         onEndEvent?.Invoke();
         currentEventHandler?.DoEndAnimation();
         dialogueRender.gameObject.SetActive(false);

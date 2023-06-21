@@ -7,7 +7,7 @@ public class MonsterAudioController : MonoBehaviour
     private AudioSourceHandler laserSound;
     public void BreakSound()
     {
-        AudioManager.Play("monsterHit1").Volume(0.3f);
+        AudioManager.Play("monsterHit1").Volume(1f);
     }
 
     public void BreathSound()
