@@ -22,8 +22,8 @@ public class LookPlayer : MonoBehaviour
 
         currentEulerAngles.y = Mathf.Clamp(currentEulerAngles.y, minRot, maxRot);
 
-        objectLookPlayer.rotation = Quaternion.Euler(currentEulerAngles);
+        Quaternion desiredRotation = Quaternion.Euler(currentEulerAngles);
 
-        objectLookPlayer.rotation = Quaternion.Lerp(objectLookPlayer.rotation, targetRot, speed * Time.deltaTime);
+        objectLookPlayer.rotation = Quaternion.Lerp(desiredRotation, targetRot, speed * Time.deltaTime);
     }
 }

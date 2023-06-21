@@ -96,7 +96,7 @@ public class DialogueDisplay : MonoBehaviour
     {
         currentEventHandler.DisableInteractParticles();
         StartCoroutine(WaitToLand());
-        if(PlayerController.instance != null) PlayerController.instance.BlockPlayerInputs(false);
+        if (PlayerController.instance != null) PlayerController.instance.BlockPlayerInputs(false);
         if (PlayerController.instance != null) PlayerController.instance.GetAnimator().SetBool("isMoving", false);
         dialogueRender.SetActive(true);
         dialogueText.text = "";
@@ -165,7 +165,7 @@ public class DialogueDisplay : MonoBehaviour
     }
     private void EndDialogue()
     {
-        BookMovement.instance.DialogueEnded();
+        if (BookMovement.instance != null) BookMovement.instance.DialogueEnded();
         if (PlayerController.instance != null) PlayerController.instance.BlockPlayerInputs(true);
         if (PlayerController.instance != null) PlayerController.instance.characterController.enabled = true;
         onEndEvent?.Invoke();
