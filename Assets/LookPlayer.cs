@@ -16,13 +16,14 @@ public class LookPlayer : MonoBehaviour
         direction.Normalize();
 
         Quaternion targetRot = Quaternion.LookRotation(direction);
-
-        objectLookPlayer.rotation = Quaternion.Lerp(objectLookPlayer.rotation, targetRot, speed * Time.deltaTime);
+       
 
         Vector3 currentEulerAngles = objectLookPlayer.rotation.eulerAngles;
 
         currentEulerAngles.y = Mathf.Clamp(currentEulerAngles.y, minRot, maxRot);
 
         objectLookPlayer.rotation = Quaternion.Euler(currentEulerAngles);
+
+        objectLookPlayer.rotation = Quaternion.Lerp(objectLookPlayer.rotation, targetRot, speed * Time.deltaTime);
     }
 }
