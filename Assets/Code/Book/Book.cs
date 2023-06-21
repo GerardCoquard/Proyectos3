@@ -63,21 +63,20 @@ public class Book : MonoBehaviour
         StartCoroutine(ShowRunes());
         ResetBookGraphics();
         bookGhost.SetActive(true);
-        AudioManager.Play("bookModeOn").Volume(0.2f);
+        AudioManager.Play("bookTransform"+Random.Range(1,5).ToString()).Volume(1f);
     }
     public void DeactivateBook()
     {
         StopAllCoroutines();
         StartCoroutine(HideRunes());
         bookGhost.SetActive(false);
-        AudioManager.Play("bookModeOff").Volume(0.2f);
+        AudioManager.Play("bookDetransformation").Volume(1f);
     }
     public void ResetBookGraphics()
     {
         if(shapeshiftedObject!=null)
         {
             MirrorFocusManager.instance.RemoveMirror();
-            AudioManager.Play("bookDetransformation").Volume(1f).SpatialBlend(shapeshiftedObject.transform.position,20f);
             Destroy(shapeshiftedObject.gameObject);
             shapeshiftedObject = null;
             particles.transform.position = bookGraphics.transform.position;

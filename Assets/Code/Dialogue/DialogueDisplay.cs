@@ -137,7 +137,7 @@ public class DialogueDisplay : MonoBehaviour
         {
 
             dialogueText.text += letter;
-            AudioManager.Play("textSound").Pitch(1 + UnityEngine.Random.Range(-0.3f, 0f)).Volume(0.3f);
+            AudioManager.Play("dialogue"+UnityEngine.Random.Range(1,12).ToString()).Volume(1f);
             yield return new WaitForSeconds(currentTypeSpeed);
         }
         isTextFinished = true;
