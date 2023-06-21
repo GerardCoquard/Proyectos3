@@ -20,7 +20,7 @@ public class MusicManager : MonoBehaviour
         {
 
             case "soundTrackBaseAmbientLoop":
-            vol = 1f;
+            vol = 0.5f;
             break;
 
             case "soundTrackNightLoop":
