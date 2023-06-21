@@ -24,7 +24,9 @@ public class MainMenu : Menu
     public void NewGame()
     {
         DataManager.Save("roomID",0);
-        Continue();
+        Loader.instance.LoadScene("START_CINEMATIC");
+        InputManager.ChangeActionMap("Player");
+        Time.timeScale = 1;
     }
     public void Continue()
     {
