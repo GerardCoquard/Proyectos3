@@ -25,7 +25,6 @@ public class AudioSourceHandler : MonoBehaviour
     }
     public AudioSourceHandler Volume(float vol)
     {
-        return this;///
         audioSource.volume = vol;
         return this;
     }
@@ -41,7 +40,6 @@ public class AudioSourceHandler : MonoBehaviour
     }
     public AudioSourceHandler SpatialBlend(Vector3 pos, float range)
     {
-        return this;///
         transform.position = pos;
         audioSource.spatialBlend = 1;
         audioSource.minDistance = 0;
