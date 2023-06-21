@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator idleCo;
     public bool isPaused;
     public float pauseDelay = 2f;
+    public RoomTrigger lastRoomTriggerPlayer;
     private void Awake()
     {
 
@@ -146,6 +147,7 @@ public class PlayerController : MonoBehaviour
             }
             movement = Vector3.zero;
             OnPlayerActivated?.Invoke();
+            if(lastRoomTriggerPlayer !=null) lastRoomTriggerPlayer.ChangeRoom();
         }
         else
         {
