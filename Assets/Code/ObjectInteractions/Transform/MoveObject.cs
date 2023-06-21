@@ -67,7 +67,8 @@ public class MoveObject : MonoBehaviour
             {
                 sound.Stop();
             }
-            sound = AudioManager.Play("platformMove").SpatialBlend(transform.position, 10f).Volume(10f);
+            sound = AudioManager.Play("platformMove").SpatialBlend(transform.position, 20f).Volume(1f);
+
         }
             
         yield return new WaitForSeconds(delay);
@@ -93,7 +94,7 @@ public class MoveObject : MonoBehaviour
             {
                 sound.Stop();
             }
-            sound = AudioManager.Play("platformMove").SpatialBlend(transform.position, 10f).Volume(10f);
+            sound = AudioManager.Play("platformMove").SpatialBlend(transform.position, 20f).Volume(1f);
         }
         float distanceToTarget = Vector3.Distance(transform.position, initPos);
         float time = distanceToTarget / distanceBetweenPositions * timeToReach;
