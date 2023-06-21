@@ -8,6 +8,6 @@ public class AssetSound : MonoBehaviour
     public float volume = 1f;
     private void Start()
     {
-        AudioManager.Play(soundName).SpatialBlend(transform.position, 10f).Volume(volume);
+        AudioManager.Play(soundName).SpatialBlend(transform.position, 15f).Volume(volume);
     }
 }

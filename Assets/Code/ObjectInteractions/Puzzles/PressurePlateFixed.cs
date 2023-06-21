@@ -27,7 +27,7 @@ public class PressurePlateFixed : MonoBehaviour
         if (onTop.Count == 0)
         {
             anim.SetBool("Pressed",true);
-            AudioManager.Play("pressurePlate").Volume(0.5f).Pitch(1+UnityEngine.Random.Range(0.1f,0.2f));
+            AudioManager.Play("pressurePlate").Volume(0.3f).Pitch(1+UnityEngine.Random.Range(0.1f,0.2f));
         }
         onTop.Add(other.gameObject);
         FixedPlateObject objectPressing = other.GetComponent<FixedPlateObject>();
@@ -49,7 +49,7 @@ public class PressurePlateFixed : MonoBehaviour
             if (onTop.Count == 0)
             {
                 anim.SetBool("Pressed", false);
-                AudioManager.Play("pressurePlate").Volume(0.5f).Pitch(1 + UnityEngine.Random.Range(0.1f, 0.2f));
+                AudioManager.Play("pressurePlate").Volume(0.3f).Pitch(1 + UnityEngine.Random.Range(0.1f, 0.2f));
             } 
         }
         FixedPlateObject objectPressing = other.GetComponent<FixedPlateObject>();

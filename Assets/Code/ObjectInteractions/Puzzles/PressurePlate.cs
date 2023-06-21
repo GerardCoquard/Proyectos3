@@ -26,7 +26,7 @@ public class PressurePlate : MonoBehaviour
         if (other.tag == "CharacterController") return;
         if(onTop.Count == 0) 
         {
-            AudioManager.Play("pressurePlate").Volume(0.5f).Pitch(1+UnityEngine.Random.Range(0.1f,0.2f));
+            AudioManager.Play("pressurePlate").Volume(0.3f).Pitch(1+UnityEngine.Random.Range(0.1f,0.2f));
             OnPressed?.Invoke();
         }
         onTop.Add(other.gameObject);
