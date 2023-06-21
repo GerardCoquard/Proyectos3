@@ -66,6 +66,7 @@ public class MirrorPuzzleManager : MonoBehaviour
         if (!isCompleted)
         {
             eventOnComplete?.Invoke();
+            AudioManager.Play("lockedMirrorAudio").Volume(1f);
             isCompleted = true;
         }
     }

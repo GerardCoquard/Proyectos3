@@ -16,6 +16,7 @@ public class BookAnimationManager : MonoBehaviour
         Collider[] colliders =  GetComponentsInChildren<Collider>();
         MoveObject[] movers =  GetComponentsInChildren<MoveObject>();
         RotateObject[] rotators =  GetComponentsInChildren<RotateObject>();
+        AudioManager.Play("bookPlatformSound").Volume(1f);
         foreach (MoveObject item in movers)
         {
             item.Move();

@@ -35,4 +35,14 @@ public class CameraShake : MonoBehaviour
         transform.localPosition = new Vector3(transform.position.x + x, transform.position.y + y, transform.position.z);
     }
 
+    public void PlayShakeSound()
+    {
+        AudioManager.Play("shakeSound").Volume(1f);
+    }
+
+    public void PlayEyeSound()
+    {
+        AudioManager.Play("eyeHitSound").Volume(1f);
+    }
+
 }

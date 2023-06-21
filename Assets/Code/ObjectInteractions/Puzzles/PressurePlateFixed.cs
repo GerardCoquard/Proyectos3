@@ -46,7 +46,11 @@ public class PressurePlateFixed : MonoBehaviour
         if (onTop.Contains(other.gameObject))
         {
             onTop.Remove(other.gameObject);
-            if(onTop.Count == 0) anim.SetBool("Pressed",false);
+            if (onTop.Count == 0)
+            {
+                anim.SetBool("Pressed", false);
+                AudioManager.Play("pressurePlate").Volume(0.5f).Pitch(1 + UnityEngine.Random.Range(0.1f, 0.2f));
+            } 
         }
         FixedPlateObject objectPressing = other.GetComponent<FixedPlateObject>();
         if(objectPressing!=null)

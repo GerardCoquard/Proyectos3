@@ -45,6 +45,7 @@ public class LightEmiter : MonoBehaviour
         else
         {
             sound = AudioManager.Play("rayLoop").SpatialBlend(transform.position,10).FadeIn(2,0.1f).Loop(true);
+            AudioManager.Play("emitterActivated").SpatialBlend(transform.position, 20).Volume(1f);
         }
     }
     IEnumerator LowerBeamAlpha()

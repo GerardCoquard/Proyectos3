@@ -15,6 +15,7 @@ public class MoveObject : MonoBehaviour
     bool locked;
     public UnityEvent OnStart;
     public UnityEvent OnFinish;
+    private AudioSourceHandler sound;
 
     private void Start()
     {
@@ -59,6 +60,11 @@ public class MoveObject : MonoBehaviour
     IEnumerator MoveCoroutine()
     {
         OnStart?.Invoke();
+        if(sound != null)
+        {
+            sound.Stop();
+        }
+        sound = AudioManager.Play("platformMove").SpatialBlend(transform.position, 10f).Volume(10f);
         yield return new WaitForSeconds(delay);
         float distanceToTarget = Vector3.Distance(transform.position, finalPos);
         float time = distanceToTarget / distanceBetweenPositions * timeToReach;
@@ -76,6 +82,11 @@ public class MoveObject : MonoBehaviour
     IEnumerator ResetObjectCoroutine()
     {
         OnStart?.Invoke();
+        if (sound != null)
+        {
+            sound.Stop();
+        }
+        sound = AudioManager.Play("platformMove").SpatialBlend(transform.position, 10f).Volume(10f);
         float distanceToTarget = Vector3.Distance(transform.position, initPos);
         float time = distanceToTarget / distanceBetweenPositions * timeToReach;
         Vector3 _initPos = transform.position;

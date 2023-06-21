@@ -12,4 +12,15 @@ public class KeyEvent : MonoBehaviour
     {
         myAnim.Play(clip.name);
     }
+
+    public void PlayUnlockSound()
+    {
+        AudioManager.Play("unlockSound").Volume(1f);
+    }
+
+    public void PlayDoorOpenSound()
+    {
+        AudioManager.Play("doorOpenSound").Volume(1f);
+
+    }
 }
