@@ -29,4 +29,14 @@ public class BookAnimationManager : MonoBehaviour
             item.isTrigger = false;
         }
     }
+
+    public void PlayBooksAnimation()
+    {
+        BookAnimationRandomizer[] books = GetComponentsInChildren<BookAnimationRandomizer>();
+
+        foreach (BookAnimationRandomizer book in books)
+        {
+            book.PlayRandomAnimation();
+        }
+    }
 }
