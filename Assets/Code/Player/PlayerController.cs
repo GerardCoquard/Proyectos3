@@ -445,6 +445,11 @@ public class PlayerController : MonoBehaviour
     {
         return isJumping;
     }
+
+    public bool GetIsGrounded()
+    {
+        return onGround;
+    }
     public Vector2 GetDirection()
     {
         if (currentObjectPushing != null) return tempDirection;
