@@ -29,10 +29,10 @@ public class PressurePlatesPuzzleController: MonoBehaviour
         if (!eventInvoked)
         {
             eventWhenComplete?.Invoke();
-            eventInvoked = true;
             SetBox(true);
             SetCircle(true);
             SetTriangle(true);
+            eventInvoked = true;
         } 
     }
     public void SetTriangle(bool pressed)
