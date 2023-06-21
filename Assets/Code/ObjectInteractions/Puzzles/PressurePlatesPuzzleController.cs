@@ -34,16 +34,19 @@ public class PressurePlatesPuzzleController: MonoBehaviour
     }
     public void SetTriangle(bool pressed)
     {
+        if(eventInvoked) return;
         if(pressed) triangle.SetEmission(maxIntensity);
         else triangle.SetEmission(minIntensity);
     }
     public void SetBox(bool pressed)
     {
+        if(eventInvoked) return;
         if(pressed) box.SetEmission(maxIntensity);
         else box.SetEmission(minIntensity);
     }
     public void SetCircle(bool pressed)
     {
+        if(eventInvoked) return;
         if(pressed) circle.SetEmission(maxIntensity);
         else circle.SetEmission(minIntensity);
     }
