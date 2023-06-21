@@ -11,12 +11,12 @@ public class CreditsCinematic : MonoBehaviour
     public float speedUp;
     private void OnEnable() {
         InputManager.GetAction("Jump").action += FastForward;
-        InputManager.GetAction("Pause").action += StopCinematic;
+        InputManager.GetAction("ExitDialogue").action += StopCinematic;
         anim.speed = speedDown;
     }
     private void OnDisable() {
         InputManager.GetAction("Jump").action -= FastForward;
-        InputManager.GetAction("Pause").action -= StopCinematic;
+        InputManager.GetAction("ExitDialogue").action -= StopCinematic;
     }
     public void EndCinematic()
     {
