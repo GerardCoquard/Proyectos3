@@ -21,10 +21,13 @@ public class LightEmiter : MonoBehaviour
     public ParticleSystem hitParticles;
     AudioSourceHandler sound;
     private bool played;
+    LayerMask masks;
 
     private void Start()
     {
-        beam = new LightBeam(transform.position, inverted ? -transform.forward : transform.forward, material, Physics.AllLayers, maxBounces, rayColor, width, transform, growthSpeed, hitParticles);
+        masks = Physics.AllLayers;
+        masks &= ~(1 << LayerMask.NameToLayer("NoBeam"));
+        beam = new LightBeam(transform.position, inverted ? -transform.forward : transform.forward, material, masks, maxBounces, rayColor, width, transform, growthSpeed, hitParticles);
         SetPower(active);
     }
 
