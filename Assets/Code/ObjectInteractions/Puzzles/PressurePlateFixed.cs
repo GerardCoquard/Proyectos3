@@ -33,7 +33,7 @@ public class PressurePlateFixed : MonoBehaviour
         FixedPlateObject objectPressing = other.GetComponent<FixedPlateObject>();
         if(objectPressing!=null)
         {
-            if(objectPressing.number == numberLinked)
+            if (objectPressing.number == numberLinked)
             {
                 pressed = true;
                 OnPressed?.Invoke();
@@ -55,7 +55,8 @@ public class PressurePlateFixed : MonoBehaviour
         FixedPlateObject objectPressing = other.GetComponent<FixedPlateObject>();
         if(objectPressing!=null)
         {
-            if(objectPressing.number == numberLinked)
+
+            if (objectPressing.number == numberLinked)
             {
                 OnUnpressed?.Invoke();
                 pressed = false;
