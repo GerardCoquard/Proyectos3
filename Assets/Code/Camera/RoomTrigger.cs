@@ -22,7 +22,11 @@ public class RoomTrigger : MonoBehaviour
             {
                 CameraController.instance.ChangeRoom(cameraBox, extraHeight, extraDepth);
             }
-            else ChangeRoom();
+            else 
+            {
+                PlayerController.instance.lastRoomTriggerPlayer = this;
+                ChangeRoom();
+            }
         }
     }
 
