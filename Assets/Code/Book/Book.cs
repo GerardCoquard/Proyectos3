@@ -106,7 +106,7 @@ public class Book : MonoBehaviour
     }
     void SpotFound(Vector3 pos, GameObject clone)
     {
-        AudioManager.Play("bookTransformation").Volume(0.5f);
+        AudioManager.Play("bookTransformation").Volume(1f);
         shapeshiftedObject = Instantiate(clone,pos, clone.transform.rotation);
         MirrorFocusManager.instance.AddMirror(shapeshiftedObject.GetComponent<PusheableObject>());
         Shape shape = shapeshiftedObject.GetComponent<Shape>();
