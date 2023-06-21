@@ -194,7 +194,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        isInputPressed = (tempDirection != Vector2.zero || isJumping || currentObjectPushing != null || !characterController.enabled) && !isPaused;
+        isInputPressed = (tempDirection != Vector2.zero || isJumping || currentObjectPushing != null) && !isPaused;
         if (!isInputPressed && breakEnded)
         {
             idleCo = TimeToBreakIdle();
