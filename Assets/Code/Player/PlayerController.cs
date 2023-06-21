@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float angleDot = 0.8f;
     [SerializeField] float distanceBetween = 0.1f;
     [SerializeField] Transform pushStartDetectionPoint;
-    PusheableObject currentObjectPushing;
+    public PusheableObject currentObjectPushing;
     [NonSerialized]
     public bool bookOpened;
     bool inputBlocked;
