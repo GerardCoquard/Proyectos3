@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MonsterAudioController : MonoBehaviour
 {
+    private AudioSourceHandler laserSound;
     public void BreakSound()
     {
         AudioManager.Play("monsterHit1").Volume(0.3f);
@@ -34,6 +35,14 @@ public class MonsterAudioController : MonoBehaviour
 
     public void Spell()
     {
-        AudioManager.Play("spellActivation1").Volume(0.3f);
+        StartCoroutine(LaserEvent());
+    }
+
+    IEnumerator LaserEvent()
+    {
+        laserSound = AudioManager.Play("spellActivation1").Volume(0.3f);
+        yield return new WaitForSeconds(3);
+        laserSound.Stop();
+        laserSound = AudioManager.Play("fireLaser").Volume(0.3f);
     }
 }
