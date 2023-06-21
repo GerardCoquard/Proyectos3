@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 4132650408345235028}
   - component: {fileID: 6464389687242261904}
   - component: {fileID: 4888174807619569834}
+  - component: {fileID: 2148132708476252628}
   m_Layer: 12
   m_Name: Player
   m_TagString: CharacterController
@@ -123,6 +124,7 @@ MonoBehaviour:
   minTimeForBreak: 6
   isPaused: 0
   pauseDelay: 2
+  lastRoomTriggerPlayer: {fileID: 0}
 --- !u!136 &4132650408345235028
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -160,6 +162,18 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 828900542119977034}
   m_Enabled: 1
+--- !u!114 &2148132708476252628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828900542119977034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 429fde3e2735d944fbf477d2928f8de0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &828900542909014590
 GameObject:
   m_ObjectHideFlags: 0
