@@ -151,6 +151,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            PressTutorial.instance.SetTutorial(false);
             StopPushing();
             InputManager.GetAction("Move").action -= OnMovementInput;
             InputManager.GetAction("Push").action -= OnPushInput;

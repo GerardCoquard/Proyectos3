@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DialogueEventHandler : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class DialogueEventHandler : MonoBehaviour
     public AnimationClip actorStartAnimation;
     public AnimationClip actorEndAnimation;
     public GameObject interactableParticles;
+    public UnityEvent OnFinish;
     public void StartDialogueEvent()
     {
         StartCoroutine(StartDialogueCoroutine());
@@ -37,6 +39,7 @@ public class DialogueEventHandler : MonoBehaviour
     }
     public void DoEndAnimation()
     {
+        OnFinish?.Invoke();
         if (actorEndAnimation != null) actorAnimation.PlayQueued(actorEndAnimation.name);
     }
 

@@ -22,6 +22,7 @@ public class LightEmiter : MonoBehaviour
     AudioSourceHandler sound;
     private bool played;
     LayerMask masks;
+    bool locked;
 
     private void Start()
     {
@@ -38,6 +39,7 @@ public class LightEmiter : MonoBehaviour
     }
     public void SetPower(bool state)
     {
+        if(locked) return;
         StopAllCoroutines();
         active = state;
         if (colorPropertySetter != null) colorPropertySetter.SetIntensity(material, active ? onIntensity : offIntensity);
@@ -70,6 +72,9 @@ public class LightEmiter : MonoBehaviour
         beam.lineRenderer.material.SetColor("_Color", new Color(newColor.r, newColor.g, newColor.b, 0));
         beam.ResetBeam();
     }
-
+    public void SetLocked(bool state)
+    {
+        locked = state;
+    }
 
 }
