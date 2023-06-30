@@ -8,6 +8,7 @@ public class Loader : MonoBehaviour
     [SerializeField] GameObject loadingScreen;
     private AsyncOperation asyncOperation;
     private float progress;
+    bool loadingScene;
 
     private void Awake()
     {
@@ -25,7 +26,9 @@ public class Loader : MonoBehaviour
     }
     public void LoadScene(string scene)
     {
+        if(loadingScene) return;
         StartCoroutine(LoadSceneAsync(scene));
+        loadingScene = true;
     }
 
     IEnumerator LoadSceneAsync(string scene)
