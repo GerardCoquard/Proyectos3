@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BookMovement : MonoBehaviour
+public class BookMovement1 : MonoBehaviour
 {
-    public static BookMovement instance;
+    public static BookMovement1 instance;
     public float maxSpeed;
     public float minSpeed;
     public float maxAcceleration;
@@ -37,7 +37,7 @@ public class BookMovement : MonoBehaviour
     float currentTilt;
     float currentWeight;
     Vector3 velocity;
-    bool canMove;
+    bool cinematicOn;
     private void Awake()
     {
         if (instance == null)
@@ -54,17 +54,6 @@ public class BookMovement : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position,innerRadius);
         Gizmos.DrawLine(transform.position,transform.position+Vector3.forward*raycastDistance);
     }
-    public void SpawnBook()
-    {
-        //Check for space before
-        attractor = GameObject.FindGameObjectWithTag("BookAttractor").transform;
-        transform.position = attractor.position + new Vector3(lateralOffset,0,0);
-        currentSpeed = minSpeed;
-        _currentAcceleration = minAcceleration;
-        currentWeight = seekWeight;
-        currentTilt = minTilt;
-        currentRotationSpeed = minRotationSpeed;
-    }
     private void Start() {
         attractor = GameObject.FindGameObjectWithTag("BookAttractor").transform;
         transform.position = attractor.position + new Vector3(lateralOffset,0,0);
@@ -76,9 +65,9 @@ public class BookMovement : MonoBehaviour
     }
     void Update()
     {
-        bool bookGhostActivated = Book.instance.bookGhost.activeInHierarchy;
-        if(canMove && !bookGhostActivated) Move();
-        else Stop();
+        if(cinematicOn) return;
+        if(Book.instance.bookGhost.activeInHierarchy) Stop();
+        else Move();
     }
     void Stop()
     {
@@ -208,11 +197,11 @@ public class BookMovement : MonoBehaviour
     }
     public void DialogueEnded()
     {
-        canMove = true;
+        cinematicOn = false;
     }
     IEnumerator GoToAttractor()
     {
-        canMove = false;
+        cinematicOn = true;
         while(Vector3.Distance(transform.position,attractor.position+new Vector3(lateralOffset,0,0)) > minDistanceToAttractor)
         {
             MoveToAttractor();
