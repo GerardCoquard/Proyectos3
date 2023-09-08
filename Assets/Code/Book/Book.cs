@@ -20,7 +20,7 @@ public class Book : MonoBehaviour
     public GameObject bookGraphics;
     public GameObject bookGhost;
     public Transform dialoguePosition;
-    public VisualEffect particles;
+    public ParticleSystem particles;
     GameObject shapeshiftedObject;
     public Material defaultRuneMat;
     public Material fixedRuneMat;

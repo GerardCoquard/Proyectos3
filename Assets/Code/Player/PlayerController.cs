@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour
     public float minTimeForBreak = 4f;
     private bool breakEnded = true;
     private IEnumerator idleCo;
+    private IEnumerator pushDelay;
     public bool isPaused;
     public float pauseDelay = 2f;
     public RoomTrigger lastRoomTriggerPlayer;
@@ -338,7 +339,8 @@ public class PlayerController : MonoBehaviour
             characterController.enabled = false;
             transform.position = new Vector3(hit.point.x, transform.position.y, hit.point.z) + hit.normal * (characterController.radius + distanceBetween);
             transform.forward = -hit.normal;
-            StartCoroutine(DelayStartPushing());
+            pushDelay = DelayStartPushing();
+            StartCoroutine(pushDelay);
             animatorController.SetBool("isPushing", true);
 
             OnObjectPushed?.Invoke();
@@ -346,6 +348,20 @@ public class PlayerController : MonoBehaviour
     }
     public void StopPushing()
     {
+        if(pushDelay!=null)
+        {
+            StopCoroutine(pushDelay);
+            pushDelay = null;
+            OnStoppedPushing?.Invoke();
+            transform.SetParent(null);
+            currentObjectPushing.NotPusheable();
+            animatorController.SetBool("isPushing", false);
+            currentObjectPushing = null;
+            characterController.enabled = true;
+            canPush = true;
+            animatorController.SetBool("CanPush", canPush);
+            return;
+        }
         if (!canPush) return;
         if (currentObjectPushing == null) return;
         OnStoppedPushing?.Invoke();
@@ -354,6 +370,9 @@ public class PlayerController : MonoBehaviour
         animatorController.SetBool("isPushing", false);
         currentObjectPushing = null;
         characterController.enabled = true;
+        canPush = true;
+        animatorController.SetBool("CanPush", canPush);
+        
     }
     private void Push()
     {
